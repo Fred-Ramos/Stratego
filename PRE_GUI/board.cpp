@@ -77,61 +77,24 @@ Board::~Board() {                                      //desctructor
 	}
 }
 
-
-
-
-
 void Board :: Print(){                           
     using namespace std;  
-    const int kiSquareWidth = 4;                                      //square width
-    const int kiSquareHeight = 3;                                     //square height
-    for (int iRow = 0; iRow < 10*kiSquareHeight; ++iRow) {             //there are 10 rows, each row has height kiSquareHeight
-        int iSquareRow = iRow/kiSquareHeight;                         //so that iSquareRow increase by 1 each 3iRow (true index)
-        // PRINT SIDE BORDER WITH NUMBERING
-        if (iRow % kiSquareHeight == 1) {                             //if row in middle of Square, display row number
-            cout << '-' << (char)('9' - iSquareRow ) << '-';
-        } 
-        else {                                                        //else make row "divider"
-            cout << "---";
-        }
-        // PRINT GAME BOARD
-        for (int iCol = 0; iCol < 10*kiSquareWidth; ++iCol) {         //there are 10 columns, each column has width kiSquareWidth
-            int iSquareCol = iCol/kiSquareWidth;                     //so that iSquareCol increase by 1 each 4iCol (true index)
-            if (((iRow % 3) == 1) && ((iCol % 4) == 1 || (iCol % 4) == 2) && mqpaaBoard[9-iSquareRow][iSquareCol] != 0) {  //if in center of Square and board square not empty
-                if ((iCol % 4) == 1) {    //if line in middle of Square
-                    cout << mqpaaBoard[9-iSquareRow][iSquareCol]->GetColor();   //print piece coulor 
-                } 
-                else {
-                    cout << mqpaaBoard[9-iSquareRow][iSquareCol]->GetPiece();   //print piece rank 
-                }
-            } 
-            else {
+    for (int iRow = 0; iRow < 10; ++iRow) {             //there are 10 rows
+        for (int iCol = 0; iCol < 2*10; ++iCol) {         //there are 10 columns
+			int iSquareCol = iCol/2;                  //actual column index
+			if (mqpaaBoard[9-iRow][iSquareCol] != 0){  //if not empty, display piece
+				if ((iCol % 2) == 0){
+					cout << mqpaaBoard[9-iRow][iSquareCol]->GetColor();   //print piece coulor
+				}
+				else{
+					cout << mqpaaBoard[9-iRow][iSquareCol]->GetPiece();   //print piece rank 
+				}
+			}
+			else { //if empty, put space
                 cout << ' ';
-            }
+            } 
         }
-        cout << endl;
-    }
-    // PRINT BOTTOM BORDER WITH NUMBERING
-    for (int iRow = 0; iRow < kiSquareHeight; ++iRow) {          ////1 row of height kiSquareHeight below the "board"
-        if (iRow % 3 == 1) {
-            cout << "---";                                       //start line by filling first Square row with "-"
-            for (int iCol = 0; iCol < 10*kiSquareWidth; ++iCol) { //there are 10 columns, each column has width kiSquareWidth
-                int iSquareCol = iCol/kiSquareWidth;             //so that iSquareCol increase by 1 each 4iCol (true index)
-                if ((iCol % 4) == 1) {                           //if row in "middle" of Square
-                    cout << (iSquareCol);                        //display column number
-                }                                                
-                else {
-                    cout << '-';                                 //else make column "divider"
-                }
-            }
-            cout << endl;                                        //finish line
-        } 
-        else {
-            for (int iCol = 1; iCol < 11*kiSquareWidth; ++iCol) { //else make "divider" between numbering and edge of board and board
-                cout << '-';                                     //all columns filled with "-"
-            }
-            cout << endl;                                        //finish line
-        }
+        cout << endl; //close line
     }
 }
 
