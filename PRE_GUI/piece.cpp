@@ -31,14 +31,9 @@ char Scout :: GetPiece(){                              //call Piece's "rank"
 }
 
 bool Scout :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {
-
-
-    
-
-    
-
-
-    if (iSrcRow == iDestRow) { //if moving in a column
+    BoardPiece* qpDest = qpaaBoard[iDestRow][iDestCol];
+    char ilegalwater = 'W';
+    if ((iSrcRow == iDestRow) && (ilegalwater != qpDest->GetPiece())) { //if moving in a column and destiny is not water
         // Make sure that all invervening squares are empty
         int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;   //1 if increasing in column, -1 if decreasing in column 
         for (int iCheckCol = iSrcCol + iColOffset; iCheckCol !=  iDestCol; iCheckCol = iCheckCol + iColOffset) {  //check column trajectory
@@ -48,7 +43,7 @@ bool Scout :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestC
         }
         return true;                                   //if all empty, legal move
     } 
-    else if (iDestCol == iSrcCol) {  //if moving in a row         
+    else if ((iDestCol == iSrcCol) && (ilegalwater != qpDest->GetPiece())) {  //if moving in a row and destiny is not water        
         // Make sure that all invervening squares are empty
         int iRowOffset = (iDestRow - iSrcRow > 0) ? 1 : -1; //1 if increasing in row, -1 if decreasing in row
         for (int iCheckRow = iSrcRow + iRowOffset; iCheckRow !=  iDestRow; iCheckRow = iCheckRow + iRowOffset) { //check row trajectory
