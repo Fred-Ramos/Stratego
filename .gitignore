@@ -1,0 +1,7 @@
+.vscode/settings.json
+.vscode/tasks.json
+PRE_GUI/stratego.exe
+PRE_GUI/piece.o
+PRE_GUI/main.o
+PRE_GUI/game.o
+PRE_GUI/board.o
