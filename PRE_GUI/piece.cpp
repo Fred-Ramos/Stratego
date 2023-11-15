@@ -33,12 +33,9 @@ char Scout :: GetPiece(){                              //call Piece's "rank"
 bool Scout :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {
 
 
+    
 
-
-    if (qpaaBoard[iDestRow][iDestCol]->GetPiece() == 'W'){ //check if moving to water
-        return false;
-    } 
-
+    
 
 
     if (iSrcRow == iDestRow) { //if moving in a column
