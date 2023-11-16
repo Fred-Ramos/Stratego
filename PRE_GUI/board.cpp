@@ -11,19 +11,19 @@ Board::Board() {                                          //board constructor
 		}
 
 		//PLACE WATER(ALLWAYS PRESENT)
-		mqpaaBoard[4][2] = new Water('B');
-		mqpaaBoard[4][3] = new Water('B');
-		mqpaaBoard[4][6] = new Water('B');
-		mqpaaBoard[4][7] = new Water('B');
-		mqpaaBoard[5][2] = new Water('B');
-		mqpaaBoard[5][3] = new Water('B');
-		mqpaaBoard[5][6] = new Water('B');
-		mqpaaBoard[5][7] = new Water('B');
+		mqpaaBoard[4][2] = new Water('G');
+		mqpaaBoard[4][3] = new Water('G');
+		mqpaaBoard[4][6] = new Water('G');
+		mqpaaBoard[4][7] = new Water('G');
+		mqpaaBoard[5][2] = new Water('G');
+		mqpaaBoard[5][3] = new Water('G');
+		mqpaaBoard[5][6] = new Water('G');
+		mqpaaBoard[5][7] = new Water('G');
 
 		//FILL FIRST 2 ROWS OF EACH SIDE(FOR TESTING)///////
 
 		// Allocate and place blue pieces
-		mqpaaBoard[8][0] = new Scout('B');
+		mqpaaBoard[8][0] = new Miner('B');
 		mqpaaBoard[8][1] = new Scout('B');
 		mqpaaBoard[8][2] = new Scout('B');
 		mqpaaBoard[8][3] = new Scout('B');
@@ -98,6 +98,25 @@ void Board :: Print(){
     }
 }
 
-bool Board :: ComparePiece(){                      //TESTING check if rank of piece is higher
-    return true;
+int Board :: ComparePiece(BoardPiece* SourcePiece, BoardPiece* EndPiece) {                      //TESTING check if rank of piece is higher
+	if (EndPiece == 0){                  //if empty
+		return 1;
+	}
+	char SourceRank = SourcePiece->GetPiece();
+	char EndRank = EndPiece->GetPiece();
+	if (isdigit(EndRank)){ //if is a ranked piece
+		int S = SourceRank - '0'; //from ASCII  to 0<->9
+		int E = EndRank - '0';
+
+		if (S > E){
+			return 1; //nothing changes, defending piece is deleted
+		}
+		else if (E > S){
+			return -1; //atacking piece remains in place
+		}
+		else if(E == S){
+			return 0; //defending piece is deleted, put atacking piece too
+		}
+	}
+	return 1;
 }

@@ -39,11 +39,15 @@ void Game :: GetNextMove(BoardPiece* qpaaBoard[10][10]) {  //current boar as the
                     qpaaBoard[iEndRow][iEndCol]		=     qpaaBoard[iStartRow][iStartCol];    //change end position to start position
                     qpaaBoard[iStartRow][iStartCol]	= 0;                                      //start position back to 0
                     // TESTING CHECK RANKS TO SEE WHICH PIECE SURVIVES
-                    if (true) {   //if rank is HIGHER delete memory of endposition piece 
+                    int comp = mqGameBoard.ComparePiece(qpStartPiece, qpEndPiece);
+                    if (comp == 1) {   //if rank is HIGHER, keep atacking piece and delete memory of endposition piece 
                         delete qpEndPiece;
                     } 
-                    else { // else keep endposition piece
+                    else if (comp == -1){             // if rank lower, discard atacking piece and keep endposition piece
                         qpaaBoard[iEndRow][iEndCol]		= qpEndPiece;
+                    }
+                    else if (comp == 0){
+                        qpaaBoard[iEndRow][iEndCol] = 0; //if rank equal, discard both pieces
                     }
                     bValidMove = true;
                 }

@@ -6,6 +6,13 @@
 
 bool BoardPiece :: IsLegalMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]){    //function that determines if the move is legal (true or false)
     BoardPiece* qpDest = qpaaBoard[iDestRow][iDestCol];                            //piece that occupies the board at destiny coordinates
+
+    if (qpDest !=0){ //if destiny square not empty
+        if (qpDest->GetPiece() == 'W'){ //if destiny is water, move is ilegal
+            return false;
+        }
+    }
+
     if ((qpDest == 0) || (mcColor != qpDest->GetColor())) {                       //if destiny square is empty or destiny piece is of diferent colour of moving piece
         return AreSquaresLegal(iSrcRow, iSrcCol, iDestRow, iDestCol, qpaaBoard);  //arguments: source row, source column, destiny row, destiny column, game board   ; function that checks, for each piece type, possible legalmoves
     }
@@ -31,9 +38,7 @@ char Scout :: GetPiece(){                              //call Piece's "rank"
 }
 
 bool Scout :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {
-    BoardPiece* qpDest = qpaaBoard[iDestRow][iDestCol];
-    char ilegalwater = 'W';
-    if ((iSrcRow == iDestRow) && (ilegalwater != qpDest->GetPiece())) { //if moving in a column and destiny is not water
+    if ((iSrcRow == iDestRow) ) { //if moving in a column and destiny is not water
         // Make sure that all invervening squares are empty
         int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;   //1 if increasing in column, -1 if decreasing in column 
         for (int iCheckCol = iSrcCol + iColOffset; iCheckCol !=  iDestCol; iCheckCol = iCheckCol + iColOffset) {  //check column trajectory
@@ -43,7 +48,7 @@ bool Scout :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestC
         }
         return true;                                   //if all empty, legal move
     } 
-    else if ((iDestCol == iSrcCol) && (ilegalwater != qpDest->GetPiece())) {  //if moving in a row and destiny is not water        
+    else if ((iDestCol == iSrcCol) ) {  //if moving in a row and destiny is not water        
         // Make sure that all invervening squares are empty
         int iRowOffset = (iDestRow - iSrcRow > 0) ? 1 : -1; //1 if increasing in row, -1 if decreasing in row
         for (int iCheckRow = iSrcRow + iRowOffset; iCheckRow !=  iDestRow; iCheckRow = iCheckRow + iRowOffset) { //check row trajectory

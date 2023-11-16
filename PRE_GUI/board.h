@@ -13,7 +13,7 @@ BoardPiece* mqpaaBoard[10][10];
 	//PRINT THE GAME BOARD, FOR TESTING, LATER INPLEMENT GRAPHICAL INTERFACE
 	void Print();
 
-	bool ComparePiece();                      //TESTING check if rank of piece is higher
+	int ComparePiece(BoardPiece* SourcePiece, BoardPiece* EndPiece);                     //TESTING check if rank of piece is higher
 };
 
 #endif
