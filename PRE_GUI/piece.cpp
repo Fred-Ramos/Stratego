@@ -23,6 +23,20 @@ char BoardPiece :: GetColor(){                              //call Piece's colou
 	return mcColor;
 }
 
+bool BoardPiece :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {  //general movement(all moving pieces except scout)
+    if (iSrcRow == iDestRow) { //if moving in a column
+        if ( abs(iSrcCol - iDestCol) == 1 ){ //if moving 1 square exactly
+            return true;
+        }
+    }
+    else if (iDestCol == iSrcCol) {  //if moving in a row
+        if ( abs(iSrcRow - iDestRow) == 1 ){ //if moving 1 square exactly
+            return true;
+        }
+    }
+    return false; //if not moving 1 square horizontally or vertically, move is illegal
+}
+
 //WATER PIECE
 char Water :: GetPiece(){                              //call Piece's "rank"
 	return 'W';
@@ -32,9 +46,18 @@ bool Water :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestC
     return false; //is immovable
 }
 
+//BOMB PIECE
+char Bomb :: GetPiece(){                              //call Piece's "rank"
+    return 'B';
+}
+
+bool Bomb :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {
+    return false; //is immovable
+}
+
 //SCOUT PIECE
 char Scout :: GetPiece(){                              //call Piece's "rank"
-	return '2';
+	return '1';
 }
 
 bool Scout :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {
@@ -62,20 +85,41 @@ bool Scout :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestC
 }
 
 //MINER PIECE
-char Miner :: GetPiece(){                              //call Piece's "rank"
+char Miner :: GetPiece(){                                //call Piece's "rank"
+    return '2';
+}
+
+//SERGEANT PIECE
+char Sergeant :: GetPiece(){                             //call Piece's "rank"
     return '3';
 }
 
-bool Miner :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {
-    if (iSrcRow == iDestRow) { //if moving in a column
-        if ( abs(iSrcCol - iDestCol) == 1 ){ //if moving 1 square exactly
-            return true;
-        }
-    }
-    else if (iDestCol == iSrcCol) {  //if moving in a row
-        if ( abs(iSrcRow - iDestRow) == 1 ){ //if moving 1 square exactly
-            return true;
-        }
-    }
-    return false; //if not moving 1 square horizontally or vertically, move is illegal
+//LIEUTENANT PIECE
+char Lieutenant :: GetPiece(){                          //call Piece's "rank"
+    return '4';
+}
+
+//CAPTAIN PIECE
+char Captain :: GetPiece(){                             //call Piece's "rank"
+    return '5';
+}
+
+//MAJOR PIECE
+char Major :: GetPiece(){                               //call Piece's "rank"
+    return '6';
+}
+
+//COLONEL PIECE
+char Colonel :: GetPiece(){                            //call Piece's "rank"
+    return '7';
+}
+
+//GENERAL PIECE
+char General :: GetPiece(){                            //call Piece's "rank"
+    return '8';
+}
+
+//MARSHAL PIECE
+char Marshal :: GetPiece(){                            //call Piece's "rank"
+    return '9';
 }

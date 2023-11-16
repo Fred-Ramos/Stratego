@@ -18,14 +18,14 @@ void Game :: GetNextMove(BoardPiece* qpaaBoard[10][10]) {  //current boar as the
         cout << mcPlayerTurn << "'s Move: ";      //Print player colour for this turn
         int iStartMove;
         cin >> iStartMove;                        //input StartMove(piece to move)
-        int iStartRow = (iStartMove / 10);    //transform RC(ROW COLUMN) into R
-        int iStartCol = (iStartMove % 10);    //transform RC(ROW COLUMN) into C
+        int iStartRow = (iStartMove - 11) / 10;    //transform RC(ROW COLUMN) into R
+        int iStartCol = (iStartMove - 11) % 10;    //transform RC(ROW COLUMN) into C
 
         cout << "To: ";                           //"where to"
         int iEndMove;
         cin >> iEndMove;                          //input iEndMove (destination square)
-        int iEndRow = (iEndMove / 10);        //transform RC(ROW COLUMN) into R
-        int iEndCol = (iEndMove % 10);        //transform RC(ROW COLUMN) into C
+        int iEndRow = (iEndMove - 11)/ 10;        //transform RC(ROW COLUMN) into R
+        int iEndCol = (iEndMove - 11)% 10;        //transform RC(ROW COLUMN) into C
 
         // Check that the indices are in range
         if ((iStartRow >= 0 && iStartRow < 10) && (iStartCol >= 0 && iStartCol < 10) && (iEndRow >= 0 && iEndRow < 10) && (iEndCol >= 0 && iEndCol < 10)) {
@@ -37,8 +37,8 @@ void Game :: GetNextMove(BoardPiece* qpaaBoard[10][10]) {  //current boar as the
                     // Make the move
                     BoardPiece* qpEndPiece					= qpaaBoard[iEndRow][iEndCol];        //store end position
                     qpaaBoard[iEndRow][iEndCol]		=     qpaaBoard[iStartRow][iStartCol];    //change end position to start position
-                    qpaaBoard[iStartRow][iStartCol]	= 0;                                      //start position back to 0
-                    // TESTING CHECK RANKS TO SEE WHICH PIECE SURVIVES
+                    qpaaBoard[iStartRow][iStartCol]	= 0;                                      //start position back to 0 (if move is legal, startpiece allways moves, so startposition allways goes to 0)
+                    // CHECK RANKS TO SEE WHICH PIECE SURVIVES IN THE ENDPOSITION
                     int comp = mqGameBoard.ComparePiece(qpStartPiece, qpEndPiece);
                     if (comp == 1) {   //if rank is HIGHER, keep atacking piece and delete memory of endposition piece 
                         delete qpEndPiece;

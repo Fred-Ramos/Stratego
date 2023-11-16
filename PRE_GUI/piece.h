@@ -16,7 +16,7 @@ public:
 	bool IsLegalMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);  //function that determines if the move is legal (true or false)
 
 private:
-	virtual bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) = 0; //declares AreSquarelegal function
+	virtual bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]); //declares AreSquarelegal function
 	
 	char mcColor;                                                                                                          //store the colour of the piece privatly (cant be changed)
 };
@@ -30,6 +30,19 @@ public:
 
 private:
 	virtual char GetPiece();   //return piece's rank, "W"
+
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);
+};
+
+//BOMB, doesnt move, if engaged kills any troop, except for the Miner
+class Bomb : public BoardPiece  
+{
+public:
+	Bomb(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Bomb() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
 
 	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);
 };
@@ -57,7 +70,90 @@ public:
 private:
 	char GetPiece();  //return "rank" of piece, "3"
 
-	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);
+};
+
+//Sergeant, moves 1 square in 1 direction
+class Sergeant : public BoardPiece  
+{
+public:
+	Sergeant(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Sergeant() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
+
+};
+
+//Lieutenant, moves 1 square in 1 direction
+class Lieutenant : public BoardPiece  
+{
+public:
+	Lieutenant(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Lieutenant() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
+
+};
+
+//Captain, moves 1 square in 1 direction
+class Captain : public BoardPiece  
+{
+public:
+	Captain(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Captain() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
+
+};
+
+//Major, moves 1 square in 1 direction
+class Major : public BoardPiece  
+{
+public:
+	Major(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Major() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
+
+};
+
+//Colonel, moves 1 square in 1 direction
+class Colonel : public BoardPiece  
+{
+public:
+	Colonel(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Colonel() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
+
+};
+
+//General, moves 1 square in 1 direction
+class General : public BoardPiece  
+{
+public:
+	General(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~General() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
+
+};
+
+//Marshal, moves 1 square in 1 direction
+class Marshal : public BoardPiece  
+{
+public:
+	Marshal(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Marshal() {}                                  //destructor
+
+private:
+	char GetPiece();  //return "rank" of piece, "3"
+
 };
 
 #endif
