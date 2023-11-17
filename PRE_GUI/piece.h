@@ -47,6 +47,18 @@ private:
 	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);
 };
 
+//SPY, moves 1 square in 1 direction, can kill the Marshal
+class Spy : public BoardPiece  
+{
+public:
+	Spy(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Spy() {}                                  //destructor
+
+private:
+	char GetPiece(); //return "rank" of piece, "2"
+
+};
+
 //SCOUT, can move any number of squares in a straight line
 class Scout : public BoardPiece  
 {

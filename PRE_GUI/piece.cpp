@@ -55,6 +55,11 @@ bool Bomb :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCo
     return false; //is immovable
 }
 
+//SPY PIECE
+char Spy :: GetPiece(){                              //call Piece's "rank"
+	return '0';
+}
+
 //SCOUT PIECE
 char Scout :: GetPiece(){                              //call Piece's "rank"
 	return '1';

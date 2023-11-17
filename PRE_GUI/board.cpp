@@ -67,7 +67,7 @@ Board::Board() {                                          //board constructor
 		mqpaaBoard[0][6] = new Scout('R');
 		mqpaaBoard[0][7] = new Scout('R');
 		mqpaaBoard[0][8] = new Scout('R');
-		mqpaaBoard[0][9] = new Scout('R');
+		mqpaaBoard[0][9] = new Spy('R');
 	}
 
 Board::~Board() {                                      //desctructor
@@ -80,7 +80,8 @@ Board::~Board() {                                      //desctructor
 }
 
 void Board :: Print(){                           
-    using namespace std;  
+    using namespace std; 
+	cout << endl; 
     for (int iRow = 0; iRow < 10; ++iRow) {             //there are 10 rows
         for (int iCol = 0; iCol < 2*10; ++iCol) {         //there are 10 columns
 			int iSquareCol = iCol/2;                  //actual column index
@@ -111,7 +112,10 @@ int Board :: ComparePiece(BoardPiece* SourcePiece, BoardPiece* EndPiece) {      
 		int S = SourceRank - '0'; //from ASCII  to 0<->9
 		int E = EndRank - '0';
 
-		if (S > E){
+		if ((S == 0) && (E == 9)){ //if spy is atacking and marshal defending, spy wins(only exception to rank rule)
+			return 1; //nothing changes, defending piece is deleted
+		}
+		else if (S > E){
 			return 1; //nothing changes, defending piece is deleted
 		}
 		else if (E > S){
@@ -131,3 +135,5 @@ int Board :: ComparePiece(BoardPiece* SourcePiece, BoardPiece* EndPiece) {      
 	}
 	return 1;
 }
+
+
