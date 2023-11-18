@@ -10,6 +10,6 @@ Functions missing:
     store removed pieces (maybe?)
     
 
-cmake-googletesting explained: 
+cmake-googletesting explained: https://www.youtube.com/watch?v=Lp1ifh9TuFI&t=695s
 Unit tests added:
     Scout(begining)

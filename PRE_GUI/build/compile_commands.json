@@ -1,0 +1,50 @@
+[
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Piece_test.dir\\logic\\piece.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\logic\\piece.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/logic/piece.cpp",
+  "output": "CMakeFiles/Piece_test.dir/logic/piece.cpp.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Piece_test.dir\\logic\\board.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\logic\\board.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/logic/board.cpp",
+  "output": "CMakeFiles/Piece_test.dir/logic/board.cpp.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Piece_test.dir\\logic\\game.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\logic\\game.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/logic/game.cpp",
+  "output": "CMakeFiles/Piece_test.dir/logic/game.cpp.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build/googletest/googlemock",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gmock.dir/includes_CXX.rsp -g -std=c++14 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gmock.dir\\src\\gmock-all.cc.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\googletest\\googlemock\\src\\gmock-all.cc\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/googletest/googlemock/src/gmock-all.cc",
+  "output": "googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build/googletest/googlemock",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gmock_main.dir/includes_CXX.rsp -g -std=c++14 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gmock_main.dir\\src\\gmock_main.cc.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\googletest\\googlemock\\src\\gmock_main.cc\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/googletest/googlemock/src/gmock_main.cc",
+  "output": "googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build/googletest/googletest",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gtest.dir/includes_CXX.rsp -g -std=c++14 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gtest.dir\\src\\gtest-all.cc.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\googletest\\googletest\\src\\gtest-all.cc\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/googletest/googletest/src/gtest-all.cc",
+  "output": "googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build/googletest/googletest",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/gtest_main.dir/includes_CXX.rsp -g -std=c++14 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles\\gtest_main.dir\\src\\gtest_main.cc.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\googletest\\googletest\\src\\gtest_main.cc\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/googletest/googletest/src/gtest_main.cc",
+  "output": "googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/build/test",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/Scout_test.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\Scout_test.dir\\Scout_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\PRE_GUI\\test\\Scout_test.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/PRE_GUI/test/Scout_test.cpp",
+  "output": "test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj"
+}
+]
