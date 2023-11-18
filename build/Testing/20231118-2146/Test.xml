@@ -24,8 +24,8 @@
 	ProcessorClockFrequency="2894"
 	>
 	<Testing>
-		<StartDateTime>Nov 18 22:04 GMT Standard Time</StartDateTime>
-		<StartTestTime>1700345073</StartTestTime>
+		<StartDateTime>Nov 18 22:25 GMT Standard Time</StartDateTime>
+		<StartTestTime>1700346324</StartTestTime>
 		<TestList>
 			<Test>./test/Scout_test</Test>
 		</TestList>
@@ -36,7 +36,7 @@
 			<FullCommandLine>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\Scout_test.exe"</FullCommandLine>
 			<Results>
 				<NamedMeasurement type="numeric/double" name="Execution Time">
-					<Value>0.0135272</Value>
+					<Value>0.0161044</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="numeric/double" name="Processors">
 					<Value>1</Value>
@@ -55,8 +55,8 @@
 				</Measurement>
 			</Results>
 		</Test>
-		<EndDateTime>Nov 18 22:04 GMT Standard Time</EndDateTime>
-		<EndTestTime>1700345074</EndTestTime>
+		<EndDateTime>Nov 18 22:25 GMT Standard Time</EndDateTime>
+		<EndTestTime>1700346324</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
