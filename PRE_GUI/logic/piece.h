@@ -29,7 +29,7 @@ public:
 	virtual ~Water() {}                                  //destructor
 
 private:
-	virtual char GetPiece();   //return piece's rank, "W"
+	char GetPiece();   //return piece's rank, "W"
 
 	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);
 };

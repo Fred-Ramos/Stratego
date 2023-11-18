@@ -4,17 +4,17 @@
 stratego.exe : main.o game.o board.o piece.o
 	g++ main.o game.o board.o piece.o -o stratego.exe
 
-main.o : main.cpp game.cpp game.o board.cpp board.h piece.cpp piece.h
-	g++ -Wall -c main.cpp
+main.o : logic/main.cpp logic/game.cpp logic/game.h logic/board.cpp logic/board.h logic/piece.cpp logic/piece.h
+	g++ -Wall -c logic/main.cpp
 
-game.o : game.cpp game.h
-	g++ -Wall -c game.cpp
+game.o : logic/game.cpp logic/game.h
+	g++ -Wall -c logic/game.cpp
 
-board.o : board.cpp board.h
-	g++ -Wall -c board.cpp
+board.o : logic/board.cpp logic/board.h
+	g++ -Wall -c logic/board.cpp
 
-piece.o : piece.cpp piece.h
-	g++ -Wall -c piece.cpp
+piece.o : logic/piece.cpp logic/piece.h
+	g++ -Wall -c logic/piece.cpp
 
 clean :
 	rm *.o stratego.exe
