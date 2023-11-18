@@ -1,7 +1,7 @@
-PRE_GUI/stratego.exe
-PRE_GUI/piece.o
-PRE_GUI/main.o
-PRE_GUI/game.o
-PRE_GUI/board.o
-PREGUI/.googletest/
-PREGUI/.vscode
+stratego.exe
+piece.o
+main.o
+game.o
+board.o
+.googletest/
+.vscode
