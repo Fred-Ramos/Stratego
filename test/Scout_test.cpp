@@ -79,9 +79,23 @@ TEST (Scouttest, obstaclemovement){
 
     TestGame.mqGameBoard.mqpaaBoard[5][7] = new Water('G'); //place water in 5 7
 
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 5, 7, TestGame.mqGameBoard.mqpaaBoard)); //cant move to water
+    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 5, 7, TestGame.mqGameBoard.mqpaaBoard));   //cant move to water
 }
 
+TEST (Scouttest, obstaclemovement2){
+
+    Game TestGame;
+
+    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard);
+
+    TestGame.mqGameBoard.mqpaaBoard[5][5] = new Scout('R'); //test Scout piece legalmoves, place scout in position 5 5
+
+    TestGame.mqGameBoard.mqpaaBoard[5][7] = new Scout('R'); //place another piece in scouts path, place scout in position 5 7
+
+    TestGame.mqGameBoard.mqpaaBoard[2][5] = new Scout('R'); //place another piece in scouts path, place scout in position 35
+    
+    
+}
 
 
 

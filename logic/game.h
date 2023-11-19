@@ -13,7 +13,7 @@ public:
 
 	void Run(); //Run Game
 
-	void GetNextMove(BoardPiece* qpaaBoard[10][10]);  //current boar as the input
+	void GetNextMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);  //current boar as the input
 
 	void AlternateTurn(); //change player turn
 
@@ -21,6 +21,7 @@ public:
 	
 	char winner = 0;        //which player wins
 private:
+	bool Validmove = false; //initially, set valid move as false
 	char mcPlayerTurn;  //store player turn as private
 };
 

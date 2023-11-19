@@ -4,16 +4,11 @@
 
 //GAME CLASS
 void Game :: Run(){
-    GetNextMove(mqGameBoard.mqpaaBoard);     //get input for next move 
-    AlternateTurn();                         //alternate turn
-}
-
-void Game :: GetNextMove(BoardPiece* qpaaBoard[10][10]) {  //current boar as the input
     using namespace std;
-    bool bValidMove		= false;   //initially, set valid move as false
-    do {                           //while no valid move has been given:
+    Validmove = false;   //initially, set valid move as false
+    do{
+        ///////////////WHEN GUI MADE, THE PLAYER INPUT WILL CHANGE/////////////////////
         mqGameBoard.Print();
-
         // Get input and convert to coordinates
         cout << mcPlayerTurn << "'s Move: ";      //Print player colour for this turn
         int iStartMove;
@@ -26,37 +21,46 @@ void Game :: GetNextMove(BoardPiece* qpaaBoard[10][10]) {  //current boar as the
         cin >> iEndMove;                      //input iEndMove (destination square)
         int iEndRow = (iEndMove / 10);        //transform RC(ROW COLUMN) into R
         int iEndCol = (iEndMove % 10);        //transform RC(ROW COLUMN) into C
+        //////////////////////////////////////////////////////////////////////////////
 
-        // Check that the indices are in range
-        if ((iStartRow >= 0 && iStartRow < 10) && (iStartCol >= 0 && iStartCol < 10) && (iEndRow >= 0 && iEndRow < 10) && (iEndCol >= 0 && iEndCol < 10)) {
-            // ADDITIONAL CHECKS IN HERE:
-            BoardPiece* qpStartPiece = qpaaBoard[iStartRow][iStartCol]; //pointer to current piece to move
-            if ((qpStartPiece != 0) && (qpStartPiece->GetColor() == mcPlayerTurn)) { //if piece is the correct color
-                if (qpStartPiece->IsLegalMove(iStartRow, iStartCol, iEndRow, iEndCol, qpaaBoard)) { // if destination is a valid destination
+        GetNextMove(iStartRow, iStartCol, iEndRow, iEndCol, mqGameBoard.mqpaaBoard);     //check move and make piece changes if necessary 
+    }while(!Validmove);
+ 
+    AlternateTurn(); //alternate turn
+}   
 
-                    // Make the move
-                    BoardPiece* qpEndPiece					= qpaaBoard[iEndRow][iEndCol];        //store end position
-                    qpaaBoard[iEndRow][iEndCol]		=     qpaaBoard[iStartRow][iStartCol];    //change end position to start position
-                    qpaaBoard[iStartRow][iStartCol]	= 0;                                      //start position back to 0 (if move is legal, startpiece allways moves, so startposition allways goes to 0)
-                    // CHECK RANKS TO SEE WHICH PIECE SURVIVES IN THE ENDPOSITION
-                    int comp = mqGameBoard.ComparePiece(qpStartPiece, qpEndPiece);
-                    if (comp == 1) {   //if rank is HIGHER, keep atacking piece and delete memory of endposition piece 
-                        delete qpEndPiece;
-                    } 
-                    else if (comp == -1){             // if rank lower, discard atacking piece and keep endposition piece
-                        qpaaBoard[iEndRow][iEndCol]		= qpEndPiece;
-                    }
-                    else if (comp == 0){
-                        qpaaBoard[iEndRow][iEndCol] = 0; //if rank equal, discard both pieces
-                    }
-                    bValidMove = true;
+void Game :: GetNextMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {  //current boar as the input
+    using namespace std;
+
+    // Check that the indices are in range
+    if ((iSrcRow >= 0 && iSrcRow < 10) && (iSrcCol >= 0 && iSrcCol < 10) && (iDestRow >= 0 && iDestRow < 10) && (iDestCol >= 0 && iDestCol < 10)) {
+        // ADDITIONAL CHECKS IN HERE:
+        BoardPiece* qpStartPiece = qpaaBoard[iSrcRow][iSrcCol]; //pointer to current piece to move
+        if ((qpStartPiece != 0) && (qpStartPiece->GetColor() == mcPlayerTurn)) { //if piece is the correct color
+            if (qpStartPiece->IsLegalMove(iSrcRow, iSrcCol, iDestRow, iDestCol, qpaaBoard)) { // if destination is a valid destination
+
+                // Make the move
+                BoardPiece* qpEndPiece	            = qpaaBoard[iDestRow][iDestCol];        //store end position
+                qpaaBoard[iDestRow][iDestCol]		= qpaaBoard[iSrcRow][iSrcCol];          //change end position to start position
+                qpaaBoard[iSrcRow][iSrcCol]      	= 0;                                    //start position back to 0 (if move is legal, startpiece allways moves, so startposition allways goes to 0)
+                // CHECK RANKS TO SEE WHICH PIECE SURVIVES IN THE ENDPOSITION
+                int comp = mqGameBoard.ComparePiece(qpStartPiece, qpEndPiece);
+                if (comp == 1) {   //if rank is HIGHER, keep atacking piece and delete memory of endposition piece 
+                    delete qpEndPiece;
+                } 
+                else if (comp == -1){             // if rank lower, discard atacking piece and keep endposition piece
+                    qpaaBoard[iDestRow][iDestCol]		= qpEndPiece;
                 }
+                else if (comp == 0){
+                    qpaaBoard[iDestRow][iDestCol] = 0; //if rank equal, discard both pieces
+                }
+                Validmove = true;
             }
         }
-        if (!bValidMove) {
-            cout << "Invalid Move!" << endl;
-        }
-    } while (!bValidMove);
+    }
+    if (!Validmove) {
+        cout << "Invalid Move!" << endl;
+    }
 }
 
 void Game :: AlternateTurn() { //change turn
