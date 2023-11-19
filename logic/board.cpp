@@ -36,7 +36,7 @@ Board::Board() {                                          //board constructor
 		mqpaaBoard[8][8] = new General('B');
 		mqpaaBoard[8][9] = new Marshal('B');
 
-		mqpaaBoard[9][0] = new Scout('B');
+		mqpaaBoard[9][0] = new Flag('B');
 		mqpaaBoard[9][1] = new Scout('B');
 		mqpaaBoard[9][2] = new Scout('B');
 		mqpaaBoard[9][3] = new Scout('B');
@@ -49,7 +49,7 @@ Board::Board() {                                          //board constructor
 		// Allocate and place red pieces
 		mqpaaBoard[1][0] = new Bomb('R');
 		mqpaaBoard[1][1] = new Miner('R');
-		mqpaaBoard[1][2] = new Scout('R');
+		mqpaaBoard[1][2] = new Flag('R');
 		mqpaaBoard[1][3] = new Scout('R');
 		mqpaaBoard[1][4] = new Scout('R');
 		mqpaaBoard[1][5] = new Scout('R');
@@ -134,6 +134,51 @@ int Board :: ComparePiece(BoardPiece* SourcePiece, BoardPiece* EndPiece) {      
 		}
 	}
 	return 1;
+}
+
+int Board :: Legalmovesleft() {
+	bool red_movable = false;
+	bool blue_movable = false;
+	bool red_flag = false;
+	bool blue_flag = false;
+	//TESTING check if flag is taken or if any player has movable pieces left
+    for (int i = 0; i < 10; ++i) { //run all lines
+        for (int j = 0; j < 10; ++j) { //run all columns
+            if (mqpaaBoard[i][j] != 0){ //if piece not empty
+				BoardPiece* rbpiece = mqpaaBoard[i][j]; //save piece
+				char rbtype = rbpiece->GetPiece();
+				if (rbtype == 'F'){                                    //if it is a flag
+					if (rbpiece->GetColor() == 'R'){ //if it is a red flag
+						red_flag = true;
+					}
+					else{                            //else it is a blue flag
+						blue_flag = true;
+					}
+				}
+                else if ( (rbtype != 'W') || (rbtype != 'B')){ //if piece is not water, a flag or a bomb
+					if (rbpiece->GetColor() == 'R'){           //if it is a movable red piece
+						red_movable = true;       
+					} 
+					else{                                     //else it is a movable blue piece
+						blue_movable = true;
+					}
+                }
+            }
+        }
+    }
+	if ( (red_flag == true) && (blue_flag == false)){ //if only red flag present, blue has no legal moves left and looses
+		return 1;
+	}
+	else if ( (red_flag == false) && (blue_flag == true)){ //if only blue flag present, red has no legal moves left and looses
+		return -1;
+	}
+	if ( (red_movable == true) && (blue_movable) == false){ //if only red has movable pieces left, blue has no legal moves left and looses
+		return 1;
+	}
+	else if ( (red_movable == false) && (blue_movable == true) ){ //if only blue has movable pieces left, red has no legal moves left and looses
+		return -1;
+	}
+	return 0; //if none of the above, then both have legal moves left
 }
 
 

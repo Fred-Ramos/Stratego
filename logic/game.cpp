@@ -65,5 +65,16 @@ void Game :: AlternateTurn() { //change turn
 
 bool Game :: IsGameOver(){
     //TESTING check if flag is taken or if any player has movable pieces left
-    return false;
+    if (mqGameBoard.Legalmovesleft() == 0){ 
+        return false;
+    }
+    else{
+        if (mqGameBoard.Legalmovesleft() == -1){
+            winner = 'B';
+        }
+        else if (mqGameBoard.Legalmovesleft() == 1){
+            winner = 'R';
+        } 
+        return true;
+    }
 }

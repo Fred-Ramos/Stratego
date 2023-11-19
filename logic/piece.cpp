@@ -46,6 +46,16 @@ bool Water :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestC
     return false; //is immovable
 }
 
+//FLAG PIECE
+char Flag :: GetPiece(){                              //call Piece's "rank"
+	return 'F';
+}
+
+bool Flag :: AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]) {
+    return false; //is immovable
+}
+
+
 //BOMB PIECE
 char Bomb :: GetPiece(){                              //call Piece's "rank"
     return 'B';

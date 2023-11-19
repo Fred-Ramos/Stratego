@@ -12,11 +12,8 @@ int main() {
 	qGame.mqGameBoard.Print(); //print board when the game finishes
 	
 	using namespace std;
-	cout << "GAME ENDED ";
-	cout << endl;
-
-
-
+	cout << "GAME ENDED " << endl;
+	cout << qGame.winner << " player wins"<< endl;
 
 	return 0;      //return 0(sucessfull) when game finishes
 }

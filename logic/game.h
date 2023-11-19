@@ -18,6 +18,8 @@ public:
 	void AlternateTurn(); //change player turn
 
 	bool IsGameOver(); //check if game is over
+	
+	char winner = 0;        //which player wins
 private:
 	char mcPlayerTurn;  //store player turn as private
 };

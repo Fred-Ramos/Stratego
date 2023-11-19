@@ -34,6 +34,19 @@ private:
 	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);
 };
 
+//FLAG, unmovable
+class Flag : public BoardPiece  
+{
+public:
+	Flag(char cColor) : BoardPiece(cColor) {}   //constructor
+	virtual ~Flag() {}                                  //destructor
+
+private:
+	char GetPiece();   //return piece's rank, "F"
+
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]);
+};
+
 //BOMB, doesnt move, if engaged kills any troop, except for the Miner
 class Bomb : public BoardPiece  
 {

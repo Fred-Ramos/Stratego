@@ -14,6 +14,9 @@ BoardPiece* mqpaaBoard[10][10];
 	void Print();
 
 	int ComparePiece(BoardPiece* SourcePiece, BoardPiece* EndPiece);                     //TESTING check if rank of piece is higher
+
+	//0(both have legalmoves), 1(only red has legal moves), -1(only blue has legal moves)
+	int Legalmovesleft(); //which player(color) has legal moves left
 };
 
 #endif
