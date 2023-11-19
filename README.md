@@ -13,3 +13,10 @@ Functions missing:
 cmake-googletesting explained: https://www.youtube.com/watch?v=Lp1ifh9TuFI&t=695s
 Unit tests added:
     Scout(begining)
+
+
+commands:
+make : creates stratego.exe
+.\stratego.exe : runs game
+
+build\test\Scout_test.exe : runs scout piece unit test

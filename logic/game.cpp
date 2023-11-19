@@ -3,7 +3,7 @@
 #include "iostream"
 
 //GAME CLASS
-void Game :: Start(){
+void Game :: Run(){
     GetNextMove(mqGameBoard.mqpaaBoard);     //get input for next move 
     AlternateTurn();                         //alternate turn
 }
@@ -21,9 +21,9 @@ void Game :: GetNextMove(BoardPiece* qpaaBoard[10][10]) {  //current boar as the
         int iStartRow = (iStartMove / 10);    //transform RC(ROW COLUMN) into R
         int iStartCol = (iStartMove % 10);    //transform RC(ROW COLUMN) into C
 
-        cout << "To: ";                           //"where to"
+        cout << "To: ";                       //"where to"
         int iEndMove;
-        cin >> iEndMove;                          //input iEndMove (destination square)
+        cin >> iEndMove;                      //input iEndMove (destination square)
         int iEndRow = (iEndMove / 10);        //transform RC(ROW COLUMN) into R
         int iEndCol = (iEndMove % 10);        //transform RC(ROW COLUMN) into C
 

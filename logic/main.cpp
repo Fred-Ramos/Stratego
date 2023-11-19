@@ -6,7 +6,7 @@ int main() {
 	Game qGame;    //create instance of the game
 
 	do { //while game is not over
-		qGame.Start(); //run the game
+		qGame.Run(); //run the game
 	} while (!qGame.IsGameOver());
 
 	qGame.mqGameBoard.Print(); //print board when the game finishes

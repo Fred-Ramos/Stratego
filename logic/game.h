@@ -11,7 +11,7 @@ public:
 	Game() : mcPlayerTurn('R') {}   //constructor; initializes mcPlayerturn as "R"
 	~Game() {}                      //destructor; does nothing
 
-	void Start(); //Start Game
+	void Run(); //Run Game
 
 	void GetNextMove(BoardPiece* qpaaBoard[10][10]);  //current boar as the input
 

@@ -1,0 +1,33 @@
+Start testing: Nov 19 16:45 GMT Standard Time
+----------------------------------------------------------
+1/1 Testing: Scout_test
+1/1 Test: Scout_test
+Command: "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/Scout_test.exe"
+Directory: C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test
+"Scout_test" start time: Nov 19 16:45 GMT Standard Time
+Output:
+----------------------------------------------------------
+Running main() from C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\googletest\googletest\src\gtest_main.cc
+[==========] Running 3 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 3 tests from Scouttest
+[ RUN      ] Scouttest.simplemovement
+[       OK ] Scouttest.simplemovement (0 ms)
+[ RUN      ] Scouttest.longmovement
+[       OK ] Scouttest.longmovement (0 ms)
+[ RUN      ] Scouttest.obstaclemovement
+[       OK ] Scouttest.obstaclemovement (0 ms)
+[----------] 3 tests from Scouttest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 3 tests.
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"Scout_test" end time: Nov 19 16:45 GMT Standard Time
+"Scout_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 19 16:45 GMT Standard Time
