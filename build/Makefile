@@ -236,17 +236,17 @@ gtest_main/fast:
 .PHONY : gtest_main/fast
 
 #=============================================================================
-# Target rules for targets named Scout_test
+# Target rules for targets named alltests
 
 # Build rule for target.
-Scout_test: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Scout_test
-.PHONY : Scout_test
+alltests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 alltests
+.PHONY : alltests
 
 # fast build rule for target.
-Scout_test/fast:
-	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/build
-.PHONY : Scout_test/fast
+alltests/fast:
+	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/build
+.PHONY : alltests/fast
 
 logic/board.obj: logic/board.cpp.obj
 .PHONY : logic/board.obj
@@ -334,7 +334,7 @@ help:
 	@echo ... rebuild_cache
 	@echo ... test
 	@echo ... Piece_test
-	@echo ... Scout_test
+	@echo ... alltests
 	@echo ... gmock
 	@echo ... gmock_main
 	@echo ... gtest

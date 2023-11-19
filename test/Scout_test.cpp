@@ -1,104 +1,123 @@
-#include "../logic/game.h"
-
+#include "testfunctions.h"
 
 #include <gtest/gtest.h>
 
-bool avallegalmove(BoardPiece* TestPiece,int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, BoardPiece* qpaaBoard[10][10]){
-    
-    return TestPiece->IsLegalMove(iSrcRow, iSrcCol, iDestRow, iDestCol, qpaaBoard);
-}
-
-void CleanTestBoard(BoardPiece* qpaaBoard[10][10]){
-    //clean board(for now because board constructor fills it up with a demo)
-    //when SETUPBOARDPIECES function created, change this part:
-    for (int i = 0; i < 10; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            qpaaBoard[i][j] = 0;
-        }
-    }
-    /////
-}
-
 TEST (Scouttest, simplemovement){
 
-    Game TestGame;
+	Game TestGame;
 
-    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard);
+    Board ExpectedBoard;
 
-    TestGame.mqGameBoard.mqpaaBoard[1][5] = new Scout('R'); //test Scout piece legalmoves, place scout in position 0.5
-    //horizontal/vertical 1square movement, ALLOWED
-	EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 2, 5, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step forward in a columm
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 1, 6, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step forward in a row
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 0, 5, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step back in a column
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 1, 4, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step back in a row
-    //diagonal movement, NOT ALLOWED
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 2, 6, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 diagonal
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 0, 4, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 diagonal
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 2, 4, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 diagonal
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 1, 5, 0, 6, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 diagonal
-    //starting position is not the pieces position, NOT ALLOWED
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 0, 0, 2, 5, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step forward in a columm
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 2, 2, 1, 6, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step forward in a row
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 3, 4, 0, 5, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step back in a column
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[1][5], 5, 7, 1, 4, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 1 step back in a row
+    bool compare;
 
+    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard); //clean board
+    CleanTestBoard(ExpectedBoard.mqpaaBoard);        //clean board
+
+    TestGame.mqGameBoard.mqpaaBoard[5][5] = new Scout('R'); //test Scout piece legalmoves, place scout in position 5 5
+
+    ExpectedBoard.mqpaaBoard[5][6] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(5, 5, 5, 6, TestGame.mqGameBoard.mqpaaBoard);                       //move scout to the right
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[5][6] = 0;
+
+    ExpectedBoard.mqpaaBoard[4][6] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(5, 6, 4, 6, TestGame.mqGameBoard.mqpaaBoard);                       //move scout down
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[4][6] = 0;
+
+    ExpectedBoard.mqpaaBoard[4][5] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(4, 6, 4, 5, TestGame.mqGameBoard.mqpaaBoard);                       //move scout to left
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[4][5] = 0;
+
+    ExpectedBoard.mqpaaBoard[5][5] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(4, 5, 5, 5, TestGame.mqGameBoard.mqpaaBoard);                       //move scout up
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[5][5] = 0;
 }
 
 TEST (Scouttest, longmovement){
 
-    Game TestGame;
+	Game TestGame;
 
-    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard);
+    Board ExpectedBoard;
+
+    bool compare;
+
+    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard); //clean board
+    CleanTestBoard(ExpectedBoard.mqpaaBoard);        //clean board
 
     TestGame.mqGameBoard.mqpaaBoard[5][5] = new Scout('R'); //test Scout piece legalmoves, place scout in position 5 5
-    //horizontal/vertical anysquare movement, ALLOWED
-	EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 9, 5, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 4 step forward in a columm
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 5, 9, TestGame.mqGameBoard.mqpaaBoard));    //piece walks 4 step forward in a row
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 0, 5, TestGame.mqGameBoard.mqpaaBoard));     //piece walks 5 step back in a column
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 5, 0, TestGame.mqGameBoard.mqpaaBoard));     //piece walks 5 step back in a row
-    
+
+    ExpectedBoard.mqpaaBoard[5][9] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(5, 5, 5, 9, TestGame.mqGameBoard.mqpaaBoard);                       //move scout to the right
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[5][9] = 0;
+
+    ExpectedBoard.mqpaaBoard[0][9] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(5, 9, 0, 9, TestGame.mqGameBoard.mqpaaBoard);                       //move scout down
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[0][9] = 0;
+
+    ExpectedBoard.mqpaaBoard[0][5] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(0, 9, 0, 5, TestGame.mqGameBoard.mqpaaBoard);                       //move scout to left
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[0][5] = 0;
+
+    ExpectedBoard.mqpaaBoard[5][5] = new Scout('R');                                         //expected board
+    TestGame.GetNextMove(0, 5, 5, 5, TestGame.mqGameBoard.mqpaaBoard);                       //move scout up
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+    ExpectedBoard.mqpaaBoard[5][5] = 0;
 }
 
 TEST (Scouttest, obstaclemovement){
 
-    Game TestGame;
+	Game TestGame;
 
-    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard);
+    Board ExpectedBoard;
 
-    TestGame.mqGameBoard.mqpaaBoard[5][5] = new Scout('R'); //test Scout piece legalmoves, place scout in position 5 5
+    bool compare;
 
-    TestGame.mqGameBoard.mqpaaBoard[5][7] = new Scout('R'); //place another piece in scouts path, place scout in position 5 7
+    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard); //clean board
+    CleanTestBoard(ExpectedBoard.mqpaaBoard);        //clean board
 
-    TestGame.mqGameBoard.mqpaaBoard[2][5] = new Scout('R'); //place another piece in scouts path, place scout in position 35
-    
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 5, 9, TestGame.mqGameBoard.mqpaaBoard));    //piece tries to pass over another piece; in same column
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 5, 6, TestGame.mqGameBoard.mqpaaBoard));    //piece doesnt pass over another piece; in same column
-    
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 1, 5, TestGame.mqGameBoard.mqpaaBoard));    //piece tries to pass over another piece; in same row
-    EXPECT_TRUE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 3, 5, TestGame.mqGameBoard.mqpaaBoard));    //piece doesnt pass over another piece; in same row
+    TestGame.mqGameBoard.mqpaaBoard[5][5] = new Scout('R'); //test Scout piece legalmoves, place moving scout in position 5 5
+    TestGame.mqGameBoard.mqpaaBoard[5][7] = new Scout('R'); //place a scout in position 5 7
+    TestGame.mqGameBoard.mqpaaBoard[3][5] = new Water('G'); //place water in position 3 5
+    TestGame.mqGameBoard.mqpaaBoard[5][2] = new Water('G'); //place water in position 5 2
 
-    TestGame.mqGameBoard.mqpaaBoard[5][7] = new Water('G'); //place water in 5 7
+    ExpectedBoard.mqpaaBoard[5][5] = new Scout('R');                                         //expected board
+    ExpectedBoard.mqpaaBoard[5][7] = new Scout('R');   
+    ExpectedBoard.mqpaaBoard[3][5] = new Water('G');  
+    ExpectedBoard.mqpaaBoard[5][2] = new Water('G');  
+    TestGame.GetNextMove(5, 5, 5, 9, TestGame.mqGameBoard.mqpaaBoard);                       //move scout to the right, cant move because other piece in the way
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare); //stays in place
 
-    EXPECT_FALSE(avallegalmove(TestGame.mqGameBoard.mqpaaBoard[5][5], 5, 5, 5, 7, TestGame.mqGameBoard.mqpaaBoard));   //cant move to water
+    TestGame.GetNextMove(5, 5, 5, 7, TestGame.mqGameBoard.mqpaaBoard);                       //move scout to the right, cant move because same color piece in destination
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare); //stays in place
+
+
+    TestGame.GetNextMove(5, 5, 2, 5, TestGame.mqGameBoard.mqpaaBoard);                       //move scout to down, cant move becayse water in the way
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+
+    TestGame.GetNextMove(5, 5, 3, 5, TestGame.mqGameBoard.mqpaaBoard);                       //move scout down, cant move because water in destination
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
+
+    ExpectedBoard.mqpaaBoard[5][5] = 0;                                                      //expected board
+    ExpectedBoard.mqpaaBoard[5][3] = new Scout('R');                                         
+    TestGame.GetNextMove(5, 5, 5, 3, TestGame.mqGameBoard.mqpaaBoard);                       //move scout left, sucessfull
+    compare = CompareBoards(ExpectedBoard.mqpaaBoard, TestGame.mqGameBoard.mqpaaBoard); //compare boards
+    EXPECT_TRUE(compare);
 }
-
-TEST (Scouttest, obstaclemovement2){
-
-    Game TestGame;
-
-    CleanTestBoard(TestGame.mqGameBoard.mqpaaBoard);
-
-    TestGame.mqGameBoard.mqpaaBoard[5][5] = new Scout('R'); //test Scout piece legalmoves, place scout in position 5 5
-
-    TestGame.mqGameBoard.mqpaaBoard[5][7] = new Scout('R'); //place another piece in scouts path, place scout in position 5 7
-
-    TestGame.mqGameBoard.mqpaaBoard[2][5] = new Scout('R'); //place another piece in scouts path, place scout in position 35
-    
-    
-}
-
-
-
-
-
-

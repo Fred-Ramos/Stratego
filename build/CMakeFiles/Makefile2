@@ -133,7 +133,7 @@ googletest/googletest/clean: googletest/googletest/CMakeFiles/gtest_main.dir/cle
 # Directory level rules for directory test
 
 # Recursive "all" directory target.
-test/all: test/CMakeFiles/Scout_test.dir/all
+test/all: test/CMakeFiles/alltests.dir/all
 .PHONY : test/all
 
 # Recursive "preinstall" directory target.
@@ -141,7 +141,7 @@ test/preinstall:
 .PHONY : test/preinstall
 
 # Recursive "clean" directory target.
-test/clean: test/CMakeFiles/Scout_test.dir/clean
+test/clean: test/CMakeFiles/alltests.dir/clean
 .PHONY : test/clean
 
 #=============================================================================
@@ -177,7 +177,7 @@ CMakeFiles/Piece_test.dir/clean:
 googletest/googlemock/CMakeFiles/gmock.dir/all: googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f googletest\googlemock\CMakeFiles\gmock.dir\build.make googletest/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest\googlemock\CMakeFiles\gmock.dir\build.make googletest/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=7,8 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=9,10 "Built target gmock"
 .PHONY : googletest/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -204,7 +204,7 @@ googletest/googlemock/CMakeFiles/gmock_main.dir/all: googletest/googlemock/CMake
 googletest/googlemock/CMakeFiles/gmock_main.dir/all: googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f googletest\googlemock\CMakeFiles\gmock_main.dir\build.make googletest/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest\googlemock\CMakeFiles\gmock_main.dir\build.make googletest/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=9,10 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=11,12 "Built target gmock_main"
 .PHONY : googletest/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -230,7 +230,7 @@ googletest/googlemock/CMakeFiles/gmock_main.dir/clean:
 googletest/googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) $(MAKESILENT) -f googletest\googletest\CMakeFiles\gtest.dir\build.make googletest/googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest\googletest\CMakeFiles\gtest.dir\build.make googletest/googletest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=11,12 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=13,14 "Built target gtest"
 .PHONY : googletest/googletest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -256,7 +256,7 @@ googletest/googletest/CMakeFiles/gtest.dir/clean:
 googletest/googletest/CMakeFiles/gtest_main.dir/all: googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f googletest\googletest\CMakeFiles\gtest_main.dir\build.make googletest/googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest\googletest\CMakeFiles\gtest_main.dir\build.make googletest/googletest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=13,14 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=15,16 "Built target gtest_main"
 .PHONY : googletest/googletest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -276,32 +276,32 @@ googletest/googletest/CMakeFiles/gtest_main.dir/clean:
 .PHONY : googletest/googletest/CMakeFiles/gtest_main.dir/clean
 
 #=============================================================================
-# Target rules for target test/CMakeFiles/Scout_test.dir
+# Target rules for target test/CMakeFiles/alltests.dir
 
 # All Build rule for target.
-test/CMakeFiles/Scout_test.dir/all: CMakeFiles/Piece_test.dir/all
-test/CMakeFiles/Scout_test.dir/all: googletest/googletest/CMakeFiles/gtest.dir/all
-test/CMakeFiles/Scout_test.dir/all: googletest/googletest/CMakeFiles/gtest_main.dir/all
-	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/depend
-	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=5,6 "Built target Scout_test"
-.PHONY : test/CMakeFiles/Scout_test.dir/all
+test/CMakeFiles/alltests.dir/all: CMakeFiles/Piece_test.dir/all
+test/CMakeFiles/alltests.dir/all: googletest/googletest/CMakeFiles/gtest.dir/all
+test/CMakeFiles/alltests.dir/all: googletest/googletest/CMakeFiles/gtest_main.dir/all
+	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/depend
+	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=5,6,7,8 "Built target alltests"
+.PHONY : test/CMakeFiles/alltests.dir/all
 
 # Build rule for subdir invocation for target.
-test/CMakeFiles/Scout_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" 10
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test/CMakeFiles/Scout_test.dir/all
+test/CMakeFiles/alltests.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" 12
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test/CMakeFiles/alltests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" 0
-.PHONY : test/CMakeFiles/Scout_test.dir/rule
+.PHONY : test/CMakeFiles/alltests.dir/rule
 
 # Convenience name for target.
-Scout_test: test/CMakeFiles/Scout_test.dir/rule
-.PHONY : Scout_test
+alltests: test/CMakeFiles/alltests.dir/rule
+.PHONY : alltests
 
 # clean rule for target.
-test/CMakeFiles/Scout_test.dir/clean:
-	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/clean
-.PHONY : test/CMakeFiles/Scout_test.dir/clean
+test/CMakeFiles/alltests.dir/clean:
+	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/clean
+.PHONY : test/CMakeFiles/alltests.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

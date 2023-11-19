@@ -43,8 +43,20 @@
 },
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/Scout_test.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\Scout_test.dir\\Scout_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\Scout_test.cpp\"",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\testfunctions.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\testfunctions.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/testfunctions.cpp",
+  "output": "test/CMakeFiles/alltests.dir/testfunctions.cpp.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\Scout_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\Scout_test.cpp\"",
   "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/Scout_test.cpp",
-  "output": "test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj"
+  "output": "test/CMakeFiles/alltests.dir/Scout_test.cpp.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\Gameover_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\Gameover_test.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/Gameover_test.cpp",
+  "output": "test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj"
 }
 ]

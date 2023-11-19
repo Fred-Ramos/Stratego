@@ -1,33 +1,44 @@
-Start testing: Nov 19 16:45 GMT Standard Time
+Start testing: Nov 19 23:34 GMT Standard Time
 ----------------------------------------------------------
-1/1 Testing: Scout_test
-1/1 Test: Scout_test
-Command: "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/Scout_test.exe"
+1/1 Testing: alltests
+1/1 Test: alltests
+Command: "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/alltests.exe"
 Directory: C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test
-"Scout_test" start time: Nov 19 16:45 GMT Standard Time
+"alltests" start time: Nov 19 23:34 GMT Standard Time
 Output:
 ----------------------------------------------------------
 Running main() from C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\googletest\googletest\src\gtest_main.cc
-[==========] Running 3 tests from 1 test suite.
+[==========] Running 5 tests from 2 test suites.
 [----------] Global test environment set-up.
+[----------] 2 tests from Gameovertest
+[ RUN      ] Gameovertest.noflag
+[       OK ] Gameovertest.noflag (0 ms)
+[ RUN      ] Gameovertest.nomovingpieces
+[       OK ] Gameovertest.nomovingpieces (0 ms)
+[----------] 2 tests from Gameovertest (0 ms total)
+
 [----------] 3 tests from Scouttest
 [ RUN      ] Scouttest.simplemovement
 [       OK ] Scouttest.simplemovement (0 ms)
 [ RUN      ] Scouttest.longmovement
 [       OK ] Scouttest.longmovement (0 ms)
 [ RUN      ] Scouttest.obstaclemovement
+Invalid Move!
+Invalid Move!
+Invalid Move!
+Invalid Move!
 [       OK ] Scouttest.obstaclemovement (0 ms)
 [----------] 3 tests from Scouttest (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 3 tests from 1 test suite ran. (0 ms total)
-[  PASSED  ] 3 tests.
+[==========] 5 tests from 2 test suites ran. (0 ms total)
+[  PASSED  ] 5 tests.
 <end of output>
-Test time =   0.09 sec
+Test time =   0.17 sec
 ----------------------------------------------------------
 Test Passed.
-"Scout_test" end time: Nov 19 16:45 GMT Standard Time
-"Scout_test" time elapsed: 00:00:00
+"alltests" end time: Nov 19 23:34 GMT Standard Time
+"alltests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Nov 19 16:45 GMT Standard Time
+End testing: Nov 19 23:34 GMT Standard Time

@@ -1,5 +1,6 @@
 test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj: \
  C:\Users\USER\Desktop\Mestrado\ Eng\ Eletro\PSW\Stratego_currentcode\a03_3\test\Scout_test.cpp \
+ C:\Users\USER\Desktop\Mestrado\ Eng\ Eletro\PSW\Stratego_currentcode\a03_3\test\testfunctions.h \
  C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/logic/game.h \
  C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/logic/piece.h \
  C:/msys64/mingw64/include/c++/13.2.0/iostream \

@@ -24,19 +24,19 @@
 	ProcessorClockFrequency="2894"
 	>
 	<Testing>
-		<StartDateTime>Nov 19 16:45 GMT Standard Time</StartDateTime>
-		<StartTestTime>1700412339</StartTestTime>
+		<StartDateTime>Nov 19 23:34 GMT Standard Time</StartDateTime>
+		<StartTestTime>1700436891</StartTestTime>
 		<TestList>
-			<Test>./test/Scout_test</Test>
+			<Test>./test/alltests</Test>
 		</TestList>
 		<Test Status="passed">
-			<Name>Scout_test</Name>
+			<Name>alltests</Name>
 			<Path>./test</Path>
-			<FullName>./test/Scout_test</FullName>
-			<FullCommandLine>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\Scout_test.exe"</FullCommandLine>
+			<FullName>./test/alltests</FullName>
+			<FullCommandLine>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\alltests.exe"</FullCommandLine>
 			<Results>
 				<NamedMeasurement type="numeric/double" name="Execution Time">
-					<Value>0.0862483</Value>
+					<Value>0.168512</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="numeric/double" name="Processors">
 					<Value>1</Value>
@@ -45,18 +45,18 @@
 					<Value>Completed</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="text/string" name="Command Line">
-					<Value>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\Scout_test.exe"</Value>
+					<Value>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\alltests.exe"</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="text/string" name="Environment">
 					<Value>#CTEST_RESOURCE_GROUP_COUNT=</Value>
 				</NamedMeasurement>
 				<Measurement>
-					<Value encoding="base64" compression="gzip">eJyNkU1vgzAMhu/8Ch/LAdSJ26QdphXtMG2rQGgHglAaPISWxCgJ3d9fKBUrlTrmk+M8fv2VDVp3ugXFO70J4dOQgqd7Vlg0lhV5mrEd2i9HPXtF6wxvCFKPpxKdIbbPP1juow5bqsVgDGonqEHGt0mdsJao9aBPvHStEawdvXosGgsRlA+zVZCdO0pgZOzU0t3pAXboHMZBGc1WwbOkA5fTP+pjZ0gr3wZYdNHQX8EL0VzQ4MZ3UEJWvMHJqt9wbDvVS1R0xFHRU5O9v/xBwWYLyoa3JCXpdk3wklmRo4N1XKz3eM3NsuvLmVBw5LgMg//t3iE3UUPfennamycFw3W8LOQH2T/mebobBz4nxsEPt5ngJA==</Value>
+					<Value encoding="base64" compression="gzip">eJyVk1FvgjAQx9/5FLc3fZAYzV6W7GGZxCyLm4GYPVhjajkJWemRtrCvvyKGgQPd7gV6/O7f/11pWCiVqgQynqrRGI6aMnh+YBuD2rBNFIRsgebTUs5WaKzmMUHg8ECi1cTW0QeLXNZiQntRaI3KCoqR8el8P2cJUeJAV9h+NVqwpHrbV5v6QnjbxyZ2EJ4d3UPFmNrS7LQAU6Tu6XvbSRM7WEo6cFkDqMpUk8qcDzBoJ0V+Ac/aqkueIZWoq5S3hXDzBqfYdb74io6SJw6o4/21H4DRFDIzviqUUel6y1MUaK4KtsFG+E+N1DRYslyOvW7RvF0UCSrs79abtG/SLJfonGA1z67dIap3CD+wJJXcEmwzN+ToYCwXLY8vquQyjWHlEnf/WA1YudTvPYn+oV47hqE/1iLXk5i+VPdGDN8E0Fz53Z1cJ+unKAoW1aTOlb73Db69Qsw=</Value>
 				</Measurement>
 			</Results>
 		</Test>
-		<EndDateTime>Nov 19 16:45 GMT Standard Time</EndDateTime>
-		<EndTestTime>1700412339</EndTestTime>
+		<EndDateTime>Nov 19 23:34 GMT Standard Time</EndDateTime>
+		<EndTestTime>1700436891</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

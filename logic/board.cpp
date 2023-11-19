@@ -11,7 +11,7 @@ Board::Board() {                                          //board constructor
 				mqpaaBoard[iRow][iCol] = 0;               //piece is 0, all squares are empty
 			}
 		}
-
+		
 		//PLACE WATER(ALLWAYS PRESENT)
 		mqpaaBoard[4][2] = new Water('G');
 		mqpaaBoard[4][3] = new Water('G');
@@ -172,11 +172,14 @@ int Board :: Legalmovesleft() {
 	else if ( (red_flag == false) && (blue_flag == true)){ //if only blue flag present, red has no legal moves left and looses
 		return -1;
 	}
-	if ( (red_movable == true) && (blue_movable) == false){ //if only red has movable pieces left, blue has no legal moves left and looses
+	else if ( (red_movable == true) && (blue_movable) == false){ //if only red has movable pieces left, blue has no legal moves left and looses
 		return 1;
 	}
 	else if ( (red_movable == false) && (blue_movable == true) ){ //if only blue has movable pieces left, red has no legal moves left and looses
 		return -1;
+	}
+	else if ( (red_movable == false) && (blue_movable == false) ){ //if by chance the last 2 movable pieces kill each other, leaving no movable pieces for none of the players, the game is a draw
+		return -2; 
 	}
 	return 0; //if none of the above, then both have legal moves left
 }
