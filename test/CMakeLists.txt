@@ -7,7 +7,8 @@ set(Headers
 )
 set(Sources
     testfunctions.cpp
-    Scout_test.cpp
+    0Spy_test.cpp
+    1Scout_test.cpp
     Gameover_test.cpp
 )
 

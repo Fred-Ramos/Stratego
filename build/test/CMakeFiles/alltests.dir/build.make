@@ -83,26 +83,41 @@ test/CMakeFiles/alltests.dir/testfunctions.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/alltests.dir/testfunctions.cpp.s"
 	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\testfunctions.cpp" -o CMakeFiles\alltests.dir\testfunctions.cpp.s
 
-test/CMakeFiles/alltests.dir/Scout_test.cpp.obj: test/CMakeFiles/alltests.dir/flags.make
-test/CMakeFiles/alltests.dir/Scout_test.cpp.obj: test/CMakeFiles/alltests.dir/includes_CXX.rsp
-test/CMakeFiles/alltests.dir/Scout_test.cpp.obj: C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/test/Scout_test.cpp
-test/CMakeFiles/alltests.dir/Scout_test.cpp.obj: test/CMakeFiles/alltests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object test/CMakeFiles/alltests.dir/Scout_test.cpp.obj"
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/alltests.dir/Scout_test.cpp.obj -MF CMakeFiles\alltests.dir\Scout_test.cpp.obj.d -o CMakeFiles\alltests.dir\Scout_test.cpp.obj -c "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Scout_test.cpp"
+test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj: test/CMakeFiles/alltests.dir/flags.make
+test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj: test/CMakeFiles/alltests.dir/includes_CXX.rsp
+test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj: C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/test/0Spy_test.cpp
+test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj: test/CMakeFiles/alltests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj -MF CMakeFiles\alltests.dir\0Spy_test.cpp.obj.d -o CMakeFiles\alltests.dir\0Spy_test.cpp.obj -c "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\0Spy_test.cpp"
 
-test/CMakeFiles/alltests.dir/Scout_test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/alltests.dir/Scout_test.cpp.i"
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Scout_test.cpp" > CMakeFiles\alltests.dir\Scout_test.cpp.i
+test/CMakeFiles/alltests.dir/0Spy_test.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/alltests.dir/0Spy_test.cpp.i"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\0Spy_test.cpp" > CMakeFiles\alltests.dir\0Spy_test.cpp.i
 
-test/CMakeFiles/alltests.dir/Scout_test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/alltests.dir/Scout_test.cpp.s"
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Scout_test.cpp" -o CMakeFiles\alltests.dir\Scout_test.cpp.s
+test/CMakeFiles/alltests.dir/0Spy_test.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/alltests.dir/0Spy_test.cpp.s"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\0Spy_test.cpp" -o CMakeFiles\alltests.dir\0Spy_test.cpp.s
+
+test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj: test/CMakeFiles/alltests.dir/flags.make
+test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj: test/CMakeFiles/alltests.dir/includes_CXX.rsp
+test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj: C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/test/1Scout_test.cpp
+test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj: test/CMakeFiles/alltests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj -MF CMakeFiles\alltests.dir\1Scout_test.cpp.obj.d -o CMakeFiles\alltests.dir\1Scout_test.cpp.obj -c "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\1Scout_test.cpp"
+
+test/CMakeFiles/alltests.dir/1Scout_test.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/alltests.dir/1Scout_test.cpp.i"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\1Scout_test.cpp" > CMakeFiles\alltests.dir\1Scout_test.cpp.i
+
+test/CMakeFiles/alltests.dir/1Scout_test.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/alltests.dir/1Scout_test.cpp.s"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\1Scout_test.cpp" -o CMakeFiles\alltests.dir\1Scout_test.cpp.s
 
 test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj: test/CMakeFiles/alltests.dir/flags.make
 test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj: test/CMakeFiles/alltests.dir/includes_CXX.rsp
 test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj: C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/test/Gameover_test.cpp
 test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj: test/CMakeFiles/alltests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj"
 	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj -MF CMakeFiles\alltests.dir\Gameover_test.cpp.obj.d -o CMakeFiles\alltests.dir\Gameover_test.cpp.obj -c "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Gameover_test.cpp"
 
 test/CMakeFiles/alltests.dir/Gameover_test.cpp.i: cmake_force
@@ -116,14 +131,16 @@ test/CMakeFiles/alltests.dir/Gameover_test.cpp.s: cmake_force
 # Object files for target alltests
 alltests_OBJECTS = \
 "CMakeFiles/alltests.dir/testfunctions.cpp.obj" \
-"CMakeFiles/alltests.dir/Scout_test.cpp.obj" \
+"CMakeFiles/alltests.dir/0Spy_test.cpp.obj" \
+"CMakeFiles/alltests.dir/1Scout_test.cpp.obj" \
 "CMakeFiles/alltests.dir/Gameover_test.cpp.obj"
 
 # External object files for target alltests
 alltests_EXTERNAL_OBJECTS =
 
 test/alltests.exe: test/CMakeFiles/alltests.dir/testfunctions.cpp.obj
-test/alltests.exe: test/CMakeFiles/alltests.dir/Scout_test.cpp.obj
+test/alltests.exe: test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj
+test/alltests.exe: test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj
 test/alltests.exe: test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj
 test/alltests.exe: test/CMakeFiles/alltests.dir/build.make
 test/alltests.exe: lib/libgtest_main.a
@@ -132,7 +149,7 @@ test/alltests.exe: lib/libgtest.a
 test/alltests.exe: test/CMakeFiles/alltests.dir/linkLibs.rsp
 test/alltests.exe: test/CMakeFiles/alltests.dir/objects1.rsp
 test/alltests.exe: test/CMakeFiles/alltests.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable alltests.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable alltests.exe"
 	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\alltests.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -1,3 +1,3 @@
 Scout_test 24 0.119613
-alltests 3 0.189567
+alltests 18 0.190318
 ---

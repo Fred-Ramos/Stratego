@@ -49,9 +49,15 @@
 },
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\Scout_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\Scout_test.cpp\"",
-  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/Scout_test.cpp",
-  "output": "test/CMakeFiles/alltests.dir/Scout_test.cpp.obj"
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\0Spy_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\0Spy_test.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/0Spy_test.cpp",
+  "output": "test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\1Scout_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\1Scout_test.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/1Scout_test.cpp",
+  "output": "test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj"
 },
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",

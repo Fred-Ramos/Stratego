@@ -1,8 +1,10 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/alltests.dir/0Spy_test.cpp.obj"
+  "CMakeFiles/alltests.dir/0Spy_test.cpp.obj.d"
+  "CMakeFiles/alltests.dir/1Scout_test.cpp.obj"
+  "CMakeFiles/alltests.dir/1Scout_test.cpp.obj.d"
   "CMakeFiles/alltests.dir/Gameover_test.cpp.obj"
   "CMakeFiles/alltests.dir/Gameover_test.cpp.obj.d"
-  "CMakeFiles/alltests.dir/Scout_test.cpp.obj"
-  "CMakeFiles/alltests.dir/Scout_test.cpp.obj.d"
   "CMakeFiles/alltests.dir/testfunctions.cpp.obj"
   "CMakeFiles/alltests.dir/testfunctions.cpp.obj.d"
   "alltests.exe"
