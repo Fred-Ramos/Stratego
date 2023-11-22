@@ -6,7 +6,7 @@ Pieces added:
     all
 
 Functions missing:
-    store removed pieces (maybe?)
+    store removed pieces (maybe?, do in qt)
     setup board (players inicial input, wait for qt implementation)
     
 
