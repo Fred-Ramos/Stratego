@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "board.h"
-
+using namespace std;
 
 
 //BOARD CLASS
@@ -13,61 +13,199 @@ Board::Board() {                                          //board constructor
 		}
 		
 		//PLACE WATER(ALLWAYS PRESENT)
-		mqpaaBoard[4][2] = new Water('G');
-		mqpaaBoard[4][3] = new Water('G');
-		mqpaaBoard[4][6] = new Water('G');
-		mqpaaBoard[4][7] = new Water('G');
-		mqpaaBoard[5][2] = new Water('G');
-		mqpaaBoard[5][3] = new Water('G');
-		mqpaaBoard[5][6] = new Water('G');
-		mqpaaBoard[5][7] = new Water('G');
+
+		//mqpaaBoard[4][2] = new Water('G');
+		//mqpaaBoard[4][3] = new Water('G');
+		//mqpaaBoard[4][6] = new Water('G');
+		//mqpaaBoard[4][7] = new Water('G');
+		//mqpaaBoard[5][2] = new Water('G');
+		//mqpaaBoard[5][3] = new Water('G');
+		//mqpaaBoard[5][6] = new Water('G');
+		//mqpaaBoard[5][7] = new Water('G');
+		
+		for(int iRow = 4; iRow < 6; ++iRow){
+			for(int iCol : {2, 3, 6, 7}){
+				mqpaaBoard[iRow][iCol] = new Water('G');
+			}
+		}
 
 		//FILL FIRST 2 ROWS OF EACH SIDE(FOR TESTING)///////
 
-		// Allocate and place blue pieces
-		mqpaaBoard[8][0] = new Scout('B');
-		mqpaaBoard[8][1] = new Miner('B');
-		mqpaaBoard[8][2] = new Bomb('B');
-		mqpaaBoard[8][3] = new Sergeant('B');
-		mqpaaBoard[8][4] = new Lieutenant('B');
-		mqpaaBoard[8][5] = new Captain('B');
-		mqpaaBoard[8][6] = new Major('B');
-		mqpaaBoard[8][7] = new Colonel('B');
-		mqpaaBoard[8][8] = new General('B');
-		mqpaaBoard[8][9] = new Marshal('B');
+		// Allocate and place blue pieces (iRow from 8 - 9)
 
-		mqpaaBoard[9][0] = new Flag('B');
-		mqpaaBoard[9][1] = new Scout('B');
-		mqpaaBoard[9][2] = new Scout('B');
-		mqpaaBoard[9][3] = new Scout('B');
-		mqpaaBoard[9][4] = new Scout('B');
-		mqpaaBoard[9][5] = new Scout('B');
-		mqpaaBoard[9][6] = new Scout('B');
-		mqpaaBoard[9][7] = new Scout('B');
-		mqpaaBoard[9][8] = new Scout('B');
-		mqpaaBoard[9][9] = new Scout('B');
-		// Allocate and place red pieces
-		mqpaaBoard[1][0] = new Bomb('R');
-		mqpaaBoard[1][1] = new Miner('R');
-		mqpaaBoard[1][2] = new Flag('R');
-		mqpaaBoard[1][3] = new Scout('R');
-		mqpaaBoard[1][4] = new Scout('R');
-		mqpaaBoard[1][5] = new Scout('R');
-		mqpaaBoard[1][6] = new Scout('R');
-		mqpaaBoard[1][7] = new Scout('R');
-		mqpaaBoard[1][8] = new Scout('R');
-		mqpaaBoard[1][9] = new Scout('R');
+		for(int bluepiece = 0; bluepiece < 20; ++bluepiece){
+			int iStartMove;
+			cout << "Square: ";
+			cin >> iStartMove;
+			int iStartRow = (iStartMove / 10);
+        	int iStartCol = (iStartMove % 10);
+			cout << "Piece?";
+			char piece;
+			cin >> piece;
+			
+			if(7 < iStartRow < 10){
+				switch(piece){
 
-		mqpaaBoard[0][0] = new Scout('R');
-		mqpaaBoard[0][1] = new Scout('R');
-		mqpaaBoard[0][2] = new Scout('R');
-		mqpaaBoard[0][3] = new Scout('R');
-		mqpaaBoard[0][4] = new Scout('R');
-		mqpaaBoard[0][5] = new Scout('R');
-		mqpaaBoard[0][6] = new Scout('R');
-		mqpaaBoard[0][7] = new Scout('R');
-		mqpaaBoard[0][8] = new Scout('R');
-		mqpaaBoard[0][9] = new Spy('R');
+					case 'F':
+					mqpaaBoard[iStartRow][iStartCol] = new Flag('B');
+					break;
+
+					case 'B':
+					mqpaaBoard[iStartRow][iStartCol] = new Bomb('B');
+					break;
+
+					case 'M':
+					mqpaaBoard[iStartRow][iStartCol] = new Miner('B');
+					break;
+
+					case 'S':
+					mqpaaBoard[iStartRow][iStartCol] = new Scout('B');
+					break;
+
+					case 'W':
+					mqpaaBoard[iStartRow][iStartCol] = new Sergeant('B');
+					break;
+
+					case 'L':
+					mqpaaBoard[iStartRow][iStartCol] = new Lieutenant('B');
+					break;
+
+					case 'C':
+					mqpaaBoard[iStartRow][iStartCol] = new Captain('B');
+					break;
+
+					case 'K':
+					mqpaaBoard[iStartRow][iStartCol] = new Major('B');
+					break;
+
+					case 'X':
+					mqpaaBoard[iStartRow][iStartCol] = new Colonel('B');
+					break;
+
+					case 'G':
+					mqpaaBoard[iStartRow][iStartCol] = new General('B');
+					break;
+
+					case 'N':
+					mqpaaBoard[iStartRow][iStartCol] = new Marshal('B');
+					break;
+				}
+			}
+			else{
+				cout << "Invalid move!" << endl;
+			}
+		}
+
+
+		//mqpaaBoard[8][0] = new Scout('B');
+		//mqpaaBoard[8][1] = new Miner('B');
+		//mqpaaBoard[8][2] = new Bomb('B');
+		//mqpaaBoard[8][3] = new Sergeant('B');
+		//mqpaaBoard[8][4] = new Lieutenant('B');
+		//mqpaaBoard[8][5] = new Captain('B');
+		//mqpaaBoard[8][6] = new Major('B');
+		//mqpaaBoard[8][7] = new Colonel('B');
+		//mqpaaBoard[8][8] = new General('B');
+		//mqpaaBoard[8][9] = new Marshal('B');
+
+		//mqpaaBoard[9][0] = new Flag('B');
+		//mqpaaBoard[9][1] = new Scout('B');
+		//mqpaaBoard[9][2] = new Scout('B');
+		//mqpaaBoard[9][3] = new Scout('B');
+		//mqpaaBoard[9][4] = new Scout('B');
+		//mqpaaBoard[9][5] = new Scout('B');
+		//mqpaaBoard[9][6] = new Scout('B');
+		//mqpaaBoard[9][7] = new Scout('B');
+		//mqpaaBoard[9][8] = new Scout('B');
+		//mqpaaBoard[9][9] = new Scout('B');
+
+		// Allocate and place red pieces (iRow from 0 - 1)
+
+		for(int redpiece = 0; redpiece < 20; ++redpiece){
+			int iStartMove;
+			cout << "Square: ";
+			cin >> iStartMove;
+			int iStartRow = (iStartMove / 10);
+        	int iStartCol = (iStartMove % 10);
+			cout << "Piece?";
+			char piece;
+			cin >> piece;
+			
+			if(7 < iStartRow < 10){
+				switch(piece){
+
+					case 'F':
+					mqpaaBoard[iStartRow][iStartCol] = new Flag('B');
+					break;
+
+					case 'B':
+					mqpaaBoard[iStartRow][iStartCol] = new Bomb('B');
+					break;
+
+					case 'M':
+					mqpaaBoard[iStartRow][iStartCol] = new Miner('B');
+					break;
+
+					case 'S':
+					mqpaaBoard[iStartRow][iStartCol] = new Scout('B');
+					break;
+
+					case 'W':
+					mqpaaBoard[iStartRow][iStartCol] = new Sergeant('B');
+					break;
+
+					case 'L':
+					mqpaaBoard[iStartRow][iStartCol] = new Lieutenant('B');
+					break;
+
+					case 'C':
+					mqpaaBoard[iStartRow][iStartCol] = new Captain('B');
+					break;
+
+					case 'K':
+					mqpaaBoard[iStartRow][iStartCol] = new Major('B');
+					break;
+
+					case 'X':
+					mqpaaBoard[iStartRow][iStartCol] = new Colonel('B');
+					break;
+
+					case 'G':
+					mqpaaBoard[iStartRow][iStartCol] = new General('B');
+					break;
+
+					case 'N':
+					mqpaaBoard[iStartRow][iStartCol] = new Marshal('B');
+					break;
+				}
+			}
+			else{
+				cout << "Invalid move!" << endl;
+			}
+		}
+
+
+		//mqpaaBoard[1][0] = new Bomb('R');
+		//mqpaaBoard[1][1] = new Miner('R');
+		//mqpaaBoard[1][2] = new Flag('R');
+		//mqpaaBoard[1][3] = new Scout('R');
+		//mqpaaBoard[1][4] = new Scout('R');
+		//mqpaaBoard[1][5] = new Scout('R');
+		//mqpaaBoard[1][6] = new Scout('R');
+		//mqpaaBoard[1][7] = new Scout('R');
+		//mqpaaBoard[1][8] = new Scout('R');
+		//mqpaaBoard[1][9] = new Scout('R');
+
+		//mqpaaBoard[0][0] = new Scout('R');
+		//mqpaaBoard[0][1] = new Scout('R');
+		//mqpaaBoard[0][2] = new Scout('R');
+		//mqpaaBoard[0][3] = new Scout('R');
+		//mqpaaBoard[0][4] = new Scout('R');
+		//mqpaaBoard[0][5] = new Scout('R');
+		//mqpaaBoard[0][6] = new Scout('R');
+		//mqpaaBoard[0][7] = new Scout('R');
+		//mqpaaBoard[0][8] = new Scout('R');
+		//mqpaaBoard[0][9] = new Spy('R');
 	}
 
 Board::~Board() {                                      //desctructor
