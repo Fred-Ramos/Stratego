@@ -171,17 +171,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Piece_test
+# Target rules for targets named Stratego_test
 
 # Build rule for target.
-Piece_test: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Piece_test
-.PHONY : Piece_test
+Stratego_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Stratego_test
+.PHONY : Stratego_test
 
 # fast build rule for target.
-Piece_test/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/build
-.PHONY : Piece_test/fast
+Stratego_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/build
+.PHONY : Stratego_test/fast
 
 #=============================================================================
 # Target rules for targets named gmock
@@ -253,7 +253,7 @@ logic/board.obj: logic/board.cpp.obj
 
 # target to build an object file
 logic/board.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/board.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/board.cpp.obj
 .PHONY : logic/board.cpp.obj
 
 logic/board.i: logic/board.cpp.i
@@ -261,7 +261,7 @@ logic/board.i: logic/board.cpp.i
 
 # target to preprocess a source file
 logic/board.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/board.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/board.cpp.i
 .PHONY : logic/board.cpp.i
 
 logic/board.s: logic/board.cpp.s
@@ -269,7 +269,7 @@ logic/board.s: logic/board.cpp.s
 
 # target to generate assembly for a file
 logic/board.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/board.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/board.cpp.s
 .PHONY : logic/board.cpp.s
 
 logic/game.obj: logic/game.cpp.obj
@@ -277,7 +277,7 @@ logic/game.obj: logic/game.cpp.obj
 
 # target to build an object file
 logic/game.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/game.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/game.cpp.obj
 .PHONY : logic/game.cpp.obj
 
 logic/game.i: logic/game.cpp.i
@@ -285,7 +285,7 @@ logic/game.i: logic/game.cpp.i
 
 # target to preprocess a source file
 logic/game.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/game.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/game.cpp.i
 .PHONY : logic/game.cpp.i
 
 logic/game.s: logic/game.cpp.s
@@ -293,7 +293,7 @@ logic/game.s: logic/game.cpp.s
 
 # target to generate assembly for a file
 logic/game.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/game.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/game.cpp.s
 .PHONY : logic/game.cpp.s
 
 logic/piece.obj: logic/piece.cpp.obj
@@ -301,7 +301,7 @@ logic/piece.obj: logic/piece.cpp.obj
 
 # target to build an object file
 logic/piece.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/piece.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/piece.cpp.obj
 .PHONY : logic/piece.cpp.obj
 
 logic/piece.i: logic/piece.cpp.i
@@ -309,7 +309,7 @@ logic/piece.i: logic/piece.cpp.i
 
 # target to preprocess a source file
 logic/piece.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/piece.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/piece.cpp.i
 .PHONY : logic/piece.cpp.i
 
 logic/piece.s: logic/piece.cpp.s
@@ -317,7 +317,7 @@ logic/piece.s: logic/piece.cpp.s
 
 # target to generate assembly for a file
 logic/piece.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/logic/piece.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/logic/piece.cpp.s
 .PHONY : logic/piece.cpp.s
 
 # Help Target
@@ -333,7 +333,7 @@ help:
 	@echo ... list_install_components
 	@echo ... rebuild_cache
 	@echo ... test
-	@echo ... Piece_test
+	@echo ... Stratego_test
 	@echo ... alltests
 	@echo ... gmock
 	@echo ... gmock_main

@@ -161,7 +161,7 @@ test/alltests.exe: test/CMakeFiles/alltests.dir/2Miner_test.cpp.obj
 test/alltests.exe: test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj
 test/alltests.exe: test/CMakeFiles/alltests.dir/build.make
 test/alltests.exe: lib/libgtest_main.a
-test/alltests.exe: libPiece_test.a
+test/alltests.exe: libStratego_test.a
 test/alltests.exe: lib/libgtest.a
 test/alltests.exe: test/CMakeFiles/alltests.dir/linkLibs.rsp
 test/alltests.exe: test/CMakeFiles/alltests.dir/objects1.rsp

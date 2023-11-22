@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-set(This Piece_test)
+set(This Stratego_test)
 
 project(${This} CXX)
 

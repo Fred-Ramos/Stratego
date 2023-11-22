@@ -62,7 +62,7 @@ CMAKE_BINARY_DIR = "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_curre
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Piece_test.dir/all
+all: CMakeFiles/Stratego_test.dir/all
 all: googletest/all
 all: test/all
 .PHONY : all
@@ -73,7 +73,7 @@ preinstall: test/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Piece_test.dir/clean
+clean: CMakeFiles/Stratego_test.dir/clean
 clean: googletest/clean
 clean: test/clean
 .PHONY : clean
@@ -145,30 +145,30 @@ test/clean: test/CMakeFiles/alltests.dir/clean
 .PHONY : test/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Piece_test.dir
+# Target rules for target CMakeFiles/Stratego_test.dir
 
 # All Build rule for target.
-CMakeFiles/Piece_test.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=1,2,3,4 "Built target Piece_test"
-.PHONY : CMakeFiles/Piece_test.dir/all
+CMakeFiles/Stratego_test.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=1,2,3,4 "Built target Stratego_test"
+.PHONY : CMakeFiles/Stratego_test.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Piece_test.dir/rule: cmake_check_build_system
+CMakeFiles/Stratego_test.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Piece_test.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Stratego_test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" 0
-.PHONY : CMakeFiles/Piece_test.dir/rule
+.PHONY : CMakeFiles/Stratego_test.dir/rule
 
 # Convenience name for target.
-Piece_test: CMakeFiles/Piece_test.dir/rule
-.PHONY : Piece_test
+Stratego_test: CMakeFiles/Stratego_test.dir/rule
+.PHONY : Stratego_test
 
 # clean rule for target.
-CMakeFiles/Piece_test.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Piece_test.dir\build.make CMakeFiles/Piece_test.dir/clean
-.PHONY : CMakeFiles/Piece_test.dir/clean
+CMakeFiles/Stratego_test.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Stratego_test.dir\build.make CMakeFiles/Stratego_test.dir/clean
+.PHONY : CMakeFiles/Stratego_test.dir/clean
 
 #=============================================================================
 # Target rules for target googletest/googlemock/CMakeFiles/gmock.dir
@@ -279,9 +279,9 @@ googletest/googletest/CMakeFiles/gtest_main.dir/clean:
 # Target rules for target test/CMakeFiles/alltests.dir
 
 # All Build rule for target.
-test/CMakeFiles/alltests.dir/all: CMakeFiles/Piece_test.dir/all
-test/CMakeFiles/alltests.dir/all: googletest/googletest/CMakeFiles/gtest.dir/all
+test/CMakeFiles/alltests.dir/all: CMakeFiles/Stratego_test.dir/all
 test/CMakeFiles/alltests.dir/all: googletest/googletest/CMakeFiles/gtest_main.dir/all
+test/CMakeFiles/alltests.dir/all: googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/depend
 	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=5,6,7,8,9,10 "Built target alltests"

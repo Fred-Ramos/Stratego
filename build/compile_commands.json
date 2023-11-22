@@ -1,21 +1,21 @@
 [
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Piece_test.dir\\logic\\piece.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\logic\\piece.cpp\"",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Stratego_test.dir\\logic\\piece.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\logic\\piece.cpp\"",
   "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/logic/piece.cpp",
-  "output": "CMakeFiles/Piece_test.dir/logic/piece.cpp.obj"
+  "output": "CMakeFiles/Stratego_test.dir/logic/piece.cpp.obj"
 },
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Piece_test.dir\\logic\\board.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\logic\\board.cpp\"",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Stratego_test.dir\\logic\\board.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\logic\\board.cpp\"",
   "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/logic/board.cpp",
-  "output": "CMakeFiles/Piece_test.dir/logic/board.cpp.obj"
+  "output": "CMakeFiles/Stratego_test.dir/logic/board.cpp.obj"
 },
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Piece_test.dir\\logic\\game.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\logic\\game.cpp\"",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\Stratego_test.dir\\logic\\game.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\logic\\game.cpp\"",
   "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/logic/game.cpp",
-  "output": "CMakeFiles/Piece_test.dir/logic/game.cpp.obj"
+  "output": "CMakeFiles/Stratego_test.dir/logic/game.cpp.obj"
 },
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/googletest/googlemock",

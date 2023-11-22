@@ -1,11 +1,11 @@
 #include <iostream>
 
 #include "board.h"
-using namespace std;
 
 
 //BOARD CLASS
 Board::Board() {                                          //board constructor
+	using namespace std;
 		for (int iRow = 0; iRow < 10; ++iRow) {           //for rows 0 to 9 (10rows)      
 			for (int iCol = 0; iCol < 10; ++iCol) {       //for columns 0 to 9 (10columns)
 				mqpaaBoard[iRow][iCol] = 0;               //piece is 0, all squares are empty
@@ -34,8 +34,9 @@ Board::Board() {                                          //board constructor
 		// Allocate and place blue pieces (iRow from 8 - 9)
 
 		for(int bluepiece = 0; bluepiece < 20; ++bluepiece){
+			Print();
 			int iStartMove;
-			cout << "Square: ";
+			cout << "Blue Square: ";
 			cin >> iStartMove;
 			int iStartRow = (iStartMove / 10);
         	int iStartCol = (iStartMove % 10);
@@ -43,10 +44,11 @@ Board::Board() {                                          //board constructor
 			char piece;
 			cin >> piece;
 			
-			if(7 < iStartRow < 10){
+			if( (7 < iStartRow ) && ( iStartRow < 10) ){
 				switch(piece){
 
 					case 'F':
+
 					mqpaaBoard[iStartRow][iStartCol] = new Flag('B');
 					break;
 
@@ -54,39 +56,43 @@ Board::Board() {                                          //board constructor
 					mqpaaBoard[iStartRow][iStartCol] = new Bomb('B');
 					break;
 
-					case 'M':
-					mqpaaBoard[iStartRow][iStartCol] = new Miner('B');
+					case '0':
+					mqpaaBoard[iStartRow][iStartCol] = new Spy('B');
 					break;
 
-					case 'S':
+					case '1':
 					mqpaaBoard[iStartRow][iStartCol] = new Scout('B');
 					break;
 
-					case 'W':
+					case '2':
+					mqpaaBoard[iStartRow][iStartCol] = new Miner('B');
+					break;
+
+					case '3':
 					mqpaaBoard[iStartRow][iStartCol] = new Sergeant('B');
 					break;
 
-					case 'L':
+					case '4':
 					mqpaaBoard[iStartRow][iStartCol] = new Lieutenant('B');
 					break;
 
-					case 'C':
+					case '5':
 					mqpaaBoard[iStartRow][iStartCol] = new Captain('B');
 					break;
 
-					case 'K':
+					case '6':
 					mqpaaBoard[iStartRow][iStartCol] = new Major('B');
 					break;
 
-					case 'X':
+					case '7':
 					mqpaaBoard[iStartRow][iStartCol] = new Colonel('B');
 					break;
 
-					case 'G':
+					case '8':
 					mqpaaBoard[iStartRow][iStartCol] = new General('B');
 					break;
 
-					case 'N':
+					case '9':
 					mqpaaBoard[iStartRow][iStartCol] = new Marshal('B');
 					break;
 				}
@@ -122,8 +128,9 @@ Board::Board() {                                          //board constructor
 		// Allocate and place red pieces (iRow from 0 - 1)
 
 		for(int redpiece = 0; redpiece < 20; ++redpiece){
+			Print();
 			int iStartMove;
-			cout << "Square: ";
+			cout << "Red Square: ";
 			cin >> iStartMove;
 			int iStartRow = (iStartMove / 10);
         	int iStartCol = (iStartMove % 10);
@@ -131,51 +138,55 @@ Board::Board() {                                          //board constructor
 			char piece;
 			cin >> piece;
 			
-			if(7 < iStartRow < 10){
+			if( (0 < iStartRow ) && ( iStartRow < 2) ){
 				switch(piece){
 
 					case 'F':
-					mqpaaBoard[iStartRow][iStartCol] = new Flag('B');
+					mqpaaBoard[iStartRow][iStartCol] = new Flag('R');
 					break;
 
 					case 'B':
-					mqpaaBoard[iStartRow][iStartCol] = new Bomb('B');
+					mqpaaBoard[iStartRow][iStartCol] = new Bomb('R');
 					break;
 
-					case 'M':
-					mqpaaBoard[iStartRow][iStartCol] = new Miner('B');
+					case '0':
+					mqpaaBoard[iStartRow][iStartCol] = new Spy('R');
 					break;
 
-					case 'S':
-					mqpaaBoard[iStartRow][iStartCol] = new Scout('B');
+					case '1':
+					mqpaaBoard[iStartRow][iStartCol] = new Scout('R');
 					break;
 
-					case 'W':
-					mqpaaBoard[iStartRow][iStartCol] = new Sergeant('B');
+					case '2':
+					mqpaaBoard[iStartRow][iStartCol] = new Miner('R');
 					break;
 
-					case 'L':
-					mqpaaBoard[iStartRow][iStartCol] = new Lieutenant('B');
+					case '3':
+					mqpaaBoard[iStartRow][iStartCol] = new Sergeant('R');
 					break;
 
-					case 'C':
-					mqpaaBoard[iStartRow][iStartCol] = new Captain('B');
+					case '4':
+					mqpaaBoard[iStartRow][iStartCol] = new Lieutenant('R');
 					break;
 
-					case 'K':
-					mqpaaBoard[iStartRow][iStartCol] = new Major('B');
+					case '5':
+					mqpaaBoard[iStartRow][iStartCol] = new Captain('R');
 					break;
 
-					case 'X':
-					mqpaaBoard[iStartRow][iStartCol] = new Colonel('B');
+					case '6':
+					mqpaaBoard[iStartRow][iStartCol] = new Major('R');
 					break;
 
-					case 'G':
-					mqpaaBoard[iStartRow][iStartCol] = new General('B');
+					case '7':
+					mqpaaBoard[iStartRow][iStartCol] = new Colonel('R');
 					break;
 
-					case 'N':
-					mqpaaBoard[iStartRow][iStartCol] = new Marshal('B');
+					case '8':
+					mqpaaBoard[iStartRow][iStartCol] = new General('R');
+					break;
+
+					case '9':
+					mqpaaBoard[iStartRow][iStartCol] = new Marshal('R');
 					break;
 				}
 			}

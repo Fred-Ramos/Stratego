@@ -1,4 +1,4 @@
-C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/CMakeFiles/Piece_test.dir
+C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/CMakeFiles/Stratego_test.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/CMakeFiles/test.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/CMakeFiles/edit_cache.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/CMakeFiles/rebuild_cache.dir
