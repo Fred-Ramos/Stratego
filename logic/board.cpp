@@ -264,7 +264,7 @@ int Board :: ComparePiece(BoardPiece* SourcePiece, BoardPiece* EndPiece) {      
 		}
 	}
 	if (EndRank == 'B'){
-		if (SourceRank == '3'){
+		if (SourceRank == '2'){
 			return 1; //Miner disarms bomb, bomb piece looses
 		}
 		else{

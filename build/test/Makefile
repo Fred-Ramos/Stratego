@@ -232,6 +232,30 @@ alltests/fast:
 	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/1Scout_test.cpp.s
 .PHONY : 1Scout_test.cpp.s
 
+2Miner_test.obj: 2Miner_test.cpp.obj
+.PHONY : 2Miner_test.obj
+
+# target to build an object file
+2Miner_test.cpp.obj:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/2Miner_test.cpp.obj
+.PHONY : 2Miner_test.cpp.obj
+
+2Miner_test.i: 2Miner_test.cpp.i
+.PHONY : 2Miner_test.i
+
+# target to preprocess a source file
+2Miner_test.cpp.i:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/2Miner_test.cpp.i
+.PHONY : 2Miner_test.cpp.i
+
+2Miner_test.s: 2Miner_test.cpp.s
+.PHONY : 2Miner_test.s
+
+# target to generate assembly for a file
+2Miner_test.cpp.s:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/2Miner_test.cpp.s
+.PHONY : 2Miner_test.cpp.s
+
 Gameover_test.obj: Gameover_test.cpp.obj
 .PHONY : Gameover_test.obj
 
@@ -300,6 +324,9 @@ help:
 	@echo ... 1Scout_test.obj
 	@echo ... 1Scout_test.i
 	@echo ... 1Scout_test.s
+	@echo ... 2Miner_test.obj
+	@echo ... 2Miner_test.i
+	@echo ... 2Miner_test.s
 	@echo ... Gameover_test.obj
 	@echo ... Gameover_test.i
 	@echo ... Gameover_test.s

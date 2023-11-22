@@ -58,9 +58,9 @@ void Game :: GetNextMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, B
             }
         }
     }
-    if (!Validmove) {
-        cout << "Invalid Move!" << endl;
-    }
+    //if (!Validmove) {
+    //    cout << "Invalid Move!" << endl;
+    //}
 }
 
 void Game :: AlternateTurn() { //change turn

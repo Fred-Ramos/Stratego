@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/0Spy_test.cpp" "test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj" "gcc" "test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj.d"
   "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/1Scout_test.cpp" "test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj" "gcc" "test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj.d"
+  "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/2Miner_test.cpp" "test/CMakeFiles/alltests.dir/2Miner_test.cpp.obj" "gcc" "test/CMakeFiles/alltests.dir/2Miner_test.cpp.obj.d"
   "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/Gameover_test.cpp" "test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj" "gcc" "test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj.d"
   "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/testfunctions.cpp" "test/CMakeFiles/alltests.dir/testfunctions.cpp.obj" "gcc" "test/CMakeFiles/alltests.dir/testfunctions.cpp.obj.d"
   )

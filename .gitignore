@@ -3,5 +3,6 @@ piece.o
 main.o
 game.o
 board.o
-.googletest/
+googletest/
 .vscode
+build/

@@ -24,8 +24,8 @@
 	ProcessorClockFrequency="2894"
 	>
 	<Testing>
-		<StartDateTime>Nov 20 17:29 GMT Standard Time</StartDateTime>
-		<StartTestTime>1700501388</StartTestTime>
+		<StartDateTime>Nov 20 17:32 GMT Standard Time</StartDateTime>
+		<StartTestTime>1700501577</StartTestTime>
 		<TestList>
 			<Test>./test/alltests</Test>
 		</TestList>
@@ -36,7 +36,7 @@
 			<FullCommandLine>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\alltests.exe"</FullCommandLine>
 			<Results>
 				<NamedMeasurement type="numeric/double" name="Execution Time">
-					<Value>0.32881</Value>
+					<Value>0.344478</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="numeric/double" name="Processors">
 					<Value>1</Value>
@@ -51,12 +51,12 @@
 					<Value>#CTEST_RESOURCE_GROUP_COUNT=</Value>
 				</NamedMeasurement>
 				<Measurement>
-					<Value encoding="base64" compression="gzip">eJydk01PwzAMhu/9FT6yA9VgcEHiAkwTQnyoY+KwTFOWel1EGldxWuDfk6xobHxtw5em7uPXb9I4q63VtoBSanvQgbmjEi7PxIjRsRgN+5m4Qn72VIlbZO9kTtAPeN+gdyQehk9iGLIeC5qq2jm0XlGOQnZ7054oiIoAhsL1JTsliriaxqapUsn4fBUTyD4cHZ1ChLj11Fu+ANc6PNNkfLiKCQwMzaRpAbSNdmTLYAQY/WFdfYE3VAeyRGrQxVQyhmx0B8uYbHxJLV2YGudGFgFq4/7mdwgOulBy50/BDPOteh/MjnKxe0lNOLpKo0LeJv2V36XNXj3+0yD42mcPP8rv9LdbGjx5aTrJH0VDRbX/fj9W6ZR1WZm4UYyXbtPxb9SPR/EJG7LFNsF1ZosczdhLtebx2jbS6BxuqUnTMB+PC81QSeeB5uAX2I5SKK9qDy+SwS1rc2BtFYIOY/aqEHNu4YVDXpDJY/VR9/gEZm9xSCfJO4sWb10=</Value>
+					<Value encoding="base64" compression="gzip">eJydk01TwjAQhu/9FXuEgx0QvTjjRWU8OH5MkfFAGCakS8mYZjvZFPXfm1AHAUHQvTTdPvvumzSb1dZqW0AptW21YeaohOsLMWR0LIaDfiZukF89VeIe2TuZE/QD3jfoHYmnwYsYhKzHgiaqdg6tV5SjkJ3epCcKoiKAoXB9yU6JIq4msWmqVDK6XMUYsi9H3XOIEDeeessX4FqHZ5qMTlYxhltDU2kaAO1CO7JlMAKM/qSutuAN1VtZIi3QxVQygmz4AMsYb3xJLV2ZGmdGFgFq4vFuPwStDpTc/lUww/yg3hdzpFzsXtIiHF2lUSEfkt7mj2nzpx7/aRB8/WUPO+WP+tsNDZ68NO3kl6KBotr/vB+rdMq6rEzcKMZLt+l4H7XzKL5hQ7Y4JLjOHJCjKXupdntM0zAfz3PNUEnngWbg59iMUiivag9vksEta3NgbRWCDmP2rhBzbuC5Q56TyWN1t3N6BtOPOKTj5BO26W05====</Value>
 				</Measurement>
 			</Results>
 		</Test>
-		<EndDateTime>Nov 20 17:29 GMT Standard Time</EndDateTime>
-		<EndTestTime>1700501389</EndTestTime>
+		<EndDateTime>Nov 20 17:32 GMT Standard Time</EndDateTime>
+		<EndTestTime>1700501577</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
