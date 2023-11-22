@@ -1,3 +1,76 @@
-Start testing: Nov 22 09:06 GMT Standard Time
+Start testing: Nov 22 09:35 GMT Standard Time
 ----------------------------------------------------------
-End testing: Nov 22 09:06 GMT Standard Time
+1/1 Testing: alltests
+1/1 Test: alltests
+Command: "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/alltests.exe"
+Directory: C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test
+"alltests" start time: Nov 22 09:35 GMT Standard Time
+Output:
+----------------------------------------------------------
+Running main() from C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\googletest\googletest\src\gtest_main.cc
+[==========] Running 20 tests from 4 test suites.
+[----------] Global test environment set-up.
+[----------] 5 tests from Gameovertest
+[ RUN      ] Gameovertest.noBlueflag
+[       OK ] Gameovertest.noBlueflag (0 ms)
+[ RUN      ] Gameovertest.noRedflag
+[       OK ] Gameovertest.noRedflag (0 ms)
+[ RUN      ] Gameovertest.noRedBluemovingpieces
+[       OK ] Gameovertest.noRedBluemovingpieces (0 ms)
+[ RUN      ] Gameovertest.noBluemovingpieces
+[       OK ] Gameovertest.noBluemovingpieces (0 ms)
+[ RUN      ] Gameovertest.noRedmovingpieces
+[       OK ] Gameovertest.noRedmovingpieces (0 ms)
+[----------] 5 tests from Gameovertest (0 ms total)
+
+[----------] 5 tests from Minertest
+[ RUN      ] Minertest.simplemovement
+[       OK ] Minertest.simplemovement (0 ms)
+[ RUN      ] Minertest.longmovement
+[       OK ] Minertest.longmovement (0 ms)
+[ RUN      ] Minertest.obstaclemovement
+[       OK ] Minertest.obstaclemovement (0 ms)
+[ RUN      ] Minertest.turn
+[       OK ] Minertest.turn (0 ms)
+[ RUN      ] Minertest.hierarchy
+[       OK ] Minertest.hierarchy (0 ms)
+[----------] 5 tests from Minertest (0 ms total)
+
+[----------] 5 tests from Scouttest
+[ RUN      ] Scouttest.simplemovement
+[       OK ] Scouttest.simplemovement (0 ms)
+[ RUN      ] Scouttest.longmovement
+[       OK ] Scouttest.longmovement (0 ms)
+[ RUN      ] Scouttest.obstaclemovement
+[       OK ] Scouttest.obstaclemovement (0 ms)
+[ RUN      ] Scouttest.turn
+[       OK ] Scouttest.turn (0 ms)
+[ RUN      ] Scouttest.hierarchy
+[       OK ] Scouttest.hierarchy (0 ms)
+[----------] 5 tests from Scouttest (0 ms total)
+
+[----------] 5 tests from Spytest
+[ RUN      ] Spytest.simplemovement
+[       OK ] Spytest.simplemovement (0 ms)
+[ RUN      ] Spytest.longmovement
+[       OK ] Spytest.longmovement (0 ms)
+[ RUN      ] Spytest.obstaclemovement
+[       OK ] Spytest.obstaclemovement (0 ms)
+[ RUN      ] Spytest.turn
+[       OK ] Spytest.turn (0 ms)
+[ RUN      ] Spytest.hierarchy
+[       OK ] Spytest.hierarchy (0 ms)
+[----------] 5 tests from Spytest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 20 tests from 4 test suites ran. (1 ms total)
+[  PASSED  ] 20 tests.
+<end of output>
+Test time =   0.27 sec
+----------------------------------------------------------
+Test Passed.
+"alltests" end time: Nov 22 09:35 GMT Standard Time
+"alltests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 22 09:35 GMT Standard Time

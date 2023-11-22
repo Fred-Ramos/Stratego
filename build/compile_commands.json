@@ -61,6 +61,12 @@
 },
 {
   "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\2Miner_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\2Miner_test.cpp\"",
+  "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/2Miner_test.cpp",
+  "output": "test/CMakeFiles/alltests.dir/2Miner_test.cpp.obj"
+},
+{
+  "directory": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test",
   "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/alltests.dir/includes_CXX.rsp -g -std=gnu++14 -o CMakeFiles\\alltests.dir\\Gameover_test.cpp.obj -c \"C:\\Users\\USER\\Desktop\\Mestrado Eng Eletro\\PSW\\Stratego_currentcode\\a03_3\\test\\Gameover_test.cpp\"",
   "file": "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/Gameover_test.cpp",
   "output": "test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj"

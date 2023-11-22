@@ -9,6 +9,7 @@ set(Sources
     testfunctions.cpp
     0Spy_test.cpp
     1Scout_test.cpp
+    2Miner_test.cpp
     Gameover_test.cpp
 )
 
