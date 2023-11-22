@@ -171,42 +171,114 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-test/CMakeFiles/Scout_test.dir/rule:
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test/CMakeFiles/Scout_test.dir/rule
-.PHONY : test/CMakeFiles/Scout_test.dir/rule
+test/CMakeFiles/alltests.dir/rule:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test/CMakeFiles/alltests.dir/rule
+.PHONY : test/CMakeFiles/alltests.dir/rule
 
 # Convenience name for target.
-Scout_test: test/CMakeFiles/Scout_test.dir/rule
-.PHONY : Scout_test
+alltests: test/CMakeFiles/alltests.dir/rule
+.PHONY : alltests
 
 # fast build rule for target.
-Scout_test/fast:
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/build
-.PHONY : Scout_test/fast
+alltests/fast:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/build
+.PHONY : alltests/fast
 
-Scout_test.obj: Scout_test.cpp.obj
-.PHONY : Scout_test.obj
+0Spy_test.obj: 0Spy_test.cpp.obj
+.PHONY : 0Spy_test.obj
 
 # target to build an object file
-Scout_test.cpp.obj:
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj
-.PHONY : Scout_test.cpp.obj
+0Spy_test.cpp.obj:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/0Spy_test.cpp.obj
+.PHONY : 0Spy_test.cpp.obj
 
-Scout_test.i: Scout_test.cpp.i
-.PHONY : Scout_test.i
+0Spy_test.i: 0Spy_test.cpp.i
+.PHONY : 0Spy_test.i
 
 # target to preprocess a source file
-Scout_test.cpp.i:
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/Scout_test.cpp.i
-.PHONY : Scout_test.cpp.i
+0Spy_test.cpp.i:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/0Spy_test.cpp.i
+.PHONY : 0Spy_test.cpp.i
 
-Scout_test.s: Scout_test.cpp.s
-.PHONY : Scout_test.s
+0Spy_test.s: 0Spy_test.cpp.s
+.PHONY : 0Spy_test.s
 
 # target to generate assembly for a file
-Scout_test.cpp.s:
-	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\Scout_test.dir\build.make test/CMakeFiles/Scout_test.dir/Scout_test.cpp.s
-.PHONY : Scout_test.cpp.s
+0Spy_test.cpp.s:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/0Spy_test.cpp.s
+.PHONY : 0Spy_test.cpp.s
+
+1Scout_test.obj: 1Scout_test.cpp.obj
+.PHONY : 1Scout_test.obj
+
+# target to build an object file
+1Scout_test.cpp.obj:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/1Scout_test.cpp.obj
+.PHONY : 1Scout_test.cpp.obj
+
+1Scout_test.i: 1Scout_test.cpp.i
+.PHONY : 1Scout_test.i
+
+# target to preprocess a source file
+1Scout_test.cpp.i:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/1Scout_test.cpp.i
+.PHONY : 1Scout_test.cpp.i
+
+1Scout_test.s: 1Scout_test.cpp.s
+.PHONY : 1Scout_test.s
+
+# target to generate assembly for a file
+1Scout_test.cpp.s:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/1Scout_test.cpp.s
+.PHONY : 1Scout_test.cpp.s
+
+Gameover_test.obj: Gameover_test.cpp.obj
+.PHONY : Gameover_test.obj
+
+# target to build an object file
+Gameover_test.cpp.obj:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/Gameover_test.cpp.obj
+.PHONY : Gameover_test.cpp.obj
+
+Gameover_test.i: Gameover_test.cpp.i
+.PHONY : Gameover_test.i
+
+# target to preprocess a source file
+Gameover_test.cpp.i:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/Gameover_test.cpp.i
+.PHONY : Gameover_test.cpp.i
+
+Gameover_test.s: Gameover_test.cpp.s
+.PHONY : Gameover_test.s
+
+# target to generate assembly for a file
+Gameover_test.cpp.s:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/Gameover_test.cpp.s
+.PHONY : Gameover_test.cpp.s
+
+testfunctions.obj: testfunctions.cpp.obj
+.PHONY : testfunctions.obj
+
+# target to build an object file
+testfunctions.cpp.obj:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/testfunctions.cpp.obj
+.PHONY : testfunctions.cpp.obj
+
+testfunctions.i: testfunctions.cpp.i
+.PHONY : testfunctions.i
+
+# target to preprocess a source file
+testfunctions.cpp.i:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/testfunctions.cpp.i
+.PHONY : testfunctions.cpp.i
+
+testfunctions.s: testfunctions.cpp.s
+.PHONY : testfunctions.s
+
+# target to generate assembly for a file
+testfunctions.cpp.s:
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build && $(MAKE) $(MAKESILENT) -f test\CMakeFiles\alltests.dir\build.make test/CMakeFiles/alltests.dir/testfunctions.cpp.s
+.PHONY : testfunctions.cpp.s
 
 # Help Target
 help:
@@ -221,10 +293,19 @@ help:
 	@echo ... list_install_components
 	@echo ... rebuild_cache
 	@echo ... test
-	@echo ... Scout_test
-	@echo ... Scout_test.obj
-	@echo ... Scout_test.i
-	@echo ... Scout_test.s
+	@echo ... alltests
+	@echo ... 0Spy_test.obj
+	@echo ... 0Spy_test.i
+	@echo ... 0Spy_test.s
+	@echo ... 1Scout_test.obj
+	@echo ... 1Scout_test.i
+	@echo ... 1Scout_test.s
+	@echo ... Gameover_test.obj
+	@echo ... Gameover_test.i
+	@echo ... Gameover_test.s
+	@echo ... testfunctions.obj
+	@echo ... testfunctions.i
+	@echo ... testfunctions.s
 .PHONY : help
 
 

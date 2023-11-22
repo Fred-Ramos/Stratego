@@ -8,7 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/Gameover_test.cpp" "test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj" "gcc" "test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj.d"
   "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/Scout_test.cpp" "test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj" "gcc" "test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj.d"
+  "C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/test/testfunctions.cpp" "test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj" "gcc" "test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

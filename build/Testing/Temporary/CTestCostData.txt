@@ -1,2 +1,3 @@
-Scout_test 11 0.116458
+Scout_test 24 0.119613
+alltests 18 0.190318
 ---

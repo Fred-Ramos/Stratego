@@ -68,11 +68,26 @@ include test/CMakeFiles/Scout_test.dir/progress.make
 # Include the compile flags for this target's objects.
 include test/CMakeFiles/Scout_test.dir/flags.make
 
+test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj: test/CMakeFiles/Scout_test.dir/flags.make
+test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj: test/CMakeFiles/Scout_test.dir/includes_CXX.rsp
+test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj: C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/test/testfunctions.cpp
+test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj: test/CMakeFiles/Scout_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj -MF CMakeFiles\Scout_test.dir\testfunctions.cpp.obj.d -o CMakeFiles\Scout_test.dir\testfunctions.cpp.obj -c "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\testfunctions.cpp"
+
+test/CMakeFiles/Scout_test.dir/testfunctions.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Scout_test.dir/testfunctions.cpp.i"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\testfunctions.cpp" > CMakeFiles\Scout_test.dir\testfunctions.cpp.i
+
+test/CMakeFiles/Scout_test.dir/testfunctions.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Scout_test.dir/testfunctions.cpp.s"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\testfunctions.cpp" -o CMakeFiles\Scout_test.dir\testfunctions.cpp.s
+
 test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj: test/CMakeFiles/Scout_test.dir/flags.make
 test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj: test/CMakeFiles/Scout_test.dir/includes_CXX.rsp
 test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj: C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/test/Scout_test.cpp
 test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj: test/CMakeFiles/Scout_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj"
 	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj -MF CMakeFiles\Scout_test.dir\Scout_test.cpp.obj.d -o CMakeFiles\Scout_test.dir\Scout_test.cpp.obj -c "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Scout_test.cpp"
 
 test/CMakeFiles/Scout_test.dir/Scout_test.cpp.i: cmake_force
@@ -83,14 +98,33 @@ test/CMakeFiles/Scout_test.dir/Scout_test.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Scout_test.dir/Scout_test.cpp.s"
 	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Scout_test.cpp" -o CMakeFiles\Scout_test.dir\Scout_test.cpp.s
 
+test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj: test/CMakeFiles/Scout_test.dir/flags.make
+test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj: test/CMakeFiles/Scout_test.dir/includes_CXX.rsp
+test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj: C:/Users/USER/Desktop/Mestrado\ Eng\ Eletro/PSW/Stratego_currentcode/a03_3/test/Gameover_test.cpp
+test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj: test/CMakeFiles/Scout_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj -MF CMakeFiles\Scout_test.dir\Gameover_test.cpp.obj.d -o CMakeFiles\Scout_test.dir\Gameover_test.cpp.obj -c "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Gameover_test.cpp"
+
+test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Scout_test.dir/Gameover_test.cpp.i"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Gameover_test.cpp" > CMakeFiles\Scout_test.dir\Gameover_test.cpp.i
+
+test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Scout_test.dir/Gameover_test.cpp.s"
+	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\test\Gameover_test.cpp" -o CMakeFiles\Scout_test.dir\Gameover_test.cpp.s
+
 # Object files for target Scout_test
 Scout_test_OBJECTS = \
-"CMakeFiles/Scout_test.dir/Scout_test.cpp.obj"
+"CMakeFiles/Scout_test.dir/testfunctions.cpp.obj" \
+"CMakeFiles/Scout_test.dir/Scout_test.cpp.obj" \
+"CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj"
 
 # External object files for target Scout_test
 Scout_test_EXTERNAL_OBJECTS =
 
+test/Scout_test.exe: test/CMakeFiles/Scout_test.dir/testfunctions.cpp.obj
 test/Scout_test.exe: test/CMakeFiles/Scout_test.dir/Scout_test.cpp.obj
+test/Scout_test.exe: test/CMakeFiles/Scout_test.dir/Gameover_test.cpp.obj
 test/Scout_test.exe: test/CMakeFiles/Scout_test.dir/build.make
 test/Scout_test.exe: lib/libgtest_main.a
 test/Scout_test.exe: libPiece_test.a
@@ -98,7 +132,7 @@ test/Scout_test.exe: lib/libgtest.a
 test/Scout_test.exe: test/CMakeFiles/Scout_test.dir/linkLibs.rsp
 test/Scout_test.exe: test/CMakeFiles/Scout_test.dir/objects1.rsp
 test/Scout_test.exe: test/CMakeFiles/Scout_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Scout_test.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Scout_test.exe"
 	cd /d C:\Users\USER\Desktop\MESTRA~1\PSW\STRATE~4\a03_3\build\test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Scout_test.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

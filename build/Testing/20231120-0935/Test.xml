@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20231120-0935-Experimental"
+	Name="(empty)"
+	Generator="ctest-3.28.0-rc5"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Windows"
+	Hostname="LAPTOP-5JQBRUN"
+	OSRelease=" Professional"
+	OSVersion=" (Build 22621)"
+	OSPlatform="AMD64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="15"
+	ModelID="0"
+	ProcessorCacheSize="64"
+	NumberOfLogicalCPU="16"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="22444"
+	TotalPhysicalMemory="15788"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="2894"
+	>
+	<Testing>
+		<StartDateTime>Nov 20 17:29 GMT Standard Time</StartDateTime>
+		<StartTestTime>1700501388</StartTestTime>
+		<TestList>
+			<Test>./test/alltests</Test>
+		</TestList>
+		<Test Status="passed">
+			<Name>alltests</Name>
+			<Path>./test</Path>
+			<FullName>./test/alltests</FullName>
+			<FullCommandLine>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\alltests.exe"</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.32881</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>"C:\Users\USER\Desktop\Mestrado Eng Eletro\PSW\Stratego_currentcode\a03_3\build\test\alltests.exe"</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Environment">
+					<Value>#CTEST_RESOURCE_GROUP_COUNT=</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value encoding="base64" compression="gzip">eJydk01PwzAMhu/9FT6yA9VgcEHiAkwTQnyoY+KwTFOWel1EGldxWuDfk6xobHxtw5em7uPXb9I4q63VtoBSanvQgbmjEi7PxIjRsRgN+5m4Qn72VIlbZO9kTtAPeN+gdyQehk9iGLIeC5qq2jm0XlGOQnZ7054oiIoAhsL1JTsliriaxqapUsn4fBUTyD4cHZ1ChLj11Fu+ANc6PNNkfLiKCQwMzaRpAbSNdmTLYAQY/WFdfYE3VAeyRGrQxVQyhmx0B8uYbHxJLV2YGudGFgFq4/7mdwgOulBy50/BDPOteh/MjnKxe0lNOLpKo0LeJv2V36XNXj3+0yD42mcPP8rv9LdbGjx5aTrJH0VDRbX/fj9W6ZR1WZm4UYyXbtPxb9SPR/EJG7LFNsF1ZosczdhLtebx2jbS6BxuqUnTMB+PC81QSeeB5uAX2I5SKK9qDy+SwS1rc2BtFYIOY/aqEHNu4YVDXpDJY/VR9/gEZm9xSCfJO4sWb10=</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<EndDateTime>Nov 20 17:29 GMT Standard Time</EndDateTime>
+		<EndTestTime>1700501389</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

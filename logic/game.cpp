@@ -13,8 +13,8 @@ void Game :: Run(){
         cout << mcPlayerTurn << "'s Move: ";      //Print player colour for this turn
         int iStartMove;
         cin >> iStartMove;                        //input StartMove(piece to move)
-        int iStartRow = (iStartMove / 10);    //transform RC(ROW COLUMN) into R
-        int iStartCol = (iStartMove % 10);    //transform RC(ROW COLUMN) into C
+        int iStartRow = (iStartMove / 10);        //transform RC(ROW COLUMN) into R
+        int iStartCol = (iStartMove % 10);        //transform RC(ROW COLUMN) into C
 
         cout << "To: ";                       //"where to"
         int iEndMove;
@@ -78,6 +78,9 @@ bool Game :: IsGameOver(){
         }
         else if (mqGameBoard.Legalmovesleft() == 1){
             winner = 'R';
+        } 
+        else if (mqGameBoard.Legalmovesleft() == -2){
+            winner = 'D'; //its a draw
         } 
         return true;
     }

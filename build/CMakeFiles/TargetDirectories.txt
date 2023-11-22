@@ -31,7 +31,7 @@ C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/g
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/googletest/googletest/CMakeFiles/install.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/googletest/googletest/CMakeFiles/install/local.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/googletest/googletest/CMakeFiles/install/strip.dir
-C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/CMakeFiles/Scout_test.dir
+C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/CMakeFiles/alltests.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/CMakeFiles/test.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/CMakeFiles/edit_cache.dir
 C:/Users/USER/Desktop/Mestrado Eng Eletro/PSW/Stratego_currentcode/a03_3/build/test/CMakeFiles/rebuild_cache.dir
