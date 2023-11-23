@@ -1,8 +1,0 @@
-stratego.exe
-piece.o
-main.o
-game.o
-board.o
-googletest/
-.vscode
-build/
