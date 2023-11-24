@@ -21,7 +21,7 @@ void Game::start(){
     scene->clear();
     //test code TODO REMOVE LATER
     board = new Board();
-    board->placePieces();
+    board->placePieces(150 + 5, 18 + 5, 10, 10);
     drawGUI();
 }
 
