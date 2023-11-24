@@ -29,6 +29,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Piece.h
         Board.h
         Board.cpp
+        Button.h
+        Button.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Stratego_gui1 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

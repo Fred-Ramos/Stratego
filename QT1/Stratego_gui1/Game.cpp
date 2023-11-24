@@ -17,3 +17,7 @@ void Game::start(){
     board = new Board();
     board->placePieces();
 }
+
+void Game::displayMainMenu(){
+
+}
