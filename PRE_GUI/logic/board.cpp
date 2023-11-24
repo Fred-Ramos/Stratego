@@ -33,7 +33,7 @@ Board::Board() {                                          //board constructor
 
 		// Allocate and place blue pieces (iRow from 8 - 9)
 
-		for(int bluepiece = 0; bluepiece < 20; ++bluepiece){
+		for(int bluepiece = 0; bluepiece < 5; ++bluepiece){ //display 5 blue pieces for testing
 			Print();
 			int iStartMove;
 			cout << "Blue Square: ";
@@ -44,7 +44,7 @@ Board::Board() {                                          //board constructor
 			char piece;
 			cin >> piece;
 			
-			if( (7 < iStartRow ) && ( iStartRow < 10) ){
+			if( (8 < iStartRow ) && ( iStartRow < 10) ){
 				switch(piece){
 
 					case 'F':
@@ -127,7 +127,7 @@ Board::Board() {                                          //board constructor
 
 		// Allocate and place red pieces (iRow from 0 - 1)
 
-		for(int redpiece = 0; redpiece < 20; ++redpiece){
+		for(int redpiece = 0; redpiece < 5; ++redpiece){ //place 5 pieces manually for testing
 			Print();
 			int iStartMove;
 			cout << "Red Square: ";
@@ -138,7 +138,7 @@ Board::Board() {                                          //board constructor
 			char piece;
 			cin >> piece;
 			
-			if( (0 < iStartRow ) && ( iStartRow < 2) ){
+			if( (0 <= iStartRow ) && ( iStartRow < 1) ){
 				switch(piece){
 
 					case 'F':
