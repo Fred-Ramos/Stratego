@@ -16,7 +16,7 @@ void Board::placePieces(){ //create grid of pieces (skeleton of board)
     for (size_t i = 0; i < 10; i++){
         for (size_t j = 0; j < 10; j++){
             Piece* piece = new Piece(); //create empty piece
-            piece->setPos(5 + i*55, 5 + j*55); //set piece position (with spacing 5, pieces dont collid with each other)
+            piece->setPos(150 + 5 + i*55, 18 + 5 + j*55); //set piece position (with spacing 5, pieces dont collid with each other)
             pieces.append(piece); //append piece to pieces list
             game->scene->addItem(piece);
         }
