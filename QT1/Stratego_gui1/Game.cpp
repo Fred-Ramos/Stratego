@@ -19,5 +19,12 @@ void Game::start(){
 }
 
 void Game::displayMainMenu(){
-
+    //create the title text
+    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Stratego"));
+    QFont titleFont("GothicI", 50); //set font and size
+    titleText->setFont(titleFont);
+    int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
+    int yTitle = 150;
+    titleText->setPos(xTitle, yTitle);
+    scene->addItem(titleText);
 }
