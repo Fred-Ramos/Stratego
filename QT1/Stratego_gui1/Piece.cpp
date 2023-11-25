@@ -12,12 +12,12 @@ bool Piece::GetisPlaced(){
 }
 
 QString Piece::getOwner(){
-    return Owner;
+    return owner;
 }
 
 void Piece::setOwner(QString player){
     //set owner
-    Owner = player;
+    owner = player;
     //change color
     if (player == QString("NOONE")){
         QBrush brush;
