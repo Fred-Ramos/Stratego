@@ -1,8 +1,11 @@
 #include "Game.h"
 #include "Button.h"
 
+#include <QMouseEvent>
 #include <QGraphicsTextItem>
 #include <QBrush>
+
+#include <QDebug>
 
 Game::Game(QWidget *parent){ //constructor
     //Set up the screen
@@ -16,12 +19,14 @@ Game::Game(QWidget *parent){ //constructor
     setScene(scene);
 
     //initialize variables
+    ArePiecesSetUp = false; //pieces not setup initially
     pieceToPlace = NULL; //no piece to place initially
 }
 
 void Game::start(){
     //clear the screen
     scene->clear();
+
     //test code TODO REMOVE LATER
     board = new Board();
     board->placePieces(150 + 5, 18 + 5);
@@ -68,6 +73,64 @@ void Game::setTurn(QString player){
     TurnText->setPlainText(QString("Whose turn: ") + player);
 }
 
+void Game::pickUpPiece(Piece* piece){
+    qDebug() << "entered pickup function";
+    qDebug() << pieceToPlace; //CHECK if null
+    qDebug() << getTurn();
+    //picks up the specified card
+    if (piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to player and no piece picked up yet
+        qDebug() << "correct player picking";
+        pieceToPlace = piece;
+        originalPos = piece->pos();
+        return;
+    }
+}
+
+void Game::placePiece(Piece *pieceToReplace){
+    //replace specified piece with pieceToPlace
+    pieceToPlace->setPos(pieceToReplace->pos());
+    QList<Piece*> pieces = board->getPieces();
+    pieces.removeAll(pieceToReplace);
+    pieces.append(pieceToReplace);
+    scene->removeItem(pieceToReplace);
+    pieceToPlace->setIsPlaced(true); //piece is now placed
+    removeFromPanel(pieceToPlace, getTurn());
+    pieceToPlace = NULL; //piece already placed
+
+    //make it the next players turn
+    //nextPlayersTurn(); COMMENTED
+}
+
+void Game::nextPlayersTurn(){
+    if (getTurn() == QString("REDPLAYER")){
+        setTurn("BLUEPLAYER");
+    }
+    else{
+        setTurn("REDPLAYER");
+    }
+}
+
+void Game::removeFromPanel(Piece *piece, QString player){
+    if (player == QString("REDPLAYER")){
+        //remove from red player
+        redUnplacedPieces.removeAll(piece);
+    }
+    if (player == QString("BLUEPLAYER")){
+        //remove from blue player
+        blueUnplacedPieces.removeAll(piece);
+    }
+
+}
+
+void Game::mouseMoveEvent(QMouseEvent* event){
+    //if there is a piecetoplace, then make it follow the mouse
+    if (pieceToPlace){
+        pieceToPlace->setPos(event->pos().x() + 3, event->pos().y() + 3); //piece follow the mouse
+    }
+
+    QGraphicsView::mouseMoveEvent(event);
+}
+
 void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
     //draws panelat specified location with specified properties
     QGraphicsRectItem* panel = new QGraphicsRectItem(x, y, width, height);
@@ -98,7 +161,7 @@ void Game::drawGUI(){
 
     //place whose turn text
     TurnText = new QGraphicsTextItem(); //turn is changed in setTurn function
-    setTurn(QString("Red Player"));
+    setTurn(QString("REDPLAYER"));
     TurnText->setPos(scene->width()/2 - TurnText->boundingRect().width()/2, 0);
     scene->addItem(TurnText);
 }
@@ -106,13 +169,13 @@ void Game::drawGUI(){
 void Game::createNewPiece(QString player){
     Piece* initialpiece = new Piece();  //Create piece
     initialpiece->setOwner(player);     //Set to player(red or blue)
-
+    initialpiece->setIsPlaced(false);
     //add card to proper list
     if (player == QString("REDPLAYER")){
-        redPieces.append(initialpiece);
+        redUnplacedPieces.append(initialpiece);
     }
     else if (player == QString("BLUEPLAYER")){
-        bluePieces.append(initialpiece);
+        blueUnplacedPieces.append(initialpiece);
     }
     //draw the pieces
     drawPieces();
@@ -134,25 +197,28 @@ void Game::drawPieces(){
     //traverse through list of pieces and draw them on side panels
 
     //remove all of redplayer pieces from the scene(to avoid overlap)
-    for (size_t i = 0, n = redPieces.size(); i < n; i++){
-        scene->removeItem(redPieces[i]);
+    for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
+        scene->removeItem(redUnplacedPieces[i]);
     }
     //remove all of blueplayer pieces from the scene
-    for (size_t i = 0, n = bluePieces.size(); i < n; i++){
-        scene->removeItem(bluePieces[i]);
+    for (size_t i = 0, n = blueUnplacedPieces.size(); i < n; i++){
+        scene->removeItem(blueUnplacedPieces[i]);
     }
 
     //draw red player's pieces
-    for (size_t i = 0, n = redPieces.size(); i < n; i++){
-        Piece* initialpiece = redPieces[i];
+    for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
+        Piece* initialpiece = redUnplacedPieces[i];
         initialpiece->setPos(5, 23 + i*55 );
         scene->addItem(initialpiece);
     }
     //draw blue player's pieces
-    for (size_t i = 0, n = bluePieces.size(); i < n; i++){
-        Piece* initialpiece = bluePieces[i];
+    for (size_t i = 0, n = blueUnplacedPieces.size(); i < n; i++){
+        Piece* initialpiece = blueUnplacedPieces[i];
         initialpiece->setPos(scene->width() - 140, 23 + i*55 );
         scene->addItem(initialpiece);
     }
+}
 
+bool Game::getArePiecesSetUp(){
+    return ArePiecesSetUp;
 }

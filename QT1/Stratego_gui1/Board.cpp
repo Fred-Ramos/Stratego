@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Game.h"
 
+#include <QDebug>
 extern Game* game; //import global variable
 
 Board::Board(){
@@ -21,6 +22,8 @@ void Board::placePieces(int x, int y){ //create grid of pieces (skeleton of boar
             game->scene->addItem(piece);
             //set owner to NOONE initially
             piece->setOwner(QString("NOONE"));
+            piece->setIsPlaced(true);
+            qDebug() << "piece added to board, owner:" << piece->getOwner() << " placed: " << piece->getIsPlaced() ;
         }
     }
 }

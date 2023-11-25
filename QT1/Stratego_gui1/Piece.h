@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <QGraphicsRectItem>
+#include <QGraphicsSceneMouseEvent>
 
 class Piece: public QGraphicsRectItem{ //Piece is a QT rectangle
 public:
@@ -9,12 +10,16 @@ public:
     Piece(QGraphicsItem* parent = NULL);
 
     // getters
-    char getType();
-    bool GetisPlaced();
+    char getRank();
+    bool getIsPlaced();
     QString getOwner();
 
+
+    //event
+    void mousePressEvent(QGraphicsSceneMouseEvent* event); //when clicking on a piece
+
     //setters
-    void setRank(char rank);
+    void setRank(char r);
     void setOwner(QString player);
     void setIsPlaced(bool p);
 
@@ -22,7 +27,7 @@ public:
 private:
     bool isPlaced; //placed or not
     QString owner; //belongs to which player
-    char Rank; //get piece rank/type
+    char rank; //get piece rank/type
 };
 
 #endif // PIECE_H

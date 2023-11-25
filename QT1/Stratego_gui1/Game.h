@@ -5,6 +5,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QMouseEvent>
 
 class Game: public QGraphicsView{ //Already inherits from Q_object, inside Qgrapicsview
     Q_OBJECT
@@ -16,10 +17,20 @@ public:
     void displayMainMenu();
     QString getTurn();
     void setTurn(QString player);
+    void pickUpPiece(Piece* piece);
+    void placePiece(Piece* pieceToReplace);
+    void nextPlayersTurn();
+    void removeFromPanel(Piece* piece, QString player);
+    bool getArePiecesSetUp();
+
+    //event
+    void mouseMoveEvent(QMouseEvent* event); //when moving mouse in the game
+
     //public attributes
     QGraphicsScene* scene;
     Board* board;            //game board
-    Piece* pieceToPlace;     //piece to place in the board(initially)
+    Piece* pieceToPlace;     //piece to place in the board(clicked piece)
+    QPointF originalPos;
 public slots:
     void start();
 
@@ -30,11 +41,13 @@ private:
     void createNewPiece(QString player);
     void createInitialPieces();
     void drawPieces();
+
     //private atributes
+    bool ArePiecesSetUp;
     QString Turn;                //string with which turn is it
     QGraphicsTextItem* TurnText; //QT text of the turn
-    QList<Piece*> redPieces; //List of pieces
-    QList<Piece*> bluePieces;
+    QList<Piece*> redUnplacedPieces; //List of pieces
+    QList<Piece*> blueUnplacedPieces;
 
 };
 
