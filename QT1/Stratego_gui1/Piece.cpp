@@ -11,3 +11,7 @@ Piece::Piece(QGraphicsItem *parent){
     brush.setColor(QColor(237, 214, 181));
     setBrush(brush);
 }
+
+void Piece::setOwner(QString player){
+    Owner = player;
+}

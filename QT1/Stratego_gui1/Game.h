@@ -24,10 +24,17 @@ public slots:
     void start();
 
 private:
+    //private methods
     void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
     void drawGUI();
-    QString Turn;
-    QGraphicsTextItem* TurnText;
+    void createNewPiece(QString player);
+    void createInitialPieces();
+    void drawPieces();
+    //private atributes
+    QString Turn;                //string with the turn
+    QGraphicsTextItem* TurnText; //QT text of the turn
+    QList<Piece*> redPieces; //List of pieces
+    QList<Piece*> bluePieces;
 
 };
 

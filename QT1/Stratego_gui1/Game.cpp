@@ -21,8 +21,9 @@ void Game::start(){
     scene->clear();
     //test code TODO REMOVE LATER
     board = new Board();
-    board->placePieces(150 + 5, 18 + 5, 10, 10);
+    board->placePieces(150 + 5, 18 + 5);
     drawGUI();
+    createInitialPieces();
 }
 
 void Game::displayMainMenu(){
@@ -93,8 +94,62 @@ void Game::drawGUI(){
     scene->addItem(bplayer);
 
     //place whose turn text
-    TurnText = new QGraphicsTextItem();
-    setTurn(QString("Red"));
+    TurnText = new QGraphicsTextItem(); //turn is changed in setTurn function
+    setTurn(QString("Red Player"));
     TurnText->setPos(scene->width()/2 - TurnText->boundingRect().width()/2, 0);
     scene->addItem(TurnText);
+}
+
+void Game::createNewPiece(QString player){
+    Piece* piece = new Piece();  //Create piece
+    piece->setOwner(player);     //Set to player(red or blue)
+
+    //add card to proper list
+    if (player == QString("REDPLAYER")){
+        redPieces.append(piece);
+    }
+    else if (player == QString("BLUEPLAYER")){
+        bluePieces.append(piece);
+    }
+    //draw the pieces
+    drawPieces();
+}
+
+void Game::createInitialPieces(){
+    //create red player's pieces
+    for (size_t i = 0; i < 5; i++){
+        createNewPiece(QString("REDPLAYER"));
+    }
+    //create blue player's pieces
+    for (size_t i = 0; i < 5; i++){
+        createNewPiece(QString("BLUEPLAYER"));
+    }
+    drawPieces();
+}
+
+void Game::drawPieces(){
+    //traverse through list of pieces and draw them on side panels
+
+    //remove all of redplayer pieces from the scene(to avoid overlap)
+    for (size_t i = 0, n = redPieces.size(); i < n; i++){
+        scene->removeItem(redPieces[i]);
+    }
+    //remove all of blueplayer pieces from the scene
+    for (size_t i = 0, n = bluePieces.size(); i < n; i++){
+        scene->removeItem(bluePieces[i]);
+    }
+
+    //draw red player's pieces
+    for (size_t i = 0, n = redPieces.size(); i < n; i++){
+        Piece* piece = redPieces[i];
+        piece->setPos(5, 23 + i*55 );
+        scene->addItem(piece);
+    }
+    //draw blue player's pieces
+    for (size_t i = 0, n = bluePieces.size(); i < n; i++){
+        Piece* piece = bluePieces[i];
+        piece->setPos(scene->width() - 140, 23 + i*55 );
+        scene->addItem(piece);
+    }
+
 }

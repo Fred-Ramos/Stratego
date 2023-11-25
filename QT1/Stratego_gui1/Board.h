@@ -14,7 +14,7 @@ public:
     QList<Piece*> getPieces();
 
     //public methods
-    void placePieces(int x, int y, int cols, int rows);
+    void placePieces(int x, int y);
 private:
     QList<Piece*> pieces;
 };

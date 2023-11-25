@@ -9,10 +9,16 @@ public:
     Piece(QGraphicsItem* parent = NULL);
 
     // getters
+    char getType();
+
+    //setters
+    void setRank(char rank);
+    void setOwner(QString player);
+
 
 private:
-    QString color; //color of the piece
-    char Type; //get piece rank/water
+    QString Owner; //belongs to which player
+    char Rank; //get piece rank/type
 };
 
 #endif // PIECE_H
