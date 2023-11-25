@@ -10,13 +10,17 @@ public:
 
     // getters
     char getType();
+    bool GetisPlaced();
+    QString getOwner();
 
     //setters
     void setRank(char rank);
     void setOwner(QString player);
+    void setisPlaced(bool p);
 
 
 private:
+    bool isPlaced; //placed or not
     QString Owner; //belongs to which player
     char Rank; //get piece rank/type
 };

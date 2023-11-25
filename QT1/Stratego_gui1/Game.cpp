@@ -4,7 +4,7 @@
 #include <QGraphicsTextItem>
 #include <QBrush>
 
-Game::Game(QWidget *parent){
+Game::Game(QWidget *parent){ //constructor
     //Set up the screen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -14,6 +14,9 @@ Game::Game(QWidget *parent){
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 855, 573); //scene same size of the screen
     setScene(scene);
+
+    //initialize variables
+    pieceToPlace = NULL; //no piece to place initially
 }
 
 void Game::start(){
@@ -101,15 +104,15 @@ void Game::drawGUI(){
 }
 
 void Game::createNewPiece(QString player){
-    Piece* piece = new Piece();  //Create piece
-    piece->setOwner(player);     //Set to player(red or blue)
+    Piece* initialpiece = new Piece();  //Create piece
+    initialpiece->setOwner(player);     //Set to player(red or blue)
 
     //add card to proper list
     if (player == QString("REDPLAYER")){
-        redPieces.append(piece);
+        redPieces.append(initialpiece);
     }
     else if (player == QString("BLUEPLAYER")){
-        bluePieces.append(piece);
+        bluePieces.append(initialpiece);
     }
     //draw the pieces
     drawPieces();
@@ -141,15 +144,15 @@ void Game::drawPieces(){
 
     //draw red player's pieces
     for (size_t i = 0, n = redPieces.size(); i < n; i++){
-        Piece* piece = redPieces[i];
-        piece->setPos(5, 23 + i*55 );
-        scene->addItem(piece);
+        Piece* initialpiece = redPieces[i];
+        initialpiece->setPos(5, 23 + i*55 );
+        scene->addItem(initialpiece);
     }
     //draw blue player's pieces
     for (size_t i = 0, n = bluePieces.size(); i < n; i++){
-        Piece* piece = bluePieces[i];
-        piece->setPos(scene->width() - 140, 23 + i*55 );
-        scene->addItem(piece);
+        Piece* initialpiece = bluePieces[i];
+        initialpiece->setPos(scene->width() - 140, 23 + i*55 );
+        scene->addItem(initialpiece);
     }
 
 }

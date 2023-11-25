@@ -19,7 +19,7 @@ public:
     //public attributes
     QGraphicsScene* scene;
     Board* board;            //game board
-    QString PlayerTurn;
+    Piece* pieceToPlace;     //piece to place in the board(initially)
 public slots:
     void start();
 
@@ -31,7 +31,7 @@ private:
     void createInitialPieces();
     void drawPieces();
     //private atributes
-    QString Turn;                //string with the turn
+    QString Turn;                //string with which turn is it
     QGraphicsTextItem* TurnText; //QT text of the turn
     QList<Piece*> redPieces; //List of pieces
     QList<Piece*> bluePieces;

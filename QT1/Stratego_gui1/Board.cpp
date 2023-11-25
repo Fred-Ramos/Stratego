@@ -19,6 +19,8 @@ void Board::placePieces(int x, int y){ //create grid of pieces (skeleton of boar
             piece->setPos(x + i*55, y + j*55); //set piece position (with spacing 5, pieces dont collid with each other)
             pieces.append(piece); //append piece to pieces list
             game->scene->addItem(piece);
+            //set owner to NOONE initially
+            piece->setOwner(QString("NOONE"));
         }
     }
 }
