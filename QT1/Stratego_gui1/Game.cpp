@@ -97,7 +97,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
             removeFromPanel(pieceToPlace, getTurn());
             pieceToPlace = NULL; //piece already placed
         }
-        else if(getTurn() == QString("BLUEPLAYER") && pieceToReplace->pos().y() <= 18 + 5 + 4*55){ //else if blueturn
+        else if(getTurn() == QString("BLUEPLAYER") && pieceToReplace->pos().y() <= 18 + 5 + 3*55){ //else if blueturn
             //replace specified piece with pieceToPlace
             pieceToPlace->setPos(pieceToReplace->pos());
             pieceToPlace->setZValue(1);
@@ -106,15 +106,19 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
             pieceToPlace = NULL; //piece already placed
         }
     }
-    //make it the next players turn
-    nextPlayersTurn();
+    //make it the next players turn if piece was placed
+    if (pieceToPlace == NULL){
+        nextPlayersTurn();
+    }
 }
 
 void Game::nextPlayersTurn(){
     if (getTurn() == QString("REDPLAYER")){
+        qDebug() << "changed to blue turn";
         setTurn("BLUEPLAYER");
     }
     else{
+        qDebug() << "changed to red turn";
         setTurn("REDPLAYER");
     }
 }
