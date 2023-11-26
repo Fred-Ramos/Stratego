@@ -25,6 +25,7 @@ public:
 
     //event
     void mouseMoveEvent(QMouseEvent* event); //when moving mouse in the game
+    void mousePressEvent(QMouseEvent* event); //check if left or right click
 
     //public attributes
     QGraphicsScene* scene;

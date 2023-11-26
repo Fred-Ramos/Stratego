@@ -22,16 +22,36 @@ QString Piece::getOwner(){
 }
 
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    //if this piece is not placed yet, then pick it up
-    if (getIsPlaced() == false){
-        game->pickUpPiece(this);
-        qDebug() << "piece not placed clicked";
-    }
+    qDebug() << game->pieceToPlace;
+    if (game->pieceToPlace == NULL){ //if no piece is picked up
+        if (getIsPlaced() == false){ //if destiny is a non placed piece, pick piece up
+            game->pickUpPiece(this);
+            qDebug() << "piece not placed clicked";
+        }
 
-    //if this piece is placed, then replace it
-    else if (getIsPlaced() == true && game->getArePiecesSetUp() == false){ //and if pieces not setup yet
-        game->placePiece(this);
-        qDebug() << "piece placed clicked";
+
+
+        //CHANGE CODE BETWEEN /////// PUT INSIDE PICKUPPIECE GAME FUNCTION
+
+
+        else{ //if destiny is non empty placed piece, pick piece back up
+            Piece* piece;        //replace picked piece by empty piece
+            piece = new Piece();
+            piece->setPos(event->scenePos() - event->pos());
+            piece->setOwner(QString("NOONE"));
+            game->scene->addItem(piece);
+            game->pickUpPiece(this);
+        }
+
+        ////////////////////
+
+
+    }
+    else{ //if piece is picked up
+        if (getIsPlaced() == true && this->owner==QString("NOONE")){ //if destiny is a empty placed piece, place piece down
+            game->placePiece(this);
+            qDebug() << "piece placed clicked";
+        }
     }
 }
 

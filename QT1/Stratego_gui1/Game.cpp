@@ -86,17 +86,41 @@ void Game::pickUpPiece(Piece* piece){
     }
 }
 
-void Game::placePiece(Piece *pieceToReplace){
-    //replace specified piece with pieceToPlace
-    pieceToPlace->setPos(pieceToReplace->pos());
-    QList<Piece*> pieces = board->getPieces();
-    pieces.removeAll(pieceToReplace);
-    pieces.append(pieceToReplace);
-    scene->removeItem(pieceToReplace);
-    pieceToPlace->setIsPlaced(true); //piece is now placed
-    removeFromPanel(pieceToPlace, getTurn());
-    pieceToPlace = NULL; //piece already placed
+//else if (getIsPlaced() == true && game->getArePiecesSetUp() == false){ //if it is a placed piece and if pieces not setup yet
+//    //if(this->owner != "NOONE"){ //if clicking in
+//    qDebug() << "piece placed clicked" << " Turn: " << game->getTurn() <<"event Y: " << event->pos().y();
+//    if(game->getTurn() == QString("REDPLAYER") && event->scenePos().y() >= 18 + 5 + 6*55){ //if placing red pieces, check if in 4last rows
+//        game->placePiece(this);
+//        qDebug() << "piece placed clicked";
+//    }
+//    else if(game->getTurn() == QString("BLUEPLAYER") && event->scenePos().y() < 18 + 5 + 4*55){ //if placing blue pieces, check if in 4first rows
+//        game->placePiece(this);
+//        qDebug() << "piece placed clicked";
+//    }
+//    //}
+//    //else{
+//    //
+//    //}
+//}
 
+
+
+
+
+void Game::placePiece(Piece *pieceToReplace){
+    if (getArePiecesSetUp() == false){    //if pieces not setup yet
+
+        //replace specified piece with pieceToPlace
+        pieceToPlace->setPos(pieceToReplace->pos());
+        QList<Piece*> pieces = board->getPieces();
+        pieces.removeAll(pieceToReplace);
+        pieces.append(pieceToReplace);
+        scene->removeItem(pieceToReplace);
+        pieceToPlace->setIsPlaced(true); //piece is now placed
+        removeFromPanel(pieceToPlace, getTurn());
+        pieceToPlace = NULL; //piece already placed
+
+    }
     //make it the next players turn
     //nextPlayersTurn(); COMMENTED
 }
@@ -129,6 +153,19 @@ void Game::mouseMoveEvent(QMouseEvent* event){
     }
 
     QGraphicsView::mouseMoveEvent(event);
+}
+
+void Game::mousePressEvent(QMouseEvent *event){
+    //make right click return pieceToPlace to originalPos
+    if (event->button() == Qt::RightButton){
+        if (pieceToPlace){
+            pieceToPlace->setPos(originalPos);
+            pieceToPlace = NULL;
+            return;
+        }
+    }
+    //else, normal behaviour:
+    QGraphicsView:: mousePressEvent(event);
 }
 
 void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
