@@ -24,6 +24,7 @@ QString Piece::getOwner(){
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
     qDebug() << game->pieceToPlace;
     if (game->pieceToPlace == NULL){ //if no piece is picked up
+        qDebug() << "no pieced picked up yet";
         if (getIsPlaced() == false){ //if destiny is a non placed piece, pick piece up
             game->pickUpPiece(this);
             qDebug() << "piece not placed clicked";
@@ -35,22 +36,27 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
 
         else{ //if destiny is non empty placed piece, pick piece back up
-            Piece* piece;        //replace picked piece by empty piece
+            game->pickUpPiece(this);                         //pickup clicked piece
+            Piece* piece;                                    //replace picked piece by new piece
             piece = new Piece();
-            piece->setPos(event->scenePos() - event->pos());
-            piece->setOwner(QString("NOONE"));
-            game->scene->addItem(piece);
-            game->pickUpPiece(this);
+            piece->setPos(event->scenePos() - event->pos()); //set new piece in correct position
+            piece->setZValue(0);                             //send piece back
+            piece->setOwner(QString("NOONE"));               //new piece belongs to noone
+            piece->setIsPlaced(true);                        //piece is placed (not on side panel)
+            game->board->addPiece(piece);                    //add piece to list of pieces in board
+            game->scene->addItem(piece);                     //add piece to scene
         }
 
         ////////////////////
 
 
     }
-    else{ //if piece is picked up
+    else{ //if a piece is already picked up
+        qDebug() << "there is a piece picked up";
+
         if (getIsPlaced() == true && this->owner==QString("NOONE")){ //if destiny is a empty placed piece, place piece down
-            game->placePiece(this);
             qDebug() << "piece placed clicked";
+            game->placePiece(this);
         }
     }
 }

@@ -10,7 +10,10 @@ public:
     //constructor
     Board();
 
-    //getters/setters
+    //setters
+    void addPiece(Piece* piece);
+
+    //getters
     QList<Piece*> getPieces();
 
     //public methods
