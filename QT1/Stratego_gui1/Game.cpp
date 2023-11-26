@@ -87,37 +87,12 @@ void Game::pickUpPiece(Piece* piece){
     }
 }
 
-//else if (getIsPlaced() == true && game->getArePiecesSetUp() == false){ //if it is a placed piece and if pieces not setup yet
-//    //if(this->owner != "NOONE"){ //if clicking in
-//    qDebug() << "piece placed clicked" << " Turn: " << game->getTurn() <<"event Y: " << event->pos().y();
-//    if(game->getTurn() == QString("REDPLAYER") && event->scenePos().y() >= 18 + 5 + 6*55){ //if placing red pieces, check if in 4last rows
-//        game->placePiece(this);
-//        qDebug() << "piece placed clicked";
-//    }
-//    else if(game->getTurn() == QString("BLUEPLAYER") && event->scenePos().y() < 18 + 5 + 4*55){ //if placing blue pieces, check if in 4first rows
-//        game->placePiece(this);
-//        qDebug() << "piece placed clicked";
-//    }
-//    //}
-//    //else{
-//    //
-//    //}
-//}
-
-
-
-
-
-void Game::placePiece(Piece *pieceToReplace){
+void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty pieces
     if (getArePiecesSetUp() == false){    //if pieces not setup yet
         if(getTurn() == QString("REDPLAYER") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if redturn,
             //replace specified piece with pieceToPlace
             pieceToPlace->setPos(pieceToReplace->pos());
-            pieceToPlace->setZValue(0);
-            QList<Piece*> pieces = board->getPieces();
-            pieces.removeAll(pieceToReplace);
-            pieces.append(pieceToPlace);
-            scene->removeItem(pieceToReplace);
+            pieceToPlace->setZValue(1);
             pieceToPlace->setIsPlaced(true); //piece is now placed
             removeFromPanel(pieceToPlace, getTurn());
             pieceToPlace = NULL; //piece already placed
@@ -125,18 +100,14 @@ void Game::placePiece(Piece *pieceToReplace){
         else if(getTurn() == QString("BLUEPLAYER") && pieceToReplace->pos().y() <= 18 + 5 + 4*55){ //else if blueturn
             //replace specified piece with pieceToPlace
             pieceToPlace->setPos(pieceToReplace->pos());
-            pieceToPlace->setZValue(0);
-            QList<Piece*> pieces = board->getPieces();
-            pieces.removeAll(pieceToReplace);
-            pieces.append(pieceToPlace);
-            scene->removeItem(pieceToReplace);
+            pieceToPlace->setZValue(1);
             pieceToPlace->setIsPlaced(true); //piece is now placed
             removeFromPanel(pieceToPlace, getTurn());
             pieceToPlace = NULL; //piece already placed
         }
     }
     //make it the next players turn
-    //nextPlayersTurn(); COMMENTED
+    nextPlayersTurn();
 }
 
 void Game::nextPlayersTurn(){
