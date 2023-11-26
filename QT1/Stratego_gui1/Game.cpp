@@ -35,6 +35,10 @@ void Game::start(){
 }
 
 void Game::displayMainMenu(){
+    //create middle panel
+    drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
+
+
     //create the title text
     QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Stratego"));
     QFont titleFont("GothicI", 50); //set font and size
@@ -185,10 +189,10 @@ void Game::drawPanel(int x, int y, int width, int height, QColor color, double o
 
 void Game::drawGUI(){
     //draw left panel
-    drawPanel(0, 0, 145, scene->height(), QColor(237, 214, 181), 2);
+    drawPanel(0, 0, 145, scene->height(), QColor(237, 214, 181), 1);
 
     //draw right panel
-    drawPanel(scene->width() - 145, 0, 145, scene->height(), QColor(237, 214, 181), 2);
+    drawPanel(scene->width() - 145, 0, 145, scene->height(), QColor(237, 214, 181), 1);
 
     //place red player text
     QGraphicsTextItem* rplayer = new QGraphicsTextItem("Red Player pieces");
