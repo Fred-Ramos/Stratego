@@ -44,7 +44,7 @@ void Game::displayMainMenu(){
     titleText->setPos(xTitle, yTitle);
     scene->addItem(titleText);
 
-    //create the new Game button
+    //create the New Game button
     Button* ngButton = new Button(QString("New Game"));
     int xngButton = this->width()/2 - ngButton->boundingRect().width()/2;
     int yngButton = 100 + titleText->boundingRect().height() + 25;
@@ -52,18 +52,25 @@ void Game::displayMainMenu(){
     connect(ngButton, SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(ngButton);
 
-    //create the new Game button
+    //create the Join Game button
     Button* jgButton = new Button(QString("Join Game"));
-    int xjgButton = this->width()/2 - jgButton->boundingRect().width()/2;
+    int xjgButton = xngButton;
     int yjgButton = yngButton + 75;
     jgButton->setPos(xjgButton, yjgButton);
     connect(jgButton, SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(jgButton);
 
+    //create the instructions button
+    Button* instButton = new Button(QString("Instructions"));
+    int xinstButton = xngButton;
+    int yinstButton = yjgButton + 75;
+    instButton->setPos(xinstButton, yinstButton);
+    scene->addItem(instButton);
+
     //create the quit button
     Button* quitButton = new Button(QString("Quit"));
-    int xqButton = this->width()/2 - quitButton->boundingRect().width()/2;
-    int yqButton = yjgButton + 75;
+    int xqButton = xngButton;
+    int yqButton = yinstButton + 75;
     quitButton->setPos(xqButton, yqButton);
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     scene->addItem(quitButton);
@@ -116,7 +123,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
     }
     //make it the next players turn if piece was placed
     if (pieceToPlace == NULL){
-        nextPlayersTurn();
+        //nextPlayersTurn(); COMMENTED, CHANGE LATER
     }
 }
 

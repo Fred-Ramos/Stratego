@@ -47,6 +47,12 @@ void Piece::setOwner(QString player){
         brush.setColor(QColor(237, 214, 181));
         setBrush(brush);
     }
+    else if (player == QString("GAME")){
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(QColor(157, 192, 225));
+        setBrush(brush);
+    }
     else if (player == QString("REDPLAYER")){
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);

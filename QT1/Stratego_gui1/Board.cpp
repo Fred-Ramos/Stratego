@@ -24,10 +24,16 @@ void Board::placePieces(int x, int y){ //create grid of pieces (skeleton of boar
             piece->setPos(x + i*55, y + j*55); //set piece position (with spacing 5, pieces dont collid with each other)
             addPiece(piece); //append piece to pieces list
             game->scene->addItem(piece);
-            //set owner to NOONE initially
-            piece->setOwner(QString("NOONE"));
+            //set owner to NOONE initially (or game if its a water piece)
+            if ( (j == 4 || j == 5) && (i == 2 || i == 3 || i == 6 || i == 7) ){
+                piece->setOwner(QString("GAME"));
+            }
+            else{
+                piece->setOwner(QString("NOONE"));
+            }
             piece->setIsPlaced(true);
             qDebug() << "piece added to board, owner:" << piece->getOwner() << " placed: " << piece->getIsPlaced() ;
         }
     }
+
 }
