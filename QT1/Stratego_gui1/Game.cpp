@@ -44,18 +44,26 @@ void Game::displayMainMenu(){
     titleText->setPos(xTitle, yTitle);
     scene->addItem(titleText);
 
-    //create the play button
-    Button* playButton = new Button(QString("New Game"));
-    int xButton = this->width()/2 - playButton->boundingRect().width()/2;
-    int yButton = 100 + titleText->boundingRect().height() + 25;
-    playButton->setPos(xButton, yButton);
-    connect(playButton, SIGNAL(clicked()), this, SLOT(start()));
-    scene->addItem(playButton);
+    //create the new Game button
+    Button* ngButton = new Button(QString("New Game"));
+    int xngButton = this->width()/2 - ngButton->boundingRect().width()/2;
+    int yngButton = 100 + titleText->boundingRect().height() + 25;
+    ngButton->setPos(xngButton, yngButton);
+    connect(ngButton, SIGNAL(clicked()), this, SLOT(start()));
+    scene->addItem(ngButton);
+
+    //create the new Game button
+    Button* jgButton = new Button(QString("Join Game"));
+    int xjgButton = this->width()/2 - jgButton->boundingRect().width()/2;
+    int yjgButton = yngButton + 75;
+    jgButton->setPos(xjgButton, yjgButton);
+    connect(jgButton, SIGNAL(clicked()), this, SLOT(start()));
+    scene->addItem(jgButton);
 
     //create the quit button
     Button* quitButton = new Button(QString("Quit"));
     int xqButton = this->width()/2 - quitButton->boundingRect().width()/2;
-    int yqButton = yButton + 75;
+    int yqButton = yjgButton + 75;
     quitButton->setPos(xqButton, yqButton);
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     scene->addItem(quitButton);
