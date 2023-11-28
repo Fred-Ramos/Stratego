@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "myserver.h"
+#include "tcpserver.h"
 
 #include <QApplication>
 
@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     game = new Game();
 
-    myserver mServer;
+    TCPServer gameServer;
 
     game->show();
     game->displayVariables(); //start the game
