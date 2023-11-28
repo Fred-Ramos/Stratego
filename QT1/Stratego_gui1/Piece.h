@@ -23,6 +23,9 @@ public:
     void setOwner(QString player);
     void setIsPlaced(bool p);
 
+    //atributes
+    QPointF originalPos;
+
 
 private:
     bool isPlaced; //placed or not

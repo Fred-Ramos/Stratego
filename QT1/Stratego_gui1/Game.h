@@ -31,7 +31,6 @@ public:
     QGraphicsScene* scene;
     Board* board;            //game board
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
-    QPointF originalPos;
 public slots:
     void start();
 

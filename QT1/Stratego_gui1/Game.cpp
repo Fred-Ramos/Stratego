@@ -101,7 +101,9 @@ void Game::pickUpPiece(Piece* piece){
         piece->setZValue(10);
         qDebug() << "correct player picking";
         pieceToPlace = piece;
-        originalPos = piece->pos();
+        if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
+           piece->originalPos = piece->pos();
+        }
         return;
     }
 }
@@ -167,7 +169,7 @@ void Game::mousePressEvent(QMouseEvent *event){
     //make right click return pieceToPlace to originalPos
     if (event->button() == Qt::RightButton){
         if (pieceToPlace){
-            pieceToPlace->setPos(originalPos);
+            pieceToPlace->setPos(pieceToPlace->originalPos);
             pieceToPlace = NULL;
             return;
         }
@@ -254,12 +256,14 @@ void Game::drawPieces(){
     for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
         Piece* initialpiece = redUnplacedPieces[i];
         initialpiece->setPos(5, 23 + i*55 );
+        initialpiece->originalPos = initialpiece->pos();
         scene->addItem(initialpiece);
     }
     //draw blue player's pieces
     for (size_t i = 0, n = blueUnplacedPieces.size(); i < n; i++){
         Piece* initialpiece = blueUnplacedPieces[i];
         initialpiece->setPos(scene->width() - 140, 23 + i*55 );
+        initialpiece->originalPos = initialpiece->pos();
         scene->addItem(initialpiece);
     }
 }

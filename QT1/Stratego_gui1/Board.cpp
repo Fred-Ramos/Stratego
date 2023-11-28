@@ -22,6 +22,8 @@ void Board::placePieces(int x, int y){ //create grid of pieces (skeleton of boar
         for (size_t j = 0; j < 10; j++){
             Piece* piece = new Piece(); //create empty piece
             piece->setPos(x + i*55, y + j*55); //set piece position (with spacing 5, pieces dont collid with each other)
+            piece->setZValue(0);
+            piece->originalPos = piece->pos();
             addPiece(piece); //append piece to pieces list
             game->scene->addItem(piece);
             //set owner to NOONE initially (or game if its a water piece)
