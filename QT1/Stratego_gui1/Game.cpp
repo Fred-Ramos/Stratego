@@ -34,6 +34,13 @@ void Game::start(){
     createInitialPieces();
 }
 
+#include <QCoreApplication>
+void Game::ready(){
+    if (ArePiecesPlaced() == true){
+         QCoreApplication::quit();
+    }
+}
+
 void Game::displayMainMenu(){
     //create middle panel
     drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
@@ -49,7 +56,7 @@ void Game::displayMainMenu(){
     scene->addItem(titleText);
 
     //create the New Game button
-    Button* ngButton = new Button(QString("New Game"));
+    Button* ngButton = new Button(QString("New Game"), 200, 50);
     int xngButton = this->width()/2 - ngButton->boundingRect().width()/2;
     int yngButton = 100 + titleText->boundingRect().height() + 25;
     ngButton->setPos(xngButton, yngButton);
@@ -57,7 +64,7 @@ void Game::displayMainMenu(){
     scene->addItem(ngButton);
 
     //create the Join Game button
-    Button* jgButton = new Button(QString("Join Game"));
+    Button* jgButton = new Button(QString("Join Game"), 200, 50);
     int xjgButton = xngButton;
     int yjgButton = yngButton + 75;
     jgButton->setPos(xjgButton, yjgButton);
@@ -65,14 +72,14 @@ void Game::displayMainMenu(){
     scene->addItem(jgButton);
 
     //create the instructions button
-    Button* instButton = new Button(QString("Instructions"));
+    Button* instButton = new Button(QString("Instructions"), 200, 50);
     int xinstButton = xngButton;
     int yinstButton = yjgButton + 75;
     instButton->setPos(xinstButton, yinstButton);
     scene->addItem(instButton);
 
     //create the quit button
-    Button* quitButton = new Button(QString("Quit"));
+    Button* quitButton = new Button(QString("Quit"), 200, 50);
     int xqButton = xngButton;
     int yqButton = yinstButton + 75;
     quitButton->setPos(xqButton, yqButton);
@@ -93,13 +100,9 @@ void Game::setTurn(QString player){
 }
 
 void Game::pickUpPiece(Piece* piece){
-    qDebug() << "entered pickup function";
-    qDebug() << pieceToPlace; //CHECK if null
-    qDebug() << getTurn();
     //picks up the specified card
     if (piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to player and no piece picked up yet
         piece->setZValue(10);
-        qDebug() << "correct player picking";
         pieceToPlace = piece;
         if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
            piece->originalPos = piece->pos();
@@ -110,6 +113,7 @@ void Game::pickUpPiece(Piece* piece){
 }
 
 void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty pieces
+    qDebug() << "Pieces placed? -> " << ArePiecesPlaced();
     if (getArePiecesSetUp() == false){    //if pieces not setup yet
         if(getTurn() == QString("REDPLAYER") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if redturn,
             //replace specified piece with pieceToPlace
@@ -136,11 +140,9 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
 
 void Game::nextPlayersTurn(){
     if (getTurn() == QString("REDPLAYER")){
-        qDebug() << "changed to blue turn";
         setTurn("BLUEPLAYER");
     }
-    else{
-        qDebug() << "changed to red turn";
+    else if (getTurn() == QString("BLUEPLAYER")){
         setTurn("REDPLAYER");
     }
 }
@@ -213,6 +215,15 @@ void Game::drawGUI(){
     setTurn(QString("REDPLAYER"));
     TurnText->setPos(scene->width()/2 - TurnText->boundingRect().width()/2, 0);
     scene->addItem(TurnText);
+
+    //place Ready button
+    Button* readyButton = new Button(QString("Ready"), 100, 50);
+    int xreadyButton = scene->width() - 150/2 - readyButton->boundingRect().width()/2;
+    int yreadyButton = scene->height() - 5 - readyButton->boundingRect().height();
+    readyButton->setPos(xreadyButton, yreadyButton);
+    connect(readyButton, SIGNAL(clicked()), this, SLOT(ready()));
+    scene->addItem(readyButton);
+
 }
 
 void Game::createNewPiece(QString player, QString pieceRank){
@@ -383,7 +394,17 @@ void Game::drawPieces(){
 //        initialpiece->setZValue(i);
 //        initialpiece->originalZ = initialpiece->zValue();
 //        scene->addItem(initialpiece);
-//    }
+    //    }
+}
+
+bool Game::ArePiecesPlaced(){
+    for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
+        if (redUnplacedPieces[i]->pos().x() < 150){ //if at least 1 piece still in panel, return false
+            return false;
+        }
+    }
+    //if no piece in panel, return true
+    return true;
 }
 
 bool Game::getArePiecesSetUp(){

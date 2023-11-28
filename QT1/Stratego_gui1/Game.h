@@ -33,6 +33,7 @@ public:
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
 public slots:
     void start();
+    void ready();
 
 private:
     //private methods
@@ -41,12 +42,16 @@ private:
     void createNewPiece(QString player, QString pieceRank);
     void createInitialPieces();
     void drawPieces();
+    bool ArePiecesPlaced();
 
     //private atributes
     bool ArePiecesSetUp;
     QString Turn;                //string with which turn is it
     QGraphicsTextItem* TurnText; //QT text of the turn
     QList<Piece*> redUnplacedPieces; //List of pieces
+
+    //later on remove blueunplacedpieces
+    //placed pieces will be gray, and red/blue color will randomly be attributed when 2players connect
     QList<Piece*> blueUnplacedPieces;
 
 };
