@@ -103,6 +103,7 @@ void Game::pickUpPiece(Piece* piece){
         pieceToPlace = piece;
         if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
            piece->originalPos = piece->pos();
+            piece->originalZ = piece->zValue();
         }
         return;
     }
@@ -170,6 +171,7 @@ void Game::mousePressEvent(QMouseEvent *event){
     if (event->button() == Qt::RightButton){
         if (pieceToPlace){
             pieceToPlace->setPos(pieceToPlace->originalPos);
+            pieceToPlace->setZValue(pieceToPlace->originalZ);
             pieceToPlace = NULL;
             return;
         }
@@ -213,9 +215,10 @@ void Game::drawGUI(){
     scene->addItem(TurnText);
 }
 
-void Game::createNewPiece(QString player){
+void Game::createNewPiece(QString player, QString pieceRank){
     Piece* initialpiece = new Piece();  //Create piece
     initialpiece->setOwner(player);     //Set to player(red or blue)
+    initialpiece->setRank(pieceRank);
     initialpiece->setIsPlaced(false);
     //add card to proper list
     if (player == QString("REDPLAYER")){
@@ -230,12 +233,63 @@ void Game::createNewPiece(QString player){
 
 void Game::createInitialPieces(){
     //create red player's pieces
-    for (size_t i = 0; i < 5; i++){
-        createNewPiece(QString("REDPLAYER"));
+    createNewPiece(QString("REDPLAYER"), "F");  //create 1 Flag
+    createNewPiece(QString("REDPLAYER"), "1");  //create 1 Spy
+    for (size_t i = 0; i < 8; i++){
+        createNewPiece(QString("REDPLAYER"), "2"); //create 8 Scouts
     }
-    //create blue player's pieces
     for (size_t i = 0; i < 5; i++){
-        createNewPiece(QString("BLUEPLAYER"));
+        createNewPiece(QString("REDPLAYER"), "3"); //create 5 Miners
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(QString("REDPLAYER"), "4"); //create 4 Sergeants
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(QString("REDPLAYER"), "5"); //create 4 Lieutenants
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(QString("REDPLAYER"), "6"); //create 4 Captains
+    }
+    for (size_t i = 0; i < 3; i++){
+        createNewPiece(QString("REDPLAYER"), "7"); //create 3 Majors
+    }
+    for (size_t i = 0; i < 2; i++){
+        createNewPiece(QString("REDPLAYER"), "8"); //create 2 Colonels
+    }
+    createNewPiece(QString("REDPLAYER"), "9"); //create 1 General
+    createNewPiece(QString("REDPLAYER"), "10"); //create 1 Marshal
+    for (size_t i = 0; i < 6; i++){
+        createNewPiece(QString("REDPLAYER"), "B"); //create 6 Bombs
+    }
+
+    //create blue player's pieces
+    createNewPiece(QString("BLUEPLAYER"), "F");  //create 1 Flag
+    createNewPiece(QString("BLUEPLAYER"), "1");  //create 1 Spy
+    for (size_t i = 0; i < 8; i++){
+        createNewPiece(QString("BLUEPLAYER"), "2"); //create 8 Scouts
+    }
+    for (size_t i = 0; i < 5; i++){
+        createNewPiece(QString("BLUEPLAYER"), "3"); //create 5 Miners
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(QString("BLUEPLAYER"), "4"); //create 4 Sergeants
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(QString("BLUEPLAYER"), "5"); //create 4 Lieutenants
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(QString("BLUEPLAYER"), "6"); //create 4 Captains
+    }
+    for (size_t i = 0; i < 3; i++){
+        createNewPiece(QString("BLUEPLAYER"), "7"); //create 3 Majors
+    }
+    for (size_t i = 0; i < 2; i++){
+        createNewPiece(QString("BLUEPLAYER"), "8"); //create 2 Colonels
+    }
+    createNewPiece(QString("BLUEPLAYER"), "9"); //create 1 General
+    createNewPiece(QString("BLUEPLAYER"), "10"); //create 1 Marshal
+    for (size_t i = 0; i < 6; i++){
+        createNewPiece(QString("BLUEPLAYER"), "B"); //create 6 Bombs
     }
     drawPieces();
 }
@@ -255,17 +309,81 @@ void Game::drawPieces(){
     //draw red player's pieces
     for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
         Piece* initialpiece = redUnplacedPieces[i];
-        initialpiece->setPos(5, 23 + i*55 );
+        //draw Flag and Spy
+        if (i < 2){
+            initialpiece->setPos(50/3 + i*(50 + 50/3), 25);
+            initialpiece->setZValue(i + 1);
+        }
+        //draw Scouts
+        else if (2 <= i && i < 10){
+            initialpiece->setPos(50/3, 75 + 25 + (i - 2)*5 );
+            initialpiece->setZValue(i - 1);
+        }
+        //draw Miners
+        else if (10 <= i && i < 15){
+            initialpiece->setPos(2*50/3 + 50, 75 + 25 + (i - 10)*5 );
+            initialpiece->setZValue(i - 9);
+        }
+        //draw Sergeants
+        else if (15 <= i && i < 19){
+            initialpiece->setPos(50/3, 185 + 25 + (i - 15)*5 );
+            initialpiece->setZValue(i - 14);
+        }
+        //draw Lieutenants
+        else if (19 <= i && i < 23){
+            initialpiece->setPos(2*50/3 + 50, 185 + 25 + (i - 19)*5 );
+            initialpiece->setZValue(i - 18);
+        }
+        //draw Captains
+        else if (23 <= i && i < 27){
+            initialpiece->setPos(50/3, 275 + 25 + (i - 23)*5 );
+            initialpiece->setZValue(i - 22);
+        }
+        //draw Majors
+        else if (27 <= i && i < 30){
+            initialpiece->setPos(2*50/3 + 50, 275 + 25 + (i - 27)*5 );
+            initialpiece->setZValue(i - 26);
+        }
+        //draw Colonels
+        else if (30 <= i && i < 32){
+            initialpiece->setPos(50/3, 350 + 25 + (i - 30)*5 );
+            initialpiece->setZValue(i - 29);
+        }
+        //draw General
+        else if (i == 32){
+            initialpiece->setPos(2*50/3 + 50, 350 + 25 + (i - 32)*5 );
+            initialpiece->setZValue(i - 31);
+        }
+        //draw Marshal
+        else if (i == 33){
+            initialpiece->setPos(50/3, 425 + 25 + (i - 33)*5 );
+            initialpiece->setZValue(i - 32);
+        }
+        //draw Bombs
+        else if (34 <= i && i < 40){
+            initialpiece->setPos(2*50/3 + 50, 425 + 25 + (i - 33)*5 );
+            initialpiece->setZValue(i - 33);
+        }
+
+
+
+
+
         initialpiece->originalPos = initialpiece->pos();
+        initialpiece->originalZ = initialpiece->zValue();
         scene->addItem(initialpiece);
+
     }
+
     //draw blue player's pieces
-    for (size_t i = 0, n = blueUnplacedPieces.size(); i < n; i++){
-        Piece* initialpiece = blueUnplacedPieces[i];
-        initialpiece->setPos(scene->width() - 140, 23 + i*55 );
-        initialpiece->originalPos = initialpiece->pos();
-        scene->addItem(initialpiece);
-    }
+//    for (size_t i = 0, n = blueUnplacedPieces.size(); i < n; i++){
+//        Piece* initialpiece = blueUnplacedPieces[i];
+//        initialpiece->setPos(scene->width() - 140, 23 + i*15 );
+//        initialpiece->originalPos = initialpiece->pos();
+//        initialpiece->setZValue(i);
+//        initialpiece->originalZ = initialpiece->zValue();
+//        scene->addItem(initialpiece);
+//    }
 }
 
 bool Game::getArePiecesSetUp(){

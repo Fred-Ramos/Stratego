@@ -38,7 +38,7 @@ private:
     //private methods
     void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
     void drawGUI();
-    void createNewPiece(QString player);
+    void createNewPiece(QString player, QString pieceRank);
     void createInitialPieces();
     void drawPieces();
 

@@ -10,7 +10,7 @@ public:
     Piece(QGraphicsItem* parent = NULL);
 
     // getters
-    char getRank();
+    QString getRank();
     bool getIsPlaced();
     QString getOwner();
 
@@ -19,18 +19,22 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent* event); //when clicking on a piece
 
     //setters
-    void setRank(char r);
+    void setRank(QString r);
     void setOwner(QString player);
     void setIsPlaced(bool p);
 
+    void setVisible(bool v); //set rank visible or not
+
     //atributes
     QPointF originalPos;
+    int originalZ;
 
 
 private:
     bool isPlaced; //placed or not
     QString owner; //belongs to which player
-    char rank; //get piece rank/type
+    QString rank; //get piece rank/type
+    QGraphicsTextItem* rankText;
 };
 
 #endif // PIECE_H
