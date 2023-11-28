@@ -37,7 +37,7 @@ void Game::start(){
 #include <QCoreApplication>
 void Game::ready(){
     if (ArePiecesPlaced() == true){
-         QCoreApplication::quit();
+        qDebug() << "player ready and pieces placed";
     }
 }
 
