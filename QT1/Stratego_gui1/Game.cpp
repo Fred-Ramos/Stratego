@@ -19,6 +19,7 @@ Game::Game(QWidget *parent){ //constructor
     setScene(scene);
 
     //initialize variables
+    SendMessage = QString("");
     ArePiecesSetUp = false; //pieces not setup initially
     pieceToPlace = NULL; //no piece to place initially
 }
@@ -34,10 +35,11 @@ void Game::start(){
     createInitialPieces();
 }
 
-#include <QCoreApplication>
 void Game::ready(){
     if (ArePiecesPlaced() == true){
         qDebug() << "player ready and pieces placed";
+        SetUpMessage();
+        qDebug() << SendMessage;
     }
 }
 
@@ -115,12 +117,20 @@ void Game::pickUpPiece(Piece* piece){
 void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty pieces
     qDebug() << "Pieces placed? -> " << ArePiecesPlaced();
     if (getArePiecesSetUp() == false){    //if pieces not setup yet
-        if(getTurn() == QString("REDPLAYER") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if redturn,
+        if(getTurn() == QString("UNASSIGNED") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if unassigned,
             //replace specified piece with pieceToPlace
             pieceToPlace->setPos(pieceToReplace->pos());
             pieceToPlace->setZValue(1);
             pieceToPlace->setIsPlaced(true); //piece is now placed
-            removeFromPanel(pieceToPlace, getTurn());
+            //removeFromPanel(pieceToPlace, getTurn());
+            pieceToPlace = NULL; //piece already placed
+        }
+        else if(getTurn() == QString("REDPLAYER") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if redturn,
+            //replace specified piece with pieceToPlace
+            pieceToPlace->setPos(pieceToReplace->pos());
+            pieceToPlace->setZValue(1);
+            pieceToPlace->setIsPlaced(true); //piece is now placed
+            //removeFromPanel(pieceToPlace, getTurn());
             pieceToPlace = NULL; //piece already placed
         }
         else if(getTurn() == QString("BLUEPLAYER") && pieceToReplace->pos().y() <= 18 + 5 + 3*55){ //else if blueturn
@@ -128,7 +138,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
             pieceToPlace->setPos(pieceToReplace->pos());
             pieceToPlace->setZValue(1);
             pieceToPlace->setIsPlaced(true); //piece is now placed
-            removeFromPanel(pieceToPlace, getTurn());
+            //removeFromPanel(pieceToPlace, getTurn());
             pieceToPlace = NULL; //piece already placed
         }
     }
@@ -147,17 +157,17 @@ void Game::nextPlayersTurn(){
     }
 }
 
-void Game::removeFromPanel(Piece *piece, QString player){
-    if (player == QString("REDPLAYER")){
-        //remove from red player
-        redUnplacedPieces.removeAll(piece);
-    }
-    if (player == QString("BLUEPLAYER")){
-        //remove from blue player
-        blueUnplacedPieces.removeAll(piece);
-    }
+//void Game::removeFromPanel(Piece *piece, QString player){
+//    if (player == QString("REDPLAYER")){
+//        //remove from red player
+//        UnassignedUnplacedPieces.removeAll(piece);
+//    }
+//    if (player == QString("BLUEPLAYER")){
+//        //remove from blue player
+//        blueUnplacedPieces.removeAll(piece);
+//    }
 
-}
+//}
 
 void Game::mouseMoveEvent(QMouseEvent* event){
     //if there is a piecetoplace, then make it follow the mouse
@@ -201,18 +211,18 @@ void Game::drawGUI(){
     drawPanel(scene->width() - 145, 0, 145, scene->height(), QColor(237, 214, 181), 1);
 
     //place red player text
-    QGraphicsTextItem* rplayer = new QGraphicsTextItem("Red Player pieces");
+    QGraphicsTextItem* rplayer = new QGraphicsTextItem("Player 1 pieces");
     rplayer->setPos(145/2 - rplayer->boundingRect().width()/2, 0);
     scene->addItem(rplayer);
 
     //place blue player text
-    QGraphicsTextItem* bplayer = new QGraphicsTextItem("Blue Player pieces");
+    QGraphicsTextItem* bplayer = new QGraphicsTextItem("Player 2 pieces");
     bplayer->setPos(scene->width() - 145/2 - bplayer->boundingRect().width()/2 , 0);
     scene->addItem(bplayer);
 
     //place whose turn text
     TurnText = new QGraphicsTextItem(); //turn is changed in setTurn function
-    setTurn(QString("REDPLAYER"));
+    setTurn(QString("UNASSIGNED"));
     TurnText->setPos(scene->width()/2 - TurnText->boundingRect().width()/2, 0);
     scene->addItem(TurnText);
 
@@ -232,94 +242,58 @@ void Game::createNewPiece(QString player, QString pieceRank){
     initialpiece->setRank(pieceRank);
     initialpiece->setIsPlaced(false);
     //add card to proper list
-    if (player == QString("REDPLAYER")){
-        redUnplacedPieces.append(initialpiece);
-    }
-    else if (player == QString("BLUEPLAYER")){
-        blueUnplacedPieces.append(initialpiece);
+    if (player == QString("UNASSIGNED")){
+        UnassignedUnplacedPieces.append(initialpiece);
     }
     //draw the pieces
     drawPieces();
 }
 
 void Game::createInitialPieces(){
-    //create red player's pieces
-    createNewPiece(QString("REDPLAYER"), "F");  //create 1 Flag
-    createNewPiece(QString("REDPLAYER"), "1");  //create 1 Spy
+    //create unAsigned player's pieces
+    createNewPiece(QString("UNASSIGNED"), "F");  //create 1 Flag
+    createNewPiece(QString("UNASSIGNED"), "1");  //create 1 Spy
     for (size_t i = 0; i < 8; i++){
-        createNewPiece(QString("REDPLAYER"), "2"); //create 8 Scouts
+        createNewPiece(QString("UNASSIGNED"), "2"); //create 8 Scouts
     }
     for (size_t i = 0; i < 5; i++){
-        createNewPiece(QString("REDPLAYER"), "3"); //create 5 Miners
+        createNewPiece(QString("UNASSIGNED"), "3"); //create 5 Miners
     }
     for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("REDPLAYER"), "4"); //create 4 Sergeants
+        createNewPiece(QString("UNASSIGNED"), "4"); //create 4 Sergeants
     }
     for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("REDPLAYER"), "5"); //create 4 Lieutenants
+        createNewPiece(QString("UNASSIGNED"), "5"); //create 4 Lieutenants
     }
     for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("REDPLAYER"), "6"); //create 4 Captains
+        createNewPiece(QString("UNASSIGNED"), "6"); //create 4 Captains
     }
     for (size_t i = 0; i < 3; i++){
-        createNewPiece(QString("REDPLAYER"), "7"); //create 3 Majors
+        createNewPiece(QString("UNASSIGNED"), "7"); //create 3 Majors
     }
     for (size_t i = 0; i < 2; i++){
-        createNewPiece(QString("REDPLAYER"), "8"); //create 2 Colonels
+        createNewPiece(QString("UNASSIGNED"), "8"); //create 2 Colonels
     }
-    createNewPiece(QString("REDPLAYER"), "9"); //create 1 General
-    createNewPiece(QString("REDPLAYER"), "10"); //create 1 Marshal
+    createNewPiece(QString("UNASSIGNED"), "9"); //create 1 General
+    createNewPiece(QString("UNASSIGNED"), "10"); //create 1 Marshal
     for (size_t i = 0; i < 6; i++){
-        createNewPiece(QString("REDPLAYER"), "B"); //create 6 Bombs
+        createNewPiece(QString("UNASSIGNED"), "B"); //create 6 Bombs
     }
 
-    //create blue player's pieces
-    createNewPiece(QString("BLUEPLAYER"), "F");  //create 1 Flag
-    createNewPiece(QString("BLUEPLAYER"), "1");  //create 1 Spy
-    for (size_t i = 0; i < 8; i++){
-        createNewPiece(QString("BLUEPLAYER"), "2"); //create 8 Scouts
-    }
-    for (size_t i = 0; i < 5; i++){
-        createNewPiece(QString("BLUEPLAYER"), "3"); //create 5 Miners
-    }
-    for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("BLUEPLAYER"), "4"); //create 4 Sergeants
-    }
-    for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("BLUEPLAYER"), "5"); //create 4 Lieutenants
-    }
-    for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("BLUEPLAYER"), "6"); //create 4 Captains
-    }
-    for (size_t i = 0; i < 3; i++){
-        createNewPiece(QString("BLUEPLAYER"), "7"); //create 3 Majors
-    }
-    for (size_t i = 0; i < 2; i++){
-        createNewPiece(QString("BLUEPLAYER"), "8"); //create 2 Colonels
-    }
-    createNewPiece(QString("BLUEPLAYER"), "9"); //create 1 General
-    createNewPiece(QString("BLUEPLAYER"), "10"); //create 1 Marshal
-    for (size_t i = 0; i < 6; i++){
-        createNewPiece(QString("BLUEPLAYER"), "B"); //create 6 Bombs
-    }
     drawPieces();
 }
 
 void Game::drawPieces(){
     //traverse through list of pieces and draw them on side panels
 
-    //remove all of redplayer pieces from the scene(to avoid overlap)
-    for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
-        scene->removeItem(redUnplacedPieces[i]);
-    }
-    //remove all of blueplayer pieces from the scene
-    for (size_t i = 0, n = blueUnplacedPieces.size(); i < n; i++){
-        scene->removeItem(blueUnplacedPieces[i]);
+    //remove all of unassigned pieces from the scene(to avoid overlap)
+    for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
+        scene->removeItem(UnassignedUnplacedPieces[i]);
     }
 
     //draw red player's pieces
-    for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
-        Piece* initialpiece = redUnplacedPieces[i];
+    for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
+        Piece* initialpiece = UnassignedUnplacedPieces[i];
         //draw Flag and Spy
         if (i < 2){
             initialpiece->setPos(50/3 + i*(50 + 50/3), 25);
@@ -398,14 +372,26 @@ void Game::drawPieces(){
 }
 
 bool Game::ArePiecesPlaced(){
-    for (size_t i = 0, n = redUnplacedPieces.size(); i < n; i++){
-        if (redUnplacedPieces[i]->pos().x() < 150){ //if at least 1 piece still in panel, return false
+    for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
+        if (UnassignedUnplacedPieces[i]->pos().x() < 150){ //if at least 1 piece still in panel, return false
             return false;
         }
     }
     //if no piece in panel, return true
     return true;
 }
+
+void Game::SetUpMessage(){
+    for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
+        if (UnassignedUnplacedPieces[i]->pos().x() < 150){ //if at least 1 piece still in panel, return false
+            int xPosition = (UnassignedUnplacedPieces[i]->pos().x() - 155)/55;
+            int yPosition = (UnassignedUnplacedPieces[i]->pos().y() - 23)/55;
+            qDebug() << xPosition;
+            qDebug() << xPosition;
+            SendMessage.append(QString::number(xPosition) + QString::number(yPosition) +UnassignedUnplacedPieces[i]->getRank());
+        }
+    }
+}//150 + 5, 18 + 5
 
 bool Game::getArePiecesSetUp(){
     return ArePiecesSetUp;

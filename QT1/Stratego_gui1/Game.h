@@ -43,16 +43,14 @@ private:
     void createInitialPieces();
     void drawPieces();
     bool ArePiecesPlaced();
+    void SetUpMessage();
 
     //private atributes
     bool ArePiecesSetUp;
     QString Turn;                //string with which turn is it
     QGraphicsTextItem* TurnText; //QT text of the turn
-    QList<Piece*> redUnplacedPieces; //List of pieces
-
-    //later on remove blueunplacedpieces
-    //placed pieces will be gray, and red/blue color will randomly be attributed when 2players connect
-    QList<Piece*> blueUnplacedPieces;
+    QList<Piece*> UnassignedUnplacedPieces; //List of pieces
+    QString SendMessage;
 
 };
 

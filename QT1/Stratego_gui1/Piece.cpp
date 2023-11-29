@@ -70,6 +70,12 @@ void Piece::setOwner(QString player){
         brush.setColor(QColor(237, 214, 181));
         setBrush(brush);
     }
+    else if(player == QString("UNASSIGNED")){
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::gray);
+        setBrush(brush);
+    }
     else if (player == QString("GAME")){
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);
