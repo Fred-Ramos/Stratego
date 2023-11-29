@@ -32,7 +32,7 @@ void Game::start(){
     Gameboard = new Board();
     Gameboard->placePieces(150 + 5, 18 + 5);
     drawGUI();
-    createInitialPieces();
+    createInitialPieces(QString("UNASSIGNED"));
 }
 
 void Game::ready(){
@@ -270,38 +270,39 @@ void Game::createNewPiece(QString player, QString pieceRank){
     drawPieces();
 }
 
-void Game::createInitialPieces(){
+void Game::createInitialPieces(QString player){
     //create unAsigned player's pieces
-    createNewPiece(QString("UNASSIGNED"), "F");  //create 1 Flag
-    createNewPiece(QString("UNASSIGNED"), "1");  //create 1 Spy
-    for (size_t i = 0; i < 8; i++){
-        createNewPiece(QString("UNASSIGNED"), "2"); //create 8 Scouts
-    }
-    for (size_t i = 0; i < 5; i++){
-        createNewPiece(QString("UNASSIGNED"), "3"); //create 5 Miners
-    }
-    for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("UNASSIGNED"), "4"); //create 4 Sergeants
-    }
-    for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("UNASSIGNED"), "5"); //create 4 Lieutenants
-    }
-    for (size_t i = 0; i < 4; i++){
-        createNewPiece(QString("UNASSIGNED"), "6"); //create 4 Captains
-    }
-    for (size_t i = 0; i < 3; i++){
-        createNewPiece(QString("UNASSIGNED"), "7"); //create 3 Majors
-    }
-    for (size_t i = 0; i < 2; i++){
-        createNewPiece(QString("UNASSIGNED"), "8"); //create 2 Colonels
-    }
-    createNewPiece(QString("UNASSIGNED"), "9"); //create 1 General
-    createNewPiece(QString("UNASSIGNED"), "10"); //create 1 Marshal
-    for (size_t i = 0; i < 6; i++){
-        createNewPiece(QString("UNASSIGNED"), "B"); //create 6 Bombs
-    }
-
+    if (player == QString("UNASSIGNED")){
+        createNewPiece(player, "F");  //create 1 Flag
+        createNewPiece(player, "1");  //create 1 Spy
+        for (size_t i = 0; i < 8; i++){
+            createNewPiece(QString("UNASSIGNED"), "2"); //create 8 Scouts
+        }
+        for (size_t i = 0; i < 5; i++){
+            createNewPiece(QString("UNASSIGNED"), "3"); //create 5 Miners
+        }
+        for (size_t i = 0; i < 4; i++){
+            createNewPiece(QString("UNASSIGNED"), "4"); //create 4 Sergeants
+        }
+        for (size_t i = 0; i < 4; i++){
+            createNewPiece(QString("UNASSIGNED"), "5"); //create 4 Lieutenants
+        }
+        for (size_t i = 0; i < 4; i++){
+            createNewPiece(QString("UNASSIGNED"), "6"); //create 4 Captains
+        }
+        for (size_t i = 0; i < 3; i++){
+            createNewPiece(QString("UNASSIGNED"), "7"); //create 3 Majors
+        }
+        for (size_t i = 0; i < 2; i++){
+            createNewPiece(QString("UNASSIGNED"), "8"); //create 2 Colonels
+        }
+        createNewPiece(QString("UNASSIGNED"), "9"); //create 1 General
+        createNewPiece(QString("UNASSIGNED"), "10"); //create 1 Marshal
+        for (size_t i = 0; i < 6; i++){
+            createNewPiece(QString("UNASSIGNED"), "B"); //create 6 Bombs
+        }
     drawPieces();
+    }
 }
 
 void Game::drawPieces(){

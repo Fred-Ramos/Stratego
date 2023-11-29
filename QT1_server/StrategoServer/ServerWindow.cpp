@@ -40,14 +40,14 @@ void ServerWindow::setDataReceived(QString data){
 void ServerWindow::displayVariables(){
     scene->clear();
     //create middle panel
-    drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
+    drawPanel(this->width()/2 - 800/2, 5, 800, 430, QColor(237, 214, 181), 1);
 
     //create the title text
     QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Stratego"));
     QFont titleFont("GothicI", 50); //set font and size
     titleText->setFont(titleFont);
     int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
-    int yTitle = 100;
+    int yTitle = 5;
     titleText->setPos(xTitle, yTitle);
     scene->addItem(titleText);
 
@@ -56,15 +56,18 @@ void ServerWindow::displayVariables(){
     QFont serverFont("Sans Serif 10", 15); //set font and size
     serverText->setFont(serverFont);
     int xServer = xTitle + 10;
-    int yServer = 100 + titleText->boundingRect().height() - 35;
+    int yServer = 5 + titleText->boundingRect().height() - 35;
     serverText->setPos(xServer, yServer);
     scene->addItem(serverText);
 
     //display connectionstate
-    ConnectionStateText->setPos(scene->width()/2 - ConnectionStateText->boundingRect().width()/2, yServer + 25);
+    ConnectionStateText->setPos(this->width()/2 - 800/2 + 5, yServer + 25);
+    QFont infoFont("Segoe", 6); //set font and size
+    ConnectionStateText->setFont(infoFont);
     scene->addItem(ConnectionStateText);
 
-    dataReceivedText->setPos(scene->width()/2 - ConnectionStateText->boundingRect().width()/2, yServer + 50);
+    dataReceivedText->setPos(this->width()/2 - 800/2 + 5, yServer + 50);
+    dataReceivedText->setFont(infoFont);
     scene->addItem(dataReceivedText);
 
 

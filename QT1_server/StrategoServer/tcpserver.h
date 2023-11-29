@@ -13,15 +13,18 @@ public:
     explicit TCPServer(QObject* parent = 0);
 
     //public atributes
-    QString receivedData;
 signals:
 
 public slots:
     void onNewConnection();
     void onReadyRead();
+    void onClientDisconnected();
 
 private:
+    //private attributes
     QTcpServer* server;
+    QList<QTcpSocket*> clients;
+    QString receivedfromClientData;
 };
 
 #endif // TCPSERVER_H

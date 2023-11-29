@@ -41,7 +41,7 @@ private:
     void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
     void drawGUI();
     void createNewPiece(QString player, QString pieceRank);
-    void createInitialPieces();
+    void createInitialPieces(QString player);
     void drawPieces();
     bool ArePiecesPlaced();
     void SetUpMessage();
