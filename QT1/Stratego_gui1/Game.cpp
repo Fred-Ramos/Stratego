@@ -29,8 +29,8 @@ void Game::start(){
     scene->clear();
 
     //test code TODO REMOVE LATER
-    board = new Board();
-    board->placePieces(150 + 5, 18 + 5);
+    Gameboard = new Board();
+    Gameboard->placePieces(150 + 5, 18 + 5);
     drawGUI();
     createInitialPieces();
 }
@@ -40,6 +40,21 @@ void Game::ready(){
         qDebug() << "player ready and pieces placed";
         SetUpMessage();
         qDebug() << SendMessage;
+        qDebug() << "Message length: " << SendMessage.length();
+    }
+}
+
+void Game::setUpDefaultPositions(){
+    for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
+        int xDefaultPosition = 155 + 55*(i%10);
+        int yDefaultPosition = 23 + 55*6 + 55*(i/10);
+
+        qDebug() << "Moving " << UnassignedUnplacedPieces[i]->getRank() << "from " <<  UnassignedUnplacedPieces[i]->pos().x() << UnassignedUnplacedPieces[i]->pos().y() << "to " << xDefaultPosition << yDefaultPosition;
+
+        UnassignedUnplacedPieces[i]->setPos(xDefaultPosition, yDefaultPosition);
+        UnassignedUnplacedPieces[i]->setZValue(1);
+        UnassignedUnplacedPieces[i]->setIsPlaced(true); //piece is now placed
+        pieceToPlace = NULL; //piece already placed
     }
 }
 
@@ -116,6 +131,7 @@ void Game::pickUpPiece(Piece* piece){
 
 void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty pieces
     qDebug() << "Pieces placed? -> " << ArePiecesPlaced();
+    qDebug() << "Unassigned list size-> " << UnassignedUnplacedPieces[39];
     if (getArePiecesSetUp() == false){    //if pieces not setup yet
         if(getTurn() == QString("UNASSIGNED") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if unassigned,
             //replace specified piece with pieceToPlace
@@ -234,6 +250,14 @@ void Game::drawGUI(){
     connect(readyButton, SIGNAL(clicked()), this, SLOT(ready()));
     scene->addItem(readyButton);
 
+    //place Default Piece Positions button
+    Button* defaultPositionsButton = new Button(QString("Default"), 100, 50);
+    int xdefaultButton = 150/2 - defaultPositionsButton->boundingRect().width()/2;
+    int ydefaultButton = scene->height() - 5 - defaultPositionsButton->boundingRect().height();
+    defaultPositionsButton->setPos(xdefaultButton, ydefaultButton);
+    connect(defaultPositionsButton, SIGNAL(clicked()), this, SLOT(setUpDefaultPositions()));
+    scene->addItem(defaultPositionsButton);
+
 }
 
 void Game::createNewPiece(QString player, QString pieceRank){
@@ -301,59 +325,54 @@ void Game::drawPieces(){
         }
         //draw Scouts
         else if (2 <= i && i < 10){
-            initialpiece->setPos(50/3, 75 + 25 + (i - 2)*5 );
+            initialpiece->setPos(50/3, 75 + 10 + (i - 2)*5 );
             initialpiece->setZValue(i - 1);
         }
         //draw Miners
         else if (10 <= i && i < 15){
-            initialpiece->setPos(2*50/3 + 50, 75 + 25 + (i - 10)*5 );
+            initialpiece->setPos(2*50/3 + 50, 75 + 10 + (i - 10)*5 );
             initialpiece->setZValue(i - 9);
         }
         //draw Sergeants
         else if (15 <= i && i < 19){
-            initialpiece->setPos(50/3, 185 + 25 + (i - 15)*5 );
+            initialpiece->setPos(50/3, 170 + 10 + (i - 15)*5 );
             initialpiece->setZValue(i - 14);
         }
         //draw Lieutenants
         else if (19 <= i && i < 23){
-            initialpiece->setPos(2*50/3 + 50, 185 + 25 + (i - 19)*5 );
+            initialpiece->setPos(2*50/3 + 50, 170 + 10 + (i - 19)*5 );
             initialpiece->setZValue(i - 18);
         }
         //draw Captains
         else if (23 <= i && i < 27){
-            initialpiece->setPos(50/3, 275 + 25 + (i - 23)*5 );
+            initialpiece->setPos(50/3, 245 + 10 + (i - 23)*5 );
             initialpiece->setZValue(i - 22);
         }
         //draw Majors
         else if (27 <= i && i < 30){
-            initialpiece->setPos(2*50/3 + 50, 275 + 25 + (i - 27)*5 );
+            initialpiece->setPos(2*50/3 + 50, 245 + 10 + (i - 27)*5 );
             initialpiece->setZValue(i - 26);
         }
         //draw Colonels
         else if (30 <= i && i < 32){
-            initialpiece->setPos(50/3, 350 + 25 + (i - 30)*5 );
+            initialpiece->setPos(50/3, 315 + 10 + (i - 30)*5 );
             initialpiece->setZValue(i - 29);
         }
         //draw General
         else if (i == 32){
-            initialpiece->setPos(2*50/3 + 50, 350 + 25 + (i - 32)*5 );
+            initialpiece->setPos(2*50/3 + 50, 315 + 10 + (i - 32)*5 );
             initialpiece->setZValue(i - 31);
         }
         //draw Marshal
         else if (i == 33){
-            initialpiece->setPos(50/3, 425 + 25 + (i - 33)*5 );
+            initialpiece->setPos(50/3, 375 + 25 + (i - 33)*5 );
             initialpiece->setZValue(i - 32);
         }
         //draw Bombs
         else if (34 <= i && i < 40){
-            initialpiece->setPos(2*50/3 + 50, 425 + 25 + (i - 33)*5 );
+            initialpiece->setPos(2*50/3 + 50, 375 + 25 + (i - 34)*5 );
             initialpiece->setZValue(i - 33);
         }
-
-
-
-
-
         initialpiece->originalPos = initialpiece->pos();
         initialpiece->originalZ = initialpiece->zValue();
         scene->addItem(initialpiece);
@@ -381,17 +400,18 @@ bool Game::ArePiecesPlaced(){
     return true;
 }
 
-void Game::SetUpMessage(){
+void Game::SetUpMessage(){ //Initial Pieces setup message to send to the server
     for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
-        if (UnassignedUnplacedPieces[i]->pos().x() < 150){ //if at least 1 piece still in panel, return false
-            int xPosition = (UnassignedUnplacedPieces[i]->pos().x() - 155)/55;
-            int yPosition = (UnassignedUnplacedPieces[i]->pos().y() - 23)/55;
-            qDebug() << xPosition;
-            qDebug() << xPosition;
-            SendMessage.append(QString::number(xPosition) + QString::number(yPosition) +UnassignedUnplacedPieces[i]->getRank());
+        int xPosition = (UnassignedUnplacedPieces[i]->pos().x() - 155)/55;
+        int yPosition = (UnassignedUnplacedPieces[i]->pos().y() - 23)/55;
+        QString thisRank = UnassignedUnplacedPieces[i]->getRank();
+        if (thisRank.length() == 1){
+            thisRank = QString("0") + thisRank;
         }
+        SendMessage.append(QString::number(xPosition) + QString::number(yPosition) + thisRank);
     }
-}//150 + 5, 18 + 5
+}
+
 
 bool Game::getArePiecesSetUp(){
     return ArePiecesSetUp;

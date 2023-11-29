@@ -29,11 +29,12 @@ public:
 
     //public attributes
     QGraphicsScene* scene;
-    Board* board;            //game board
+    Board* Gameboard;            //game board
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
 public slots:
     void start();
     void ready();
+    void setUpDefaultPositions();
 
 private:
     //private methods
