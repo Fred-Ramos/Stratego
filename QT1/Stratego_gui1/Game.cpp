@@ -1,11 +1,14 @@
 #include "Game.h"
 #include "Button.h"
+#include "tcpsocket.h"
 
 #include <QMouseEvent>
 #include <QGraphicsTextItem>
 #include <QBrush>
 
 #include <QDebug>
+
+extern TCPsocket* clientSocket; //import global variable
 
 Game::Game(QWidget *parent){ //constructor
     //Set up the screen
@@ -41,6 +44,8 @@ void Game::ready(){
         SetUpMessage();
         qDebug() << SendMessage;
         qDebug() << "Message length: " << SendMessage.length();
+        clientSocket->Connect(); //connect to socket(if not connected)
+        clientSocket->writeData(SendMessage);
     }
 }
 
