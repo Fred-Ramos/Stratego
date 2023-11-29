@@ -1,4 +1,5 @@
-#include "Game.h"
+#include "ServerWindow.h"
+#include "tcpserver.h"
 #include "Button.h"
 
 #include <QMouseEvent>
@@ -7,7 +8,9 @@
 
 #include <QDebug>
 
-Game::Game(QWidget *parent){ //constructor
+extern TCPServer* gameServer;      //global variable
+
+ServerWindow::ServerWindow(QWidget *parent){ //constructor
     //Set up the screen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -20,14 +23,21 @@ Game::Game(QWidget *parent){ //constructor
 
     ConnectionStateText = new QGraphicsTextItem();
     setConnectionState("nothing");
+    dataReceivedText = new QGraphicsTextItem();
+    setDataReceived(" ");
 }
 
-void Game::setConnectionState(QString state){
+void ServerWindow::setConnectionState(QString state){
     //change QGraphicsTextItem
-    ConnectionStateText->setPlainText(state);
+    ConnectionStateText->setPlainText(QString("Connection state: ") + state);
 }
 
-void Game::displayVariables(){
+void ServerWindow::setDataReceived(QString data){
+    //change QGraphicsTextItem
+    dataReceivedText->setPlainText(QString("Last data received: ") + data);
+}
+
+void ServerWindow::displayVariables(){
     scene->clear();
     //create middle panel
     drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
@@ -54,6 +64,9 @@ void Game::displayVariables(){
     ConnectionStateText->setPos(scene->width()/2 - ConnectionStateText->boundingRect().width()/2, yServer + 25);
     scene->addItem(ConnectionStateText);
 
+    dataReceivedText->setPos(scene->width()/2 - ConnectionStateText->boundingRect().width()/2, yServer + 50);
+    scene->addItem(dataReceivedText);
+
 
     //create the quit button
     Button* quitButton = new Button(QString("Quit"));
@@ -64,7 +77,7 @@ void Game::displayVariables(){
     scene->addItem(quitButton);
 }
 
-void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
+void ServerWindow::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
     //draws panelat specified location with specified properties
     QGraphicsRectItem* panel = new QGraphicsRectItem(x, y, width, height);
     QBrush brush;

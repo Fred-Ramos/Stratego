@@ -1,19 +1,20 @@
-#include "Game.h"
+#include "ServerWindow.h"
 #include "tcpserver.h"
 
 #include <QApplication>
 
-Game* game; //global variable
+ServerWindow* serverwindow; //global variable
+TCPServer* gameServer;      //global variable
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    game = new Game();
+    serverwindow = new ServerWindow();
 
-    TCPServer gameServer;
+    gameServer = new TCPServer();
 
-    game->show();
-    game->displayVariables(); //start the game
+    serverwindow->show();
+    serverwindow->displayVariables(); //start the game
     return a.exec();
 }

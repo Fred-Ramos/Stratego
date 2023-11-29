@@ -26,8 +26,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(StrategoServer
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        Game.h
-        Game.cpp
+        ServerWindow.h
+        ServerWindow.cpp
         button.h
         button.cpp
 

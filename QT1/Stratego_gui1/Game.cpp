@@ -48,9 +48,6 @@ void Game::setUpDefaultPositions(){
     for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
         int xDefaultPosition = 155 + 55*(i%10);
         int yDefaultPosition = 23 + 55*6 + 55*(i/10);
-
-        qDebug() << "Moving " << UnassignedUnplacedPieces[i]->getRank() << "from " <<  UnassignedUnplacedPieces[i]->pos().x() << UnassignedUnplacedPieces[i]->pos().y() << "to " << xDefaultPosition << yDefaultPosition;
-
         UnassignedUnplacedPieces[i]->setPos(xDefaultPosition, yDefaultPosition);
         UnassignedUnplacedPieces[i]->setZValue(1);
         UnassignedUnplacedPieces[i]->setIsPlaced(true); //piece is now placed
