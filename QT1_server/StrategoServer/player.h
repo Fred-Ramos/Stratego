@@ -5,11 +5,23 @@
 
 class Player{
 public:
-    Player(QTcpSocket *socket, int room);
+    Player(QString IP, QString SOURCEPORT);
+
+    //setters
+    QString setIP();
+    QString setSourcePort();
+
+    //getters
+    QString getIP();
+    QString getSourcePort();
+
+
 
 private:
     //private attributes
-    QTcpSocket *socket;
+    QString name; //see later
+    QString ip;
+    QString sourcePort;
 };
 
 #endif // PLAYER_H

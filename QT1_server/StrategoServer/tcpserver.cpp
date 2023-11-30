@@ -1,4 +1,5 @@
 #include "tcpserver.h"
+#include "player.h"
 #include "ServerWindow.h"
 
 extern ServerWindow* serverwindow; //import global variable
@@ -22,7 +23,26 @@ TCPServer::TCPServer(QObject *parent): QObject(parent){
 void TCPServer::onNewConnection(){ //handle connections while they come in
     serverwindow->setConnectionState("New client connected");
     QTcpSocket* socket = server->nextPendingConnection();
-    qDebug() << "New client connected: " << socket->peerAddress().toString() << " on port: " << socket->localPort();
+    QString connectionIP = socket->peerAddress().toString();
+    QString connectionSourcePort = QString::number(socket->peerPort());
+    qDebug() << "New client connected: " << connectionIP << " on port: " << connectionSourcePort;
+
+    bool found = false;
+    for(Player *player : players) {
+        if(player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
+            // Search for player
+            qDebug() << "Player found";
+            found = true;
+            break;
+        }
+    }
+
+    if(!found) {                //if not found
+        // Create a new player
+        qDebug() << "New player added";
+        Player* newPlayer = new Player(connectionIP, connectionSourcePort);
+        players.append(newPlayer); //add to players list
+    }
 
     connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onClientDisconnected()));
