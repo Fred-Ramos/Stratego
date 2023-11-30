@@ -66,18 +66,73 @@ void Game::setUpDefaultPositions(){
 }
 
 void Game::loginGame(){
-    //create middle panel
-    drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
+    qDebug() << "1";
 
+    //create middle panel
+    int xPanel = this->width()/2 - 300/2;
+    int yPanel = 100;
+    drawPanel(xPanel, yPanel, 300, 430, QColor(237, 214, 181), 1);
+
+    qDebug() << "1";
 
     //create the title text
     titleText = new QGraphicsTextItem(QString("Stratego"));
     QFont titleFont("GothicI", 50); //set font and size
     titleText->setFont(titleFont);
     int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
-    int yTitle = 100;
+    int yTitle = yPanel;
     titleText->setPos(xTitle, yTitle);
     scene->addItem(titleText);
+
+    qDebug() << "2";
+
+    //Create Login Name text
+    loginNameText = new QGraphicsTextItem(QString("Account Name: "));
+    QFont loginFont("Sans Serif 10", 10); //set font and size
+    loginFont.setBold(true);
+    loginNameText->setFont(loginFont);
+    int xLoginNameText = xPanel + 5;
+    int yLoginNameText = yPanel + titleText->boundingRect().height() + 5;
+    loginNameText->setPos(xLoginNameText, yLoginNameText);
+    scene->addItem(loginNameText);
+
+    qDebug() << "3";
+
+    //create textBox to write Login Name
+    loginNameTextbox = new Textbox(15, 15, 170, 25);
+    int xloginNameTextbox = xLoginNameText + loginNameText->boundingRect().width() + 2;
+    int yloginNameTextbox = yLoginNameText;
+    loginNameTextbox->setPos(xloginNameTextbox, yloginNameTextbox);
+    scene->addItem(loginNameTextbox);
+
+    qDebug() << "4";
+
+    //Create Login Password text
+    loginPasswordText = new QGraphicsTextItem(QString("Password: "));
+    loginPasswordText->setFont(loginFont);
+    int xLoginPasswordText = xPanel + 5;
+    int yLoginPasswordText = yloginNameTextbox + loginNameTextbox->boundingRect().height() + 5;
+    loginPasswordText->setPos(xLoginPasswordText, yLoginPasswordText);
+    scene->addItem(loginPasswordText);
+
+    qDebug() << "5";
+
+    //create textBox to write Login Password
+    loginPasswordTextbox = new Textbox(15, 15, 170, 25);
+    int xloginPasswordTextbox = xloginNameTextbox;
+    int yloginPasswordTextbox = yLoginPasswordText;
+    loginPasswordTextbox->setPos(xloginPasswordTextbox, yloginPasswordTextbox);
+    scene->addItem(loginPasswordTextbox);
+
+    qDebug() << "6";
+
+    //create the login button
+    loginButton = new Button(QString("Login"), 200, 50);
+    int xlButton = this->width()/2 - loginButton->boundingRect().width()/2;;
+    int ylButton = 453 - 75;
+    loginButton->setPos(xlButton, ylButton);
+    connect(loginButton, SIGNAL(clicked()), this, SLOT(waitForLogin()));
+    scene->addItem(loginButton);
 
 
     //create the quit button
@@ -87,6 +142,32 @@ void Game::loginGame(){
     quitButton->setPos(xqButton, yqButton);
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     scene->addItem(quitButton);
+
+    qDebug() << "7";
+}
+
+void Game::waitForLogin(){
+    if (loginNameTextbox->getWriten().size() > 4 && loginPasswordTextbox->getWriten().size() > 4){
+        SetLoginMessage(loginNameTextbox->getWriten(), loginPasswordTextbox->getWriten());
+        //create message to send
+        qDebug() << "Send new Login Message: " << MessageToSend;
+        ThisClientSocket->writeData(MessageToSend);
+    }
+    else{
+        QList<QGraphicsItem *> itemsInScene = scene->items();
+        for(QGraphicsItem *item : itemsInScene) { //to avoid removing text from scene if it isnt there in the first place (avoid crash)
+            if(item == waitingLoginText) {
+                scene->removeItem(waitingLoginText);
+                break;
+            }
+        }
+        waitingLoginText = new QGraphicsTextItem();
+        waitingLoginText->setPlainText(QString("Name/Password have 4-15 digits"));
+        int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
+        int yLogin = 453 - 75 - 50;
+        waitingLoginText->setPos(xLogin, yLogin);
+        scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
+    }
 }
 
 void Game::displayMainMenu(){
@@ -152,7 +233,6 @@ void Game::createRoom(){
     scene->removeItem(instButton);
     scene->removeItem(quitButton);
 
-    qDebug() << "1";
     //Create retry connection button
     retryConButton = new Button(QString("Retry"), 50, 25);
     int xretryConButton = this->width()/2 - 300/2 + 5;
@@ -161,13 +241,11 @@ void Game::createRoom(){
     connect(retryConButton, SIGNAL(clicked()), ThisClientSocket, SLOT(Connect()));
     scene->addItem(retryConButton);
 
-    qDebug() << "2";
     //Create Connection state text
     int xConStateText = xretryConButton + retryConButton->boundingRect().width() + 5;
     int yConStateText = yretryConButton;
     ThisClientSocket->ConnectionToServerStateText->setPos(xConStateText, yConStateText);
     scene->addItem(ThisClientSocket->ConnectionToServerStateText);
-    qDebug() << "3";
 
     //Create Room name text
     roomText = new QGraphicsTextItem(QString("Room name:"));
@@ -177,16 +255,13 @@ void Game::createRoom(){
     int yRoom = titleText->pos().y() + titleText->boundingRect().height() + 10;
     roomText->setPos(xRoom, yRoom);
     scene->addItem(roomText);
-    qDebug() << "4";
 
     //create textBox to write Room number
     roomTextbox = new Textbox(6, 15, 90, 25); //QString "number" does nothing, change later
-
     int xRoomTextBox = xRoom;
     int yRoomTextBox = yRoom + 50;
     roomTextbox->setPos(xRoomTextBox, yRoomTextBox);
     scene->addItem(roomTextbox);
-    qDebug() << "5";
 
     //create Create Room button
     createRoomButton = new Button(QString("Create"), 100, 25);
@@ -195,14 +270,11 @@ void Game::createRoom(){
     createRoomButton->setPos(xcreateRoomButton, ycreateRoomButton);
     connect(createRoomButton, SIGNAL(clicked()), this, SLOT(waitForJoin()));
     scene->addItem(createRoomButton);
-    qDebug() << "6";
 
     //create waitingJoinText
     waitingJoinText = new QGraphicsTextItem();
     int yJoin = yRoomTextBox + roomTextbox->boundingRect().height() + 25;
     waitingJoinText->setY(yJoin); //dont write or add to scene yet
-
-    qDebug() << "4";
 
     //create back to menu button
     backButton = new Button(QString("Back"), 100, 50);
@@ -211,7 +283,6 @@ void Game::createRoom(){
     backButton->setPos(xbackButton, ybackButton);
     connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
     scene->addItem(backButton);
-    qDebug() << "7";
 }
 
 void Game::waitForJoin(){
@@ -508,6 +579,12 @@ bool Game::ArePiecesPlaced(){
     return true;
 }
 
+void Game::SetLoginMessage(QString name, QString password){
+    MessageToSend = QString("LOGIN");
+    MessageToSend.append(name + QString("|"));
+    MessageToSend.append(password);
+}
+
 void Game::SetPiecesMessage(){ //Initial Pieces setup message to send to the server
     MessageToSend = QString("SETUP");
     for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
@@ -523,7 +600,7 @@ void Game::SetPiecesMessage(){ //Initial Pieces setup message to send to the ser
 
 void Game::SetRoomMessage(QString room){
     MessageToSend = QString("SETRO");
-    MessageToSend.append(room + "X");
+    MessageToSend.append(room + "|");
 }
 
 

@@ -45,7 +45,7 @@ void Textbox::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
 void Textbox::keyPressEvent(QKeyEvent *event){
     qDebug() << "key is being pressed";
-    if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9 && thisToWrite.size() < textMaxLength) {
+    if ( ( (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9) || (event->key() >= Qt::Key_A && event->key() <= Qt::Key_Z)) && thisToWrite.size() < textMaxLength) {
         qDebug() << "number is being pressed";
         // The key pressed is a number
         thisToWrite.append(QString(event->text()));

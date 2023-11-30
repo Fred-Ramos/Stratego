@@ -36,6 +36,7 @@ public:
 
 public slots:
     void loginGame();
+    void waitForLogin();
     void displayMainMenu();
     void createRoom();
     void waitForJoin();
@@ -51,10 +52,14 @@ private:
     void createInitialPieces(QString player);
     void drawPieces();
     bool ArePiecesPlaced();
-    void SetPiecesMessage();
+    void SetLoginMessage(QString name, QString password);
     void SetRoomMessage(QString room);
+    void SetPiecesMessage();
 
     //private atributes
+    QString AccountName;
+    QString AccountPassword;
+
     TCPsocket* ThisClientSocket;
     bool ArePiecesSetUp;
     QString Turn;                //string with which turn is it
@@ -63,6 +68,13 @@ private:
     QString MessageToSend;
     QString roomNumber;
 
+    //private login attributes
+    QGraphicsTextItem* loginNameText;
+    QGraphicsTextItem* loginPasswordText;
+    Textbox* loginNameTextbox;
+    Textbox* loginPasswordTextbox;
+    Button* loginButton;
+    QGraphicsTextItem* waitingLoginText;
     //private mainMenu atributes
     QGraphicsTextItem* titleText; //titleText
     Button* ngButton;   //newgame button
@@ -77,8 +89,6 @@ private:
     Button* createRoomButton;
             //create room
     QGraphicsTextItem* waitingJoinText;
-
-
 };
 
 #endif // GAME_H
