@@ -5,24 +5,33 @@
 #include <QTextEdit>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
+#include <QGraphicsItem>
 
 class Textbox:public QObject, public QGraphicsRectItem{
     Q_OBJECT
 public:
-    Textbox(QString name, int width, int height, QGraphicsItem* parent = NULL);
+    Textbox(int maxlength, int textsize, int width, int height, QGraphicsItem* parent = NULL);
 
     //public methods
+
+    //getters
+    QString getWriten();
+
+    //events
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
     void keyPressEvent(QKeyEvent * event);
 
     //public attributes
-    QString roomNumber;
+
 signals:
     void clicked();
 private:
-    QGraphicsTextItem* roomNumberText;
+    QString thisToWrite;
+    QGraphicsTextItem* thisToWriteText;
+    int thisTextSize;
+    int textMaxLength;
 };
 
 

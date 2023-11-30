@@ -180,7 +180,8 @@ void Game::createRoom(){
     qDebug() << "4";
 
     //create textBox to write Room number
-    roomTextbox = new Textbox(QString(""), 90, 25); //QString "number" does nothing, change later
+    roomTextbox = new Textbox(6, 15, 90, 25); //QString "number" does nothing, change later
+
     int xRoomTextBox = xRoom;
     int yRoomTextBox = yRoom + 50;
     roomTextbox->setPos(xRoomTextBox, yRoomTextBox);
@@ -214,9 +215,10 @@ void Game::createRoom(){
 }
 
 void Game::waitForJoin(){
-    if (roomTextbox->roomNumber != ""){
+    if (roomTextbox->getWriten() != ""){
+        roomNumber = roomTextbox->getWriten();
         //create message to send
-        SetRoomMessage(roomTextbox->roomNumber);
+        SetRoomMessage(roomNumber);
         qDebug() << "Send new Room Message: " << MessageToSend;
         ThisClientSocket->writeData(MessageToSend);
         waitingJoinText->setPlainText(QString("Waiting for another player to join..."));

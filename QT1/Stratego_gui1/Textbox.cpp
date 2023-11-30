@@ -1,27 +1,29 @@
 #include "Textbox.h"
-
+#include "Game.h"
 #include <QBrush>
 
+extern Game* game;
 
-Textbox::Textbox(QString name, int width, int height, QGraphicsItem *parent){
+Textbox::Textbox(int maxlength, int textsize, int width, int height, QGraphicsItem *parent){
+    thisTextSize = textsize;
+    textMaxLength = maxlength;
     setRect(0, 0, width, height);
     setZValue(1);
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(QColor(237, 214, 181));
     setBrush(brush);
-
     //draw box text
-    roomNumber = name;
-    roomNumberText = new QGraphicsTextItem(roomNumber, this);
-    roomNumberText->setPlainText(roomNumber);
-    QFont roomFont("Sans Serif 10", 15); //set font and size
-    roomNumberText->setFont(roomFont);
+    thisToWrite = QString("");
+    thisToWriteText = new QGraphicsTextItem(this);
+    thisToWriteText->setPlainText(thisToWrite);
+    QFont roomFont("Sans Serif 10", thisTextSize); //set font and size
+    thisToWriteText->setFont(roomFont);
     //center text
     int xText = rect().x() + 1;
-    int yText = rect().height()/2 - roomNumberText->boundingRect().height()/2;
-    roomNumberText->setPos(xText, yText);
-    roomNumberText->setZValue(2);
+    int yText = rect().height()/2 - thisToWriteText->boundingRect().height()/2;
+    thisToWriteText->setPos(xText, yText);
+    thisToWriteText->setZValue(2);
 
 
     // Make the Textbox focusable
@@ -29,6 +31,10 @@ Textbox::Textbox(QString name, int width, int height, QGraphicsItem *parent){
 
     //allow responding to hover events
     setAcceptHoverEvents(true);
+}
+
+QString Textbox::getWriten(){
+    return thisToWrite;
 }
 
 void Textbox::mousePressEvent(QGraphicsSceneMouseEvent *event){
@@ -39,17 +45,17 @@ void Textbox::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
 void Textbox::keyPressEvent(QKeyEvent *event){
     qDebug() << "key is being pressed";
-    if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9 && roomNumber.size() < 6) {
+    if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9 && thisToWrite.size() < textMaxLength) {
         qDebug() << "number is being pressed";
         // The key pressed is a number
-        roomNumber.append(QString(event->text()));
-        roomNumberText->setPlainText(roomNumber);
-        qDebug() << roomNumber;
+        thisToWrite.append(QString(event->text()));
+        thisToWriteText->setPlainText(thisToWrite);
+        qDebug() << thisToWrite;
     }
     if (event->key() == Qt::Key_Backspace){
-        roomNumber.chop(1);
-        roomNumberText->setPlainText(roomNumber);
-        qDebug() << roomNumber;
+        thisToWrite.chop(1);
+        thisToWriteText->setPlainText(thisToWrite);
+        qDebug() << thisToWrite;
     }
 }
 

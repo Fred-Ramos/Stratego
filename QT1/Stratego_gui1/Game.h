@@ -33,6 +33,7 @@ public:
     QGraphicsScene* scene;
     Board* Gameboard;            //game board
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
+
 public slots:
     void loginGame();
     void displayMainMenu();
@@ -50,6 +51,8 @@ private:
     void createInitialPieces(QString player);
     void drawPieces();
     bool ArePiecesPlaced();
+    void SetPiecesMessage();
+    void SetRoomMessage(QString room);
 
     //private atributes
     TCPsocket* ThisClientSocket;
@@ -58,9 +61,7 @@ private:
     QGraphicsTextItem* TurnText; //QT text of the turn
     QList<Piece*> UnassignedUnplacedPieces; //List of pieces
     QString MessageToSend;
-    void SetPiecesMessage();
-    void SetRoomMessage(QString room);
-
+    QString roomNumber;
 
     //private mainMenu atributes
     QGraphicsTextItem* titleText; //titleText
