@@ -129,20 +129,20 @@ void Game::createRoom(){
     scene->removeItem(quitButton);
 
     qDebug() << "1";
-    //Create Connection state text
-    int xConStateText = this->width()/2 - 300/2 + 5;
-    int yConStateText = titleText->pos().y() + titleText->boundingRect().height() - 10;
-    ThisClientSocket->ConnectionToServerStateText->setPos(xConStateText, yConStateText);
-    scene->addItem(ThisClientSocket->ConnectionToServerStateText);
-    qDebug() << "2";
-
     //Create retry connection button
-    retryConButton = new Button(QString("Retry Connection"), 92, 25);
-    int xretryConButton = xConStateText + ThisClientSocket->ConnectionToServerStateText->boundingRect().width() + 5;
-    int yretryConButton = yConStateText;
+    retryConButton = new Button(QString("Retry"), 50, 25);
+    int xretryConButton = this->width()/2 - 300/2 + 5;
+    int yretryConButton = titleText->pos().y() + titleText->boundingRect().height() - 10;
     retryConButton->setPos(xretryConButton, yretryConButton);
     connect(retryConButton, SIGNAL(clicked()), ThisClientSocket, SLOT(Connect()));
     scene->addItem(retryConButton);
+
+    qDebug() << "2";
+    //Create Connection state text
+    int xConStateText = xretryConButton + retryConButton->boundingRect().width() + 5;
+    int yConStateText = yretryConButton;
+    ThisClientSocket->ConnectionToServerStateText->setPos(xConStateText, yConStateText);
+    scene->addItem(ThisClientSocket->ConnectionToServerStateText);
     qDebug() << "3";
 
     //Create Room name text
@@ -181,13 +181,12 @@ void Game::createRoom(){
 
     //create back to menu button
     backButton = new Button(QString("Back"), 100, 50);
-    int xbackButton = scene->width() - 150/2 - backButton->boundingRect().width()/2;
-    int ybackButton = scene->height() - 5 - backButton->boundingRect().height();
+    int xbackButton = this->width()/2 - 300/2 + 190;
+    int ybackButton = 530 - 50 - 10;
     backButton->setPos(xbackButton, ybackButton);
     connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
     scene->addItem(backButton);
     qDebug() << "7";
-
 }
 
 void Game::waitForJoin(){
