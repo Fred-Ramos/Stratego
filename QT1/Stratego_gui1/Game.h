@@ -37,6 +37,7 @@ public:
 public slots:
     void loginGame();
     void waitForLogin();
+    void waitForRegister();
     void displayMainMenu();
     void createRoom();
     void waitForJoin();
@@ -52,7 +53,7 @@ private:
     void createInitialPieces(QString player);
     void drawPieces();
     bool ArePiecesPlaced();
-    void SetLoginMessage(QString name, QString password);
+    void SetLoginMessage(bool existingAcc, QString name, QString password);
     void SetRoomMessage(QString room);
     void SetPiecesMessage();
 
@@ -74,6 +75,7 @@ private:
     Textbox* loginNameTextbox;
     Textbox* loginPasswordTextbox;
     Button* loginButton;
+    Button* registerButton;
     QGraphicsTextItem* waitingLoginText;
     //private mainMenu atributes
     QGraphicsTextItem* titleText; //titleText

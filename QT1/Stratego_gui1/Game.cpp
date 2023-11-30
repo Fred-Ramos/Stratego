@@ -126,29 +126,40 @@ void Game::loginGame(){
 
     qDebug() << "6";
 
+    //create the register button
+    registerButton = new Button(QString("Register Account"), 141, 50);
+    int xrButton = xPanel + 6;
+    int yrButton = yLoginPasswordText + loginPasswordTextbox->boundingRect().height() + 5;
+    registerButton->setPos(xrButton, yrButton);
+    connect(registerButton, SIGNAL(clicked()), this, SLOT(waitForRegister()));
+    scene->addItem(registerButton);
+
+    qDebug() << "7";
+
     //create the login button
-    loginButton = new Button(QString("Login"), 200, 50);
-    int xlButton = this->width()/2 - loginButton->boundingRect().width()/2;;
-    int ylButton = 453 - 75;
+    loginButton = new Button(QString("Login"), 141, 50);
+    int xlButton = xPanel + 6 + registerButton->boundingRect().width() + 6;
+    int ylButton = yLoginPasswordText + loginPasswordTextbox->boundingRect().height() + 5;
     loginButton->setPos(xlButton, ylButton);
     connect(loginButton, SIGNAL(clicked()), this, SLOT(waitForLogin()));
     scene->addItem(loginButton);
 
+    qDebug() << "8";
 
     //create the quit button
     quitButton = new Button(QString("Quit"), 200, 50);
-    int xqButton = this->width()/2 - quitButton->boundingRect().width()/2;;
+    int xqButton = this->width()/2 - quitButton->boundingRect().width()/2;
     int yqButton = 453;
     quitButton->setPos(xqButton, yqButton);
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     scene->addItem(quitButton);
 
-    qDebug() << "7";
+    qDebug() << "9";
 }
 
 void Game::waitForLogin(){
     if (loginNameTextbox->getWriten().size() > 4 && loginPasswordTextbox->getWriten().size() > 4){
-        SetLoginMessage(loginNameTextbox->getWriten(), loginPasswordTextbox->getWriten());
+        SetLoginMessage(true, loginNameTextbox->getWriten(), loginPasswordTextbox->getWriten());
         //create message to send
         qDebug() << "Send new Login Message: " << MessageToSend;
         ThisClientSocket->writeData(MessageToSend);
@@ -162,7 +173,31 @@ void Game::waitForLogin(){
             }
         }
         waitingLoginText = new QGraphicsTextItem();
-        waitingLoginText->setPlainText(QString("Name/Password have 4-15 digits"));
+        waitingLoginText->setPlainText(QString("Name/Password have 5-15 digits"));
+        int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
+        int yLogin = 453 - 75 - 50;
+        waitingLoginText->setPos(xLogin, yLogin);
+        scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
+    }
+}
+
+void Game::waitForRegister(){
+    if (loginNameTextbox->getWriten().size() > 4 && loginPasswordTextbox->getWriten().size() > 4){
+        SetLoginMessage(false, loginNameTextbox->getWriten(), loginPasswordTextbox->getWriten());
+        //create message to send
+        qDebug() << "Send new Login Message: " << MessageToSend;
+        ThisClientSocket->writeData(MessageToSend);
+    }
+    else{
+        QList<QGraphicsItem *> itemsInScene = scene->items();
+        for(QGraphicsItem *item : itemsInScene) { //to avoid removing text from scene if it isnt there in the first place (avoid crash)
+            if(item == waitingLoginText) {
+                scene->removeItem(waitingLoginText);
+                break;
+            }
+        }
+        waitingLoginText = new QGraphicsTextItem();
+        waitingLoginText->setPlainText(QString("Registered Name/Password needs to have 5-15 digits"));
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
         int yLogin = 453 - 75 - 50;
         waitingLoginText->setPos(xLogin, yLogin);
@@ -579,8 +614,13 @@ bool Game::ArePiecesPlaced(){
     return true;
 }
 
-void Game::SetLoginMessage(QString name, QString password){
-    MessageToSend = QString("LOGIN");
+void Game::SetLoginMessage(bool existingAcc, QString name, QString password){
+    if(existingAcc == true){
+        MessageToSend = QString("LOGIN");
+    }
+    else{
+        MessageToSend = QString("REGIS");
+    }
     MessageToSend.append(name + QString("|"));
     MessageToSend.append(password);
 }
