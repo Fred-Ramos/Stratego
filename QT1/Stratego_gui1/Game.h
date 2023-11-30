@@ -34,6 +34,7 @@ public:
     Board* Gameboard;            //game board
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
 public slots:
+    void loginGame();
     void displayMainMenu();
     void createRoom();
     void waitForJoin();

@@ -65,6 +65,30 @@ void Game::setUpDefaultPositions(){
     }
 }
 
+void Game::loginGame(){
+    //create middle panel
+    drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
+
+
+    //create the title text
+    titleText = new QGraphicsTextItem(QString("Stratego"));
+    QFont titleFont("GothicI", 50); //set font and size
+    titleText->setFont(titleFont);
+    int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
+    int yTitle = 100;
+    titleText->setPos(xTitle, yTitle);
+    scene->addItem(titleText);
+
+
+    //create the quit button
+    quitButton = new Button(QString("Quit"), 200, 50);
+    int xqButton = this->width()/2 - quitButton->boundingRect().width()/2;;
+    int yqButton = 453;
+    quitButton->setPos(xqButton, yqButton);
+    connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
+    scene->addItem(quitButton);
+}
+
 void Game::displayMainMenu(){
     //scene->clear();
     //clean unnecessary items
@@ -232,23 +256,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
     qDebug() << "Pieces placed? -> " << ArePiecesPlaced();
     qDebug() << "Unassigned list size-> " << UnassignedUnplacedPieces[39];
     if (getArePiecesSetUp() == false){    //if pieces not setup yet
-        if(getTurn() == QString("UNASSIGNED") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if unassigned,
-            //replace specified piece with pieceToPlace
-            pieceToPlace->setPos(pieceToReplace->pos());
-            pieceToPlace->setZValue(1);
-            pieceToPlace->setIsPlaced(true); //piece is now placed
-            //removeFromPanel(pieceToPlace, getTurn());
-            pieceToPlace = NULL; //piece already placed
-        }
-        else if(getTurn() == QString("REDPLAYER") && pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if redturn,
-            //replace specified piece with pieceToPlace
-            pieceToPlace->setPos(pieceToReplace->pos());
-            pieceToPlace->setZValue(1);
-            pieceToPlace->setIsPlaced(true); //piece is now placed
-            //removeFromPanel(pieceToPlace, getTurn());
-            pieceToPlace = NULL; //piece already placed
-        }
-        else if(getTurn() == QString("BLUEPLAYER") && pieceToReplace->pos().y() <= 18 + 5 + 3*55){ //else if blueturn
+        if(pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if in initial squares
             //replace specified piece with pieceToPlace
             pieceToPlace->setPos(pieceToReplace->pos());
             pieceToPlace->setZValue(1);
@@ -374,35 +382,33 @@ void Game::createNewPiece(QString player, QString pieceRank){
 
 void Game::createInitialPieces(QString player){
     //create unAsigned player's pieces
-    if (player == QString("UNASSIGNED")){
-        createNewPiece(player, "F");  //create 1 Flag
-        createNewPiece(player, "1");  //create 1 Spy
-        for (size_t i = 0; i < 8; i++){
-            createNewPiece(QString("UNASSIGNED"), "2"); //create 8 Scouts
-        }
-        for (size_t i = 0; i < 5; i++){
-            createNewPiece(QString("UNASSIGNED"), "3"); //create 5 Miners
-        }
-        for (size_t i = 0; i < 4; i++){
-            createNewPiece(QString("UNASSIGNED"), "4"); //create 4 Sergeants
-        }
-        for (size_t i = 0; i < 4; i++){
-            createNewPiece(QString("UNASSIGNED"), "5"); //create 4 Lieutenants
-        }
-        for (size_t i = 0; i < 4; i++){
-            createNewPiece(QString("UNASSIGNED"), "6"); //create 4 Captains
-        }
-        for (size_t i = 0; i < 3; i++){
-            createNewPiece(QString("UNASSIGNED"), "7"); //create 3 Majors
-        }
-        for (size_t i = 0; i < 2; i++){
-            createNewPiece(QString("UNASSIGNED"), "8"); //create 2 Colonels
-        }
-        createNewPiece(QString("UNASSIGNED"), "9"); //create 1 General
-        createNewPiece(QString("UNASSIGNED"), "10"); //create 1 Marshal
-        for (size_t i = 0; i < 6; i++){
-            createNewPiece(QString("UNASSIGNED"), "B"); //create 6 Bombs
-        }
+    createNewPiece(player, "F");  //create 1 Flag
+    createNewPiece(player, "1");  //create 1 Spy
+    for (size_t i = 0; i < 8; i++){
+        createNewPiece(player, "2"); //create 8 Scouts
+    }
+    for (size_t i = 0; i < 5; i++){
+        createNewPiece(player, "3"); //create 5 Miners
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(player, "4"); //create 4 Sergeants
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(player, "5"); //create 4 Lieutenants
+    }
+    for (size_t i = 0; i < 4; i++){
+        createNewPiece(player, "6"); //create 4 Captains
+    }
+    for (size_t i = 0; i < 3; i++){
+        createNewPiece(player, "7"); //create 3 Majors
+    }
+    for (size_t i = 0; i < 2; i++){
+        createNewPiece(player, "8"); //create 2 Colonels
+    }
+    createNewPiece(player, "9"); //create 1 General
+    createNewPiece(player, "10"); //create 1 Marshal
+    for (size_t i = 0; i < 6; i++){
+        createNewPiece(player, "B"); //create 6 Bombs
     drawPieces();
     }
 }
