@@ -25,7 +25,7 @@ public slots:
 private:
     //private attributes
     QTcpServer* server;
-    QList<Player*> clients;
+    QList<Player*> players;
     QString receivedfromClientData;
 };
 

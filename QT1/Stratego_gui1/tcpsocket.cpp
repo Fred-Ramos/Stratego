@@ -1,7 +1,11 @@
 #include "tcpsocket.h"
 
+#include <QGraphicsTextItem>
+
 TCPsocket::TCPsocket(QObject* parent){
     socket = new QTcpSocket(this);
+    ConnectionToServerStateText = new QGraphicsTextItem();
+    ConnectionToServerStateText->setPlainText(QString("Server Connection: Disconnected"));
 }
 
 void TCPsocket::Connect(){
@@ -10,10 +14,13 @@ void TCPsocket::Connect(){
 
         connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
 
-        if (socket->waitForConnected(3000)){
+        if (socket->waitForConnected(2000)){ //wait 2 seconds to connect
+            ConnectionToServerStateText->setPlainText(QString("Server Connection: Connected"));
             qDebug() << "Connected!";
+
         }
         else{
+            ConnectionToServerStateText->setPlainText(QString("Server Connection: Unsucessful Connection"));
             qDebug() << "Not Connected!";
         }
     }
@@ -22,6 +29,7 @@ void TCPsocket::Connect(){
 void TCPsocket::Disconnect(){
     if (socket->state() == QAbstractSocket::ConnectedState) { //if connected, disconnect socket
         socket->disconnectFromHost();
+        ConnectionToServerStateText->setPlainText(QString("Server Connection: Unsucessful Connection"));
         qDebug() << "Disconnected!";
     }
 }

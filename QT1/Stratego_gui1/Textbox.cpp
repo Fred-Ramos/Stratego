@@ -12,7 +12,7 @@ Textbox::Textbox(QString name, int width, int height, QGraphicsItem *parent){
     setBrush(brush);
 
     //draw box text
-    roomNumber = QString("1");
+    roomNumber = name;
     roomNumberText = new QGraphicsTextItem(roomNumber, this);
     roomNumberText->setPlainText(roomNumber);
     QFont roomFont("Sans Serif 10", 15); //set font and size

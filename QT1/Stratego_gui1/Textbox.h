@@ -16,10 +16,12 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
     void keyPressEvent(QKeyEvent * event);
+
+    //public attributes
+    QString roomNumber;
 signals:
     void clicked();
 private:
-    QString roomNumber;
     QGraphicsTextItem* roomNumberText;
 };
 

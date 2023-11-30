@@ -21,11 +21,15 @@ Game::Game(QWidget *parent){ //constructor
     setScene(scene);
 
     //initialize variables
-    SendMessage = QString("");
+    MessageToSend = QString("");
     ArePiecesSetUp = false; //pieces not setup initially
     pieceToPlace = NULL; //no piece to place initially
 
     ThisClientSocket = new TCPsocket(); //connect later in ready button
+
+    //initialize mainmenu attributes
+
+
 }
 
 void Game::start(){
@@ -42,11 +46,11 @@ void Game::start(){
 void Game::ready(){
     if (ArePiecesPlaced() == true){
         qDebug() << "player ready and pieces placed";
-        SetUpMessage();
-        qDebug() << SendMessage;
-        qDebug() << "Message length: " << SendMessage.length();
+        SetPiecesMessage();
+        qDebug() << MessageToSend;
+        qDebug() << "Message length: " << MessageToSend.length();
 
-        ThisClientSocket->writeData(SendMessage);
+        ThisClientSocket->writeData(MessageToSend);
     }
 }
 
@@ -62,7 +66,16 @@ void Game::setUpDefaultPositions(){
 }
 
 void Game::displayMainMenu(){
-    scene->clear();
+    //scene->clear();
+    //clean unnecessary items
+    QList<QGraphicsItem *> items = scene->items();
+    for(QGraphicsItem *item : items) {
+        if(item != titleText || item != ngButton || item != jgButton || item != instButton || item != quitButton) {
+            scene->removeItem(item);
+        }
+    }
+
+
     //create middle panel
     drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
 
@@ -81,7 +94,7 @@ void Game::displayMainMenu(){
     int xngButton = this->width()/2 - ngButton->boundingRect().width()/2;
     int yngButton = 100 + titleText->boundingRect().height() + 25;
     ngButton->setPos(xngButton, yngButton);
-    connect(ngButton, SIGNAL(clicked()), this, SLOT(start()));
+    connect(ngButton, SIGNAL(clicked()), this, SLOT(createRoom()));
     scene->addItem(ngButton);
 
     //create the Join Game button
@@ -89,7 +102,7 @@ void Game::displayMainMenu(){
     int xjgButton = xngButton;
     int yjgButton = yngButton + 75;
     jgButton->setPos(xjgButton, yjgButton);
-    connect(jgButton, SIGNAL(clicked()), this, SLOT(joinRoom()));
+    connect(jgButton, SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(jgButton);
 
     //create the instructions button
@@ -108,12 +121,29 @@ void Game::displayMainMenu(){
     scene->addItem(quitButton);
 }
 
-void Game::joinRoom(){
+void Game::createRoom(){
     ThisClientSocket->Connect(); //connect to socket(if not connected)
     scene->removeItem(ngButton);
     scene->removeItem(jgButton);
     scene->removeItem(instButton);
     scene->removeItem(quitButton);
+
+    qDebug() << "1";
+    //Create Connection state text
+    int xConStateText = this->width()/2 - 300/2 + 5;
+    int yConStateText = titleText->pos().y() + titleText->boundingRect().height() - 10;
+    ThisClientSocket->ConnectionToServerStateText->setPos(xConStateText, yConStateText);
+    scene->addItem(ThisClientSocket->ConnectionToServerStateText);
+    qDebug() << "2";
+
+    //Create retry connection button
+    retryConButton = new Button(QString("Retry Connection"), 92, 25);
+    int xretryConButton = xConStateText + ThisClientSocket->ConnectionToServerStateText->boundingRect().width() + 5;
+    int yretryConButton = yConStateText;
+    retryConButton->setPos(xretryConButton, yretryConButton);
+    connect(retryConButton, SIGNAL(clicked()), ThisClientSocket, SLOT(Connect()));
+    scene->addItem(retryConButton);
+    qDebug() << "3";
 
     //Create Room name text
     roomText = new QGraphicsTextItem(QString("Room name:"));
@@ -123,23 +153,54 @@ void Game::joinRoom(){
     int yRoom = titleText->pos().y() + titleText->boundingRect().height() + 10;
     roomText->setPos(xRoom, yRoom);
     scene->addItem(roomText);
+    qDebug() << "4";
 
     //create textBox to write Room number
-    roomTextbox = new Textbox(QString("Number"), 90, 50);
+    roomTextbox = new Textbox(QString(""), 90, 25); //QString "number" does nothing, change later
     int xRoomTextBox = xRoom;
     int yRoomTextBox = yRoom + 50;
     roomTextbox->setPos(xRoomTextBox, yRoomTextBox);
     scene->addItem(roomTextbox);
+    qDebug() << "5";
+
+    //create Create Room button
+    createRoomButton = new Button(QString("Create"), 100, 25);
+    int xcreateRoomButton = xRoomTextBox + roomTextbox->boundingRect().width() + 5;
+    int ycreateRoomButton = yRoomTextBox;
+    createRoomButton->setPos(xcreateRoomButton, ycreateRoomButton);
+    connect(createRoomButton, SIGNAL(clicked()), this, SLOT(waitForJoin()));
+    scene->addItem(createRoomButton);
+    qDebug() << "6";
+
+    //create waitingJoinText
+    waitingJoinText = new QGraphicsTextItem();
+    int yJoin = yRoomTextBox + roomTextbox->boundingRect().height() + 25;
+    waitingJoinText->setY(yJoin); //dont write or add to scene yet
+
+    qDebug() << "4";
 
     //create back to menu button
-    Button* backButton = new Button(QString("Back"), 100, 50);
+    backButton = new Button(QString("Back"), 100, 50);
     int xbackButton = scene->width() - 150/2 - backButton->boundingRect().width()/2;
     int ybackButton = scene->height() - 5 - backButton->boundingRect().height();
     backButton->setPos(xbackButton, ybackButton);
     connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
     scene->addItem(backButton);
+    qDebug() << "7";
 
+}
 
+void Game::waitForJoin(){
+    if (roomTextbox->roomNumber != ""){
+        //create message to send
+        SetRoomMessage(roomTextbox->roomNumber);
+        qDebug() << "Send new Room Message: " << MessageToSend;
+        ThisClientSocket->writeData(MessageToSend);
+        waitingJoinText->setPlainText(QString("Waiting for another player to join..."));
+        int xJoin = this->width()/2 - waitingJoinText->boundingRect().width()/2;
+        waitingJoinText->setX(xJoin);
+        scene->addItem(waitingJoinText); //add join to scene after clicking "create"
+    }
 }
 
 
@@ -440,8 +501,8 @@ bool Game::ArePiecesPlaced(){
     return true;
 }
 
-void Game::SetUpMessage(){ //Initial Pieces setup message to send to the server
-    SendMessage = QString("SETUP");
+void Game::SetPiecesMessage(){ //Initial Pieces setup message to send to the server
+    MessageToSend = QString("SETUP");
     for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
         int xPosition = (UnassignedUnplacedPieces[i]->pos().x() - 155)/55;
         int yPosition = (UnassignedUnplacedPieces[i]->pos().y() - 23)/55;
@@ -449,8 +510,13 @@ void Game::SetUpMessage(){ //Initial Pieces setup message to send to the server
         if (thisRank.length() == 1){
             thisRank = QString("0") + thisRank;
         }
-        SendMessage.append(QString::number(xPosition) + QString::number(yPosition) + thisRank);
+        MessageToSend.append(QString::number(xPosition) + QString::number(yPosition) + thisRank);
     }
+}
+
+void Game::SetRoomMessage(QString room){
+    MessageToSend = QString("SETRO");
+    MessageToSend.append(room + "X");
 }
 
 

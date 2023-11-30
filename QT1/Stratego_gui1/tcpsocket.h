@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QGraphicsView>
 #include <QDebug>
 
 class TCPsocket: public QObject
@@ -15,12 +16,16 @@ public:
     void writeData(QString data);
     void readData();
 
-    void Connect();
     void Disconnect();
+
+    //public attributes
+    QGraphicsTextItem* ConnectionToServerStateText; //QT text of the connection state
+
 signals:
 
 public slots:
     void onReadyRead();
+    void Connect();
 
 private:
     //private attributes

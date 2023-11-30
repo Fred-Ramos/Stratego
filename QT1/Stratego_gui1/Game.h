@@ -35,7 +35,8 @@ public:
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
 public slots:
     void displayMainMenu();
-    void joinRoom();
+    void createRoom();
+    void waitForJoin();
     void start();
     void ready();
     void setUpDefaultPositions();
@@ -48,7 +49,6 @@ private:
     void createInitialPieces(QString player);
     void drawPieces();
     bool ArePiecesPlaced();
-    void SetUpMessage();
 
     //private atributes
     TCPsocket* ThisClientSocket;
@@ -56,16 +56,25 @@ private:
     QString Turn;                //string with which turn is it
     QGraphicsTextItem* TurnText; //QT text of the turn
     QList<Piece*> UnassignedUnplacedPieces; //List of pieces
-    QString SendMessage;
+    QString MessageToSend;
+    void SetPiecesMessage();
+    void SetRoomMessage(QString room);
 
-    //mainMenu atributes
+
+    //private mainMenu atributes
     QGraphicsTextItem* titleText; //titleText
     Button* ngButton;   //newgame button
     Button* jgButton;   //joingame button
     Button* instButton; //instructions button
     Button* quitButton; //quit button
+        //new game
     QGraphicsTextItem* roomText; //"Room name: "
     Textbox* roomTextbox; //where to write room
+    Button* backButton;
+    Button* retryConButton;
+    Button* createRoomButton;
+            //create room
+    QGraphicsTextItem* waitingJoinText;
 
 
 };

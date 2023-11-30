@@ -22,7 +22,7 @@ TCPServer::TCPServer(QObject *parent): QObject(parent){
 void TCPServer::onNewConnection(){ //handle connections while they come in
     serverwindow->setConnectionState("New client connected");
     QTcpSocket* socket = server->nextPendingConnection();
-    qDebug() << "socket: " << socket;
+    qDebug() << "New client connected: " << socket->peerAddress().toString() << " on port: " << socket->localPort();
 
     connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onClientDisconnected()));
