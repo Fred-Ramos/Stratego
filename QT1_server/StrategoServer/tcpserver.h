@@ -1,6 +1,8 @@
 #ifndef TCPSERVER_H
 #define TCPSERVER_H
 
+#include "player.h"
+
 #include <QObject>
 #include <QDebug>
 #include <QTcpServer>
@@ -23,7 +25,7 @@ public slots:
 private:
     //private attributes
     QTcpServer* server;
-    QList<QTcpSocket*> clients;
+    QList<Player*> clients;
     QString receivedfromClientData;
 };
 

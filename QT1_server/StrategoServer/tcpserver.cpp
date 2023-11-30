@@ -22,7 +22,7 @@ TCPServer::TCPServer(QObject *parent): QObject(parent){
 void TCPServer::onNewConnection(){ //handle connections while they come in
     serverwindow->setConnectionState("New client connected");
     QTcpSocket* socket = server->nextPendingConnection();
-    clients.append(socket); //to distinguish from the diferent clients
+    qDebug() << "socket: " << socket;
 
     connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onClientDisconnected()));
@@ -33,11 +33,23 @@ void TCPServer::onNewConnection(){ //handle connections while they come in
     socket->waitForBytesWritten(3000);
 }
 
+//QString clientKey = socket->peerAddress().toString() + ":" + QString::number(socket->peerPort()); ADD IDENTIFIER???
+
+
+
+
+
+
+
 void TCPServer::onReadyRead(){
     QTcpSocket *senderSocket = dynamic_cast<QTcpSocket*>(sender());
     if(senderSocket) {
         QByteArray data = senderSocket->readAll();
         receivedfromClientData = QString::fromUtf8(data);
+//        if(receivedfromClientData.left(5) == QString("SETUP")){
+
+//        }
+
         serverwindow->setDataReceived(receivedfromClientData);
         // Now we can use strData
     }

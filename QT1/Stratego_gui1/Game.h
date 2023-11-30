@@ -2,6 +2,9 @@
 #define GAME_H
 
 #include "Board.h"
+#include "Button.h"
+#include "Textbox.h"
+#include "tcpsocket.h"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -14,7 +17,6 @@ public:
     Game(QWidget* parent = NULL); //Option of passing on a parent widget
 
     //public methods
-    void displayMainMenu();
     QString getTurn();
     void setTurn(QString player);
     void pickUpPiece(Piece* piece);
@@ -32,6 +34,8 @@ public:
     Board* Gameboard;            //game board
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
 public slots:
+    void displayMainMenu();
+    void joinRoom();
     void start();
     void ready();
     void setUpDefaultPositions();
@@ -47,11 +51,22 @@ private:
     void SetUpMessage();
 
     //private atributes
+    TCPsocket* ThisClientSocket;
     bool ArePiecesSetUp;
     QString Turn;                //string with which turn is it
     QGraphicsTextItem* TurnText; //QT text of the turn
     QList<Piece*> UnassignedUnplacedPieces; //List of pieces
     QString SendMessage;
+
+    //mainMenu atributes
+    QGraphicsTextItem* titleText; //titleText
+    Button* ngButton;   //newgame button
+    Button* jgButton;   //joingame button
+    Button* instButton; //instructions button
+    Button* quitButton; //quit button
+    QGraphicsTextItem* roomText; //"Room name: "
+    Textbox* roomTextbox; //where to write room
+
 
 };
 

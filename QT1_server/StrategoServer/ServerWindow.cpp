@@ -40,7 +40,7 @@ void ServerWindow::setDataReceived(QString data){
 void ServerWindow::displayVariables(){
     scene->clear();
     //create middle panel
-    drawPanel(this->width()/2 - 800/2, 5, 800, 430, QColor(237, 214, 181), 1);
+    drawPanel(this->width()/2 - 800/2, 5, 800, 530, QColor(237, 214, 181), 1);
 
     //create the title text
     QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Stratego"));

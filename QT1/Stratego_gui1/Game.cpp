@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Button.h"
+#include "Textbox.h"
 #include "tcpsocket.h"
 
 #include <QMouseEvent>
@@ -7,8 +8,6 @@
 #include <QBrush>
 
 #include <QDebug>
-
-extern TCPsocket* clientSocket; //import global variable
 
 Game::Game(QWidget *parent){ //constructor
     //Set up the screen
@@ -25,6 +24,8 @@ Game::Game(QWidget *parent){ //constructor
     SendMessage = QString("");
     ArePiecesSetUp = false; //pieces not setup initially
     pieceToPlace = NULL; //no piece to place initially
+
+    ThisClientSocket = new TCPsocket(); //connect later in ready button
 }
 
 void Game::start(){
@@ -44,8 +45,8 @@ void Game::ready(){
         SetUpMessage();
         qDebug() << SendMessage;
         qDebug() << "Message length: " << SendMessage.length();
-        clientSocket->Connect(); //connect to socket(if not connected)
-        clientSocket->writeData(SendMessage);
+
+        ThisClientSocket->writeData(SendMessage);
     }
 }
 
@@ -61,12 +62,13 @@ void Game::setUpDefaultPositions(){
 }
 
 void Game::displayMainMenu(){
+    scene->clear();
     //create middle panel
     drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
 
 
     //create the title text
-    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Stratego"));
+    titleText = new QGraphicsTextItem(QString("Stratego"));
     QFont titleFont("GothicI", 50); //set font and size
     titleText->setFont(titleFont);
     int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
@@ -75,7 +77,7 @@ void Game::displayMainMenu(){
     scene->addItem(titleText);
 
     //create the New Game button
-    Button* ngButton = new Button(QString("New Game"), 200, 50);
+    ngButton = new Button(QString("New Game"), 200, 50);
     int xngButton = this->width()/2 - ngButton->boundingRect().width()/2;
     int yngButton = 100 + titleText->boundingRect().height() + 25;
     ngButton->setPos(xngButton, yngButton);
@@ -83,28 +85,63 @@ void Game::displayMainMenu(){
     scene->addItem(ngButton);
 
     //create the Join Game button
-    Button* jgButton = new Button(QString("Join Game"), 200, 50);
+    jgButton = new Button(QString("Join Game"), 200, 50);
     int xjgButton = xngButton;
     int yjgButton = yngButton + 75;
     jgButton->setPos(xjgButton, yjgButton);
-    connect(jgButton, SIGNAL(clicked()), this, SLOT(start()));
+    connect(jgButton, SIGNAL(clicked()), this, SLOT(joinRoom()));
     scene->addItem(jgButton);
 
     //create the instructions button
-    Button* instButton = new Button(QString("Instructions"), 200, 50);
+    instButton = new Button(QString("Instructions"), 200, 50);
     int xinstButton = xngButton;
     int yinstButton = yjgButton + 75;
     instButton->setPos(xinstButton, yinstButton);
     scene->addItem(instButton);
 
     //create the quit button
-    Button* quitButton = new Button(QString("Quit"), 200, 50);
+    quitButton = new Button(QString("Quit"), 200, 50);
     int xqButton = xngButton;
     int yqButton = yinstButton + 75;
     quitButton->setPos(xqButton, yqButton);
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     scene->addItem(quitButton);
 }
+
+void Game::joinRoom(){
+    ThisClientSocket->Connect(); //connect to socket(if not connected)
+    scene->removeItem(ngButton);
+    scene->removeItem(jgButton);
+    scene->removeItem(instButton);
+    scene->removeItem(quitButton);
+
+    //Create Room name text
+    roomText = new QGraphicsTextItem(QString("Room name:"));
+    QFont roomFont("Sans Serif 10", 20); //set font and size
+    roomText->setFont(roomFont);
+    int xRoom = this->width()/2 - roomText->boundingRect().width()/2;
+    int yRoom = titleText->pos().y() + titleText->boundingRect().height() + 10;
+    roomText->setPos(xRoom, yRoom);
+    scene->addItem(roomText);
+
+    //create textBox to write Room number
+    roomTextbox = new Textbox(QString("Number"), 90, 50);
+    int xRoomTextBox = xRoom;
+    int yRoomTextBox = yRoom + 50;
+    roomTextbox->setPos(xRoomTextBox, yRoomTextBox);
+    scene->addItem(roomTextbox);
+
+    //create back to menu button
+    Button* backButton = new Button(QString("Back"), 100, 50);
+    int xbackButton = scene->width() - 150/2 - backButton->boundingRect().width()/2;
+    int ybackButton = scene->height() - 5 - backButton->boundingRect().height();
+    backButton->setPos(xbackButton, ybackButton);
+    connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
+    scene->addItem(backButton);
+
+
+}
+
 
 QString Game::getTurn(){
     return Turn;
@@ -404,6 +441,7 @@ bool Game::ArePiecesPlaced(){
 }
 
 void Game::SetUpMessage(){ //Initial Pieces setup message to send to the server
+    SendMessage = QString("SETUP");
     for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
         int xPosition = (UnassignedUnplacedPieces[i]->pos().x() - 155)/55;
         int yPosition = (UnassignedUnplacedPieces[i]->pos().y() - 23)/55;
