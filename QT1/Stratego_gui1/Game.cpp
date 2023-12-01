@@ -390,7 +390,9 @@ void Game::pickUpPiece(Piece* piece){
 void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty pieces
     qDebug() << "Pieces placed? -> " << ArePiecesPlaced();
     qDebug() << "Unassigned list size-> " << UnassignedUnplacedPieces[39];
-    if (getArePiecesSetUp() == false){    //if pieces not setup yet
+
+
+    if (getArePiecesSetUp() == false){    //if pieces not setup yet, a piece can be placed anywhere in the stup area
         if(pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if in initial squares
             //replace specified piece with pieceToPlace
             pieceToPlace->setPos(pieceToReplace->pos());
@@ -400,10 +402,13 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
             pieceToPlace = NULL; //piece already placed
         }
     }
+
+
     //make it the next players turn if piece was placed
     if (pieceToPlace == NULL){
         //nextPlayersTurn(); COMMENTED, CHANGE LATER
     }
+
 }
 
 void Game::nextPlayersTurn(){
