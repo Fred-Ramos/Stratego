@@ -85,6 +85,21 @@ void Game::loginGame(){
     titleText->setPos(xTitle, yTitle);
     scene->addItem(titleText);
 
+    //Create retry connection button
+    retryConButton = new Button(QString("Retry"), 50, 25);
+    int xretryConButton = this->width()/2 - 300/2 + 5;
+    int yretryConButton = titleText->pos().y() + titleText->boundingRect().height() - 10;
+    retryConButton->setPos(xretryConButton, yretryConButton);
+    connect(retryConButton, SIGNAL(clicked()), ThisClientSocket, SLOT(Connect()));
+    scene->addItem(retryConButton);
+
+    //Create Connection state text
+    int xConStateText = xretryConButton + retryConButton->boundingRect().width() + 5;
+    int yConStateText = yretryConButton;
+    ThisClientSocket->ConnectionToServerStateText->setPos(xConStateText, yConStateText);
+    scene->addItem(ThisClientSocket->ConnectionToServerStateText);
+
+
     qDebug() << "2";
 
     //Create Login Name text
@@ -93,7 +108,7 @@ void Game::loginGame(){
     loginFont.setBold(true);
     loginNameText->setFont(loginFont);
     int xLoginNameText = xPanel + 5;
-    int yLoginNameText = yPanel + titleText->boundingRect().height() + 5;
+    int yLoginNameText = yConStateText + ThisClientSocket->ConnectionToServerStateText->boundingRect().height() + 5;
     loginNameText->setPos(xLoginNameText, yLoginNameText);
     scene->addItem(loginNameText);
 
@@ -268,10 +283,6 @@ void Game::displayMainMenu(){
 
 void Game::createRoom(){
     ThisClientSocket->Connect(); //connect to socket(if not connected)
-//    scene->removeItem(ngButton);
-//    scene->removeItem(jgButton);
-//    scene->removeItem(instButton);
-//    scene->removeItem(quitButton);
 
     //clean unnecessary items
     QList<QGraphicsItem *> items = scene->items();
