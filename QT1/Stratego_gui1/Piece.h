@@ -1,0 +1,40 @@
+#ifndef PIECE_H
+#define PIECE_H
+
+#include <QGraphicsRectItem>
+#include <QGraphicsSceneMouseEvent>
+
+class Piece: public QGraphicsRectItem{ //Piece is a QT rectangle
+public:
+    // constructors
+    Piece(QGraphicsItem* parent = NULL);
+
+    // getters
+    QString getRank();
+    bool getIsPlaced();
+    QString getOwner();
+
+
+    //event
+    void mousePressEvent(QGraphicsSceneMouseEvent* event); //when clicking on a piece
+
+    //setters
+    void setRank(QString r);
+    void setOwner(QString player);
+    void setIsPlaced(bool p);
+
+    void setVisible(bool v); //set rank visible or not
+
+    //atributes
+    QPointF originalPos;
+    int originalZ;
+
+
+private:
+    bool isPlaced; //placed or not
+    QString owner; //belongs to which player
+    QString rank; //get piece rank/type
+    QGraphicsTextItem* rankText;
+};
+
+#endif // PIECE_H

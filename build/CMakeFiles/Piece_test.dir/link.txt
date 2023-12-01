@@ -1,2 +1,0 @@
-C:\msys64\mingw64\bin\ar.exe qc libPiece_test.a CMakeFiles/Piece_test.dir/logic/piece.cpp.obj CMakeFiles/Piece_test.dir/logic/board.cpp.obj CMakeFiles/Piece_test.dir/logic/game.cpp.obj
-C:\msys64\mingw64\bin\ranlib.exe libPiece_test.a
