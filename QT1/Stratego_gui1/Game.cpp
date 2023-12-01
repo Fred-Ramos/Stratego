@@ -66,6 +66,7 @@ void Game::setUpDefaultPositions(){
 }
 
 void Game::loginGame(){
+    ThisClientSocket->Connect(); //connect to socket(if not connected)
     qDebug() << "1";
 
     //create middle panel
@@ -206,7 +207,6 @@ void Game::waitForRegister(){
 }
 
 void Game::displayMainMenu(){
-    //scene->clear();
     //clean unnecessary items
     QList<QGraphicsItem *> items = scene->items();
     for(QGraphicsItem *item : items) {
@@ -227,6 +227,7 @@ void Game::displayMainMenu(){
     int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
     int yTitle = 100;
     titleText->setPos(xTitle, yTitle);
+    titleText->setZValue(1);
     scene->addItem(titleText);
 
     //create the New Game button
@@ -234,6 +235,7 @@ void Game::displayMainMenu(){
     int xngButton = this->width()/2 - ngButton->boundingRect().width()/2;
     int yngButton = 100 + titleText->boundingRect().height() + 25;
     ngButton->setPos(xngButton, yngButton);
+    ngButton->setZValue(1);
     connect(ngButton, SIGNAL(clicked()), this, SLOT(createRoom()));
     scene->addItem(ngButton);
 
@@ -242,6 +244,7 @@ void Game::displayMainMenu(){
     int xjgButton = xngButton;
     int yjgButton = yngButton + 75;
     jgButton->setPos(xjgButton, yjgButton);
+    jgButton->setZValue(1);
     connect(jgButton, SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(jgButton);
 
@@ -250,6 +253,7 @@ void Game::displayMainMenu(){
     int xinstButton = xngButton;
     int yinstButton = yjgButton + 75;
     instButton->setPos(xinstButton, yinstButton);
+    instButton->setZValue(1);
     scene->addItem(instButton);
 
     //create the quit button
@@ -257,16 +261,28 @@ void Game::displayMainMenu(){
     int xqButton = xngButton;
     int yqButton = yinstButton + 75;
     quitButton->setPos(xqButton, yqButton);
+    quitButton->setZValue(1);
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
     scene->addItem(quitButton);
 }
 
 void Game::createRoom(){
     ThisClientSocket->Connect(); //connect to socket(if not connected)
-    scene->removeItem(ngButton);
-    scene->removeItem(jgButton);
-    scene->removeItem(instButton);
-    scene->removeItem(quitButton);
+//    scene->removeItem(ngButton);
+//    scene->removeItem(jgButton);
+//    scene->removeItem(instButton);
+//    scene->removeItem(quitButton);
+
+    //clean unnecessary items
+    QList<QGraphicsItem *> items = scene->items();
+    for(QGraphicsItem *item : items) {
+        if(item != titleText && item != retryConButton && item != roomText && item != roomTextbox && item != createRoomButton && item != waitingJoinText && item != backButton ) {
+            scene->removeItem(item);
+        }
+    }
+
+    //create middle panel
+    drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
 
     //Create retry connection button
     retryConButton = new Button(QString("Retry"), 50, 25);
@@ -426,6 +442,7 @@ void Game::mousePressEvent(QMouseEvent *event){
 void Game::drawPanel(int x, int y, int width, int height, QColor color, double opacity){
     //draws panelat specified location with specified properties
     QGraphicsRectItem* panel = new QGraphicsRectItem(x, y, width, height);
+    panel->setZValue(0);
     QBrush brush;
     brush.setStyle(Qt::SolidPattern); //set panel color
     brush.setColor(color);
