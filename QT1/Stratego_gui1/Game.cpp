@@ -381,7 +381,7 @@ void Game::pickUpPiece(Piece* piece){
         pieceToPlace = piece;
         if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
            piece->originalPos = piece->pos();
-            piece->originalZ = piece->zValue();
+           piece->originalZ = piece->zValue();
         }
         return;
     }

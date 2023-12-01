@@ -25,24 +25,8 @@ void TCPServer::onNewConnection(){ //handle connections while they come in
     QTcpSocket* socket = server->nextPendingConnection();
     QString connectionIP = socket->peerAddress().toString();
     QString connectionSourcePort = QString::number(socket->peerPort());
-    qDebug() << "New client connected: " << connectionIP << " on port: " << connectionSourcePort;
 
-    bool found = false;
-    for(Player *player : players) {
-        if(player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
-            // Search for player
-            qDebug() << "Player found";
-            found = true;
-            break;
-        }
-    }
-
-    if(!found) {                //if not found
-        // Create a new player
-        qDebug() << "New player added";
-        Player* newPlayer = new Player(connectionIP, connectionSourcePort);
-        players.append(newPlayer); //add to players list
-    }
+    qDebug() << "New client connected: " << connectionIP << " from port: " << connectionSourcePort;
 
     connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onClientDisconnected()));
@@ -63,15 +47,15 @@ void TCPServer::onNewConnection(){ //handle connections while they come in
 
 void TCPServer::onReadyRead(){
     QTcpSocket *senderSocket = dynamic_cast<QTcpSocket*>(sender());
+    QString connectionIP = senderSocket->peerAddress().toString();
+    QString connectionSourcePort = QString::number(senderSocket->peerPort());
+
+    qDebug() << "New data from client: " << connectionIP << " from port: " << connectionSourcePort;
+
     if(senderSocket) {
         QByteArray data = senderSocket->readAll();
         receivedfromClientData = QString::fromUtf8(data);
-//        if(receivedfromClientData.left(5) == QString("SETUP")){
-
-//        }
-
-        serverwindow->setDataReceived(receivedfromClientData);
-        // Now we can use strData
+        serverwindow->setDataReceived(connectionIP, connectionSourcePort, receivedfromClientData); // Now we can use the data
     }
 }
 

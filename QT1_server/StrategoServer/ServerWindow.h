@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QMouseEvent>
 
+#include <QtSql/QSqlDatabase>
+
 class ServerWindow: public QGraphicsView{ //Already inherits from Q_object, inside Qgrapicsview
     Q_OBJECT
 public:
@@ -16,7 +18,7 @@ public:
 
     //public methods
     void displayVariables();
-    void setDataReceived(QString data);
+    void setDataReceived(QString ip, QString port, QString data);
 
     //public attributes
     QGraphicsScene* scene;
@@ -25,11 +27,14 @@ public slots:
 
 
 private:
+    //database
+    QSqlDatabase database;
     //private methods
     void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
 
     QGraphicsTextItem* ConnectionStateText; //QT text of the connection state
-    QGraphicsTextItem* dataReceivedText; //QT text of the lasta data received
+    QGraphicsTextItem* dataReceivedText; //QT text of the last data received
+    QGraphicsTextItem* dataReceivedIpPortText; //QT text of the source ip and port of the data
 
 };
 

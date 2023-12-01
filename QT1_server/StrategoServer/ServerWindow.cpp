@@ -6,6 +6,11 @@
 #include <QGraphicsTextItem>
 #include <QBrush>
 
+#include <QDir>
+#include <QStandardPaths>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+
 #include <QDebug>
 
 extern TCPServer* gameServer;      //global variable
@@ -16,6 +21,32 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(855, 573);
 
+    //set up directory to save files
+    QString documentsPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation); //Get path to documents folder
+    QDir dir(documentsPath + "/StrategoGame"); //folder to look for
+    if (!dir.exists()){
+        dir.mkpath("."); //if folder doesnt exist in this machine, create one
+    }
+
+    // Create the database inside the directory
+    database = QSqlDatabase::addDatabase("QSQLITE"); //create database to store passwords(doesnt overwrite previous database, if there is one)
+    database.setDatabaseName(dir.filePath("StrategoGame.db"));
+
+    // Check database connection
+    if (database.open()) {
+        qDebug() << "Database: connection ok";
+    }
+    else {
+        qDebug() << "Error: connection with database fail";
+    }
+
+    //create user table in database
+    QSqlQuery query(database);
+    query.exec("CREATE TABLE IF NOT EXISTS Users (username TEXT, password TEXT)");
+
+
+
+
     //set up the scene
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 855, 573); //scene same size of the screen
@@ -24,7 +55,8 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
     ConnectionStateText = new QGraphicsTextItem();
     setConnectionState("nothing");
     dataReceivedText = new QGraphicsTextItem();
-    setDataReceived(" ");
+    dataReceivedIpPortText = new QGraphicsTextItem();
+    setDataReceived(" ", " ", " ");
 }
 
 void ServerWindow::setConnectionState(QString state){
@@ -32,9 +64,50 @@ void ServerWindow::setConnectionState(QString state){
     ConnectionStateText->setPlainText(QString("Connection state: ") + state);
 }
 
-void ServerWindow::setDataReceived(QString data){
+void ServerWindow::setDataReceived(QString ip, QString port, QString data){
     //change QGraphicsTextItem
     dataReceivedText->setPlainText(QString("Last data received: ") + data);
+    dataReceivedIpPortText->setPlainText(QString("IP: ") + ip + QString(" | Source Port: ") + port);
+    if (data.left(5) == QString("REGIS")){
+        //read pretended username and password
+        int changeIndex = data.indexOf("|");
+        QString thisUserName = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
+        QString thisPassword = data.mid(changeIndex + 1, data.size() - 1 - changeIndex);
+        qDebug() << thisUserName;
+        qDebug() << thisPassword;
+
+        //Add username and password to database
+        QSqlQuery query(database);                                                                //Create query
+        query.prepare("INSERT INTO Users (username, password) VALUES (:username, :password)");    //prepare a insert in users table command
+        query.bindValue(":username", thisUserName);                                               //bind pretended username
+        query.bindValue(":password", thisPassword);                                               //bind pretended password
+        query.exec();                                                                             //execute
+
+
+    }
+    else if (data.mid(0,5) == QString("LOGIN")){
+        //read pretended username and password
+        int changeIndex = data.indexOf("|");
+        QString thisUserName = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
+        QString thisPassword = data.mid(changeIndex + 1, data.size() - 1 - changeIndex);
+        qDebug() << thisUserName;
+        qDebug() << thisPassword;
+
+        //check if username and password exist and match
+        QSqlQuery query(database);                                                                     //Create query
+        query.prepare("SELECT * FROM Users WHERE username = :username AND password = :password");      //prepares a SELECT command to select all rows from the Users table
+        query.bindValue(":username", thisUserName);                                                    //bind pretended username
+        query.bindValue(":password", thisPassword);                                                    //bind pretended password
+        query.exec();                                                                                  //execute
+
+        if (query.next()) { //there is a row with matched username and password
+            qDebug() << "username/password correct"; // The username and password exist and match in the database.
+        }
+        else {
+            qDebug() << "username/password incorrect" ; // The username and password do not exist or do not match in the database.
+        }
+
+    }
 }
 
 void ServerWindow::displayVariables(){
@@ -61,14 +134,26 @@ void ServerWindow::displayVariables(){
     scene->addItem(serverText);
 
     //display connectionstate
-    ConnectionStateText->setPos(this->width()/2 - 825/2 + 5, yServer + 25);
+    int xCon = this->width()/2 - 825/2 + 5;
+    int yCon = yServer + 25;
+    ConnectionStateText->setPos(xCon, yCon);
     QFont infoFont("Segoe", 6); //set font and size
     ConnectionStateText->setFont(infoFont);
     scene->addItem(ConnectionStateText);
 
-    dataReceivedText->setPos(this->width()/2 - 825/2 + 5, yServer + 50);
+    //display last recieved data
+    int xDataText = this->width()/2 - 825/2 + 5;
+    int yDataText = yCon + 15;
+    dataReceivedText->setPos(xDataText, yDataText);
     dataReceivedText->setFont(infoFont);
     scene->addItem(dataReceivedText);
+
+    //data received ip and source port
+    int xIpPortText = xDataText;
+    int yIpPortText = yDataText + 15;
+    dataReceivedIpPortText->setPos(xIpPortText, yIpPortText);
+    dataReceivedIpPortText->setFont(infoFont);
+    scene->addItem(dataReceivedIpPortText);
 
 
     //create the quit button
