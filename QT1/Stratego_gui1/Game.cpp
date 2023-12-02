@@ -380,7 +380,7 @@ void Game::pickUpPiece(Piece* piece){
         piece->setZValue(10);
         pieceToPlace = piece;
         if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
-           piece->originalPos = piece->pos();
+            piece->originalPos = piece->pos();
             piece->originalZ = piece->zValue();
         }
         return;
@@ -398,6 +398,179 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
             pieceToPlace->setIsPlaced(true); //piece is now placed
             //removeFromPanel(pieceToPlace, getTurn());
             pieceToPlace = NULL; //piece already placed
+        }
+    }else if(getArePiecesSetUp() == true){
+        if(pieceToPlace->getRank() == "2"){ //scout
+            if(pieceToReplace->getRank() == "N"){ // empty square
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+            if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+            if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(0);
+                    pieceToReplace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(0);
+                    pieceToReplace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+            if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
+                    pieceToPlace->setZValue(-1);
+                    pieceToReplace->setZValue(-1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                    pieceToPlace->setZValue(-1);
+                    pieceToReplace->setZValue(-1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+        }
+        if(pieceToPlace->getRank() == "3" || pieceToPlace->getRank() == "4" || pieceToPlace->getRank() == "5" ||
+           pieceToPlace->getRank() == "6" || pieceToPlace->getRank() == "7" || pieceToPlace->getRank() == "8" ||
+           pieceToPlace->getRank() == "9" || pieceToPlace->getRank() == "10" || pieceToPlace->getRank() == "1"){ //other pieces
+            if(pieceToReplace->getRank() == 'N'){ // empty square
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+            if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+            if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(0);
+                    pieceToReplace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(0);
+                    pieceToReplace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(0);
+                    pieceToReplace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(0);
+                    pieceToReplace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+            if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
+                    pieceToPlace->setZValue(-1);
+                    pieceToReplace->setZValue(-1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                    pieceToReplace->setZValue(-1);
+                    pieceToPlace->setZValue(-1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                    pieceToReplace->setZValue(-1);
+                    pieceToPlace->setZValue(-1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                    pieceToPlace->setZValue(-1);
+                    pieceToReplace->setZValue(-1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
         }
     }
     //make it the next players turn if piece was placed

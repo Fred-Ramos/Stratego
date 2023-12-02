@@ -1,0 +1,9 @@
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/Stratego_gui1.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/install.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/Stratego_gui1_autogen_timestamp_deps.dir
+C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/Stratego_gui1_autogen.dir
