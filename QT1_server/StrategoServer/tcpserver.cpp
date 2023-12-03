@@ -50,7 +50,7 @@ void TCPServer::onNewConnection(){ //handle connections while they come in
     socket->waitForBytesWritten(3000);
 }
 
-//QString clientKey = socket->peerAddress().toString() + ":" + QString::number(socket->peerPort()); ADD IDENTIFIER???
+//QString clientID = socket->peerAddress().toString() + ":" + QString::number(socket->peerPort()); ADD IDENTIFIER???
 
 
 void TCPServer::onReadyRead(){

@@ -89,11 +89,6 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         qDebug() << thisUsername;
         qDebug() << thisPassword;
         ResponseMessage = setRegisterResponse(thisUsername, thisPassword);
-        if (ResponseMessage == QString("LOGCO")){
-            //create player for this server session
-            Player* player = new Player(thisUsername, connectionIP, connectionSourcePort);
-            Players.append(player); //add player to list
-        }
         gameServer->writeToClient(socket, ResponseMessage);
     }
     else if (data.mid(0,5) == QString("LOGIN")){
@@ -104,15 +99,28 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         qDebug() << thisUsername;
         qDebug() << thisPassword;
         ResponseMessage = setLoginResponse(thisUsername, thisPassword); //run new login function
+
+        if (ResponseMessage == QString("LOGCO")){
+            qDebug() << "response being sent, new player being added";
+            Player* newplayer;
+            newplayer = new Player(thisUsername, connectionIP, connectionSourcePort);
+            Players.append(newplayer);
+            qDebug() << Players.size();
+
+        }
         gameServer->writeToClient(socket, ResponseMessage);
     }
     else if (data.mid(0,5) == QString("SETRO")){ //set room
+        qDebug() << "Room message received";
+        qDebug() << "number of players: " << Players.size();
         for (Player* player : Players) {
+            qDebug() << "Running through player's IPs: " << player->getIP();
             if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
                 // Found player with the given IP and source, set its game room
-                setRoomResponse(player, data);
+                ResponseMessage = setRoomResponse(player, data);
             }
         }
+        gameServer->writeToClient(socket, ResponseMessage);
     }
 
 
@@ -229,7 +237,19 @@ QString ServerWindow::setRegisterResponse(QString receivedUsername, QString rece
 }
 
 QString ServerWindow::setRoomResponse(Player* player, QString data){
-    return QString("mudaristo");
+    int endIndex = data.indexOf("|");
+    QString thisRoom = data.mid(5, endIndex - 1); //from position 5, read "changeIndex - 5" characters
+    qDebug() << "New Room: " << thisRoom;
+
+    for (Player* player : Players) {
+        if (player->getRoom() == thisRoom ) {
+            // Found player with pretended room
+            return QString("ROCFA"); //Room already ocuped, failed
+        }
+    }
+
+    player->setRoom(thisRoom);
+    return QString("ROCSU"); //Room creation sucessfull
 }
 
 
