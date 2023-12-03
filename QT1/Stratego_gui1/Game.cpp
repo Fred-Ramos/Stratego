@@ -281,6 +281,38 @@ void Game::displayMainMenu(){
     scene->addItem(quitButton);
 }
 
+void Game::displayGameOver(){
+    //clean unnecessary items
+    QList<QGraphicsItem *> items = scene->items();
+    for(QGraphicsItem *item : items) {
+        if(item != titleText || item != ngButton || item != jgButton || item != instButton || item != quitButton) {
+            scene->removeItem(item);
+        }
+    }
+
+    //create middle panel
+    drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
+
+    //create the title text
+    titleText = new QGraphicsTextItem(QString("GAME OVER"));
+    QFont titleFont("GothicI", 50); //set font and size
+    titleText->setFont(titleFont);
+    int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
+    int yTitle = 100;
+    titleText->setPos(xTitle, yTitle);
+    titleText->setZValue(1);
+    scene->addItem(titleText);
+
+    //create the Back button
+    backButton = new Button(QString("Back"), 200, 50);
+    int xbackButton = this->width()/2 - backButton->boundingRect().width()/2;
+    int ybackButton = 100 + titleText->boundingRect().height() + 25;
+    backButton->setPos(xbackButton, ybackButton);
+    backButton->setZValue(1);
+    connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
+    scene->addItem(backButton);
+}
+
 void Game::createRoom(){
     ThisClientSocket->Connect(); //connect to socket(if not connected)
 
@@ -408,28 +440,28 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
             }
-            if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
+            else if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
                 if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
             }
-            if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
+            else if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
                 if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(0);
@@ -437,7 +469,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(0);
                     pieceToReplace->setZValue(1);
@@ -445,14 +477,14 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                     pieceToPlace = NULL;
                 }
             }
-            if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
+            else if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
                 if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
                     pieceToPlace->setZValue(-1);
                     pieceToReplace->setZValue(-1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
                     pieceToPlace->setZValue(-1);
                     pieceToReplace->setZValue(-1);
                     pieceToPlace->setIsPlaced(true);
@@ -460,7 +492,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                 }
             }
         }
-        if(pieceToPlace->getRank() == "3" || pieceToPlace->getRank() == "4" || pieceToPlace->getRank() == "5" ||
+        else if(pieceToPlace->getRank() == "3" || pieceToPlace->getRank() == "4" || pieceToPlace->getRank() == "5" ||
            pieceToPlace->getRank() == "6" || pieceToPlace->getRank() == "7" || pieceToPlace->getRank() == "8" ||
            pieceToPlace->getRank() == "9" || pieceToPlace->getRank() == "10" || pieceToPlace->getRank() == "1"){ //other pieces
             if(pieceToReplace->getRank() == 'N'){ // empty square
@@ -470,52 +502,52 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-            }
-            if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
             }
-            if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
+            else if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
+                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                    pieceToPlace->setPos(pieceToReplace->pos());
+                    pieceToPlace->setZValue(1);
+                    pieceToPlace->setIsPlaced(true);
+                    pieceToPlace = NULL;
+                }
+            }
+            else if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
                 if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(0);
@@ -523,21 +555,21 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(0);
                     pieceToReplace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(0);
                     pieceToReplace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(0);
                     pieceToReplace->setZValue(1);
@@ -545,26 +577,26 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                     pieceToPlace = NULL;
                 }
             }
-            if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
+            else if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
                 if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
                     pieceToPlace->setZValue(-1);
                     pieceToReplace->setZValue(-1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
                     pieceToReplace->setZValue(-1);
                     pieceToPlace->setZValue(-1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
                     pieceToReplace->setZValue(-1);
                     pieceToPlace->setZValue(-1);
                     pieceToPlace->setIsPlaced(true);
                     pieceToPlace = NULL;
                 }
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
+                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
                     pieceToPlace->setZValue(-1);
                     pieceToReplace->setZValue(-1);
                     pieceToPlace->setIsPlaced(true);

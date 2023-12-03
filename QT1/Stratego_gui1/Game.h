@@ -39,6 +39,7 @@ public slots:
     void waitForLogin();
     void waitForRegister();
     void displayMainMenu();
+    void displayGameOver();
     void createRoom();
     void waitForJoin();
     void start();
