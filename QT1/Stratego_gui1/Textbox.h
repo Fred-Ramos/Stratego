@@ -10,7 +10,7 @@
 class Textbox:public QObject, public QGraphicsRectItem{
     Q_OBJECT
 public:
-    Textbox(int maxlength, int textsize, int width, int height, QGraphicsItem* parent = NULL);
+    Textbox(int maxlength, int textsize, bool visibility, int width, int height, QGraphicsItem* parent = NULL);
 
     //public methods
 
@@ -28,6 +28,8 @@ public:
 signals:
     void clicked();
 private:
+    //private attributes
+    bool isVisible;
     QString thisToWrite;
     QGraphicsTextItem* thisToWriteText;
     int thisTextSize;

@@ -1,5 +1,6 @@
 #include "ServerWindow.h"
 #include "tcpserver.h"
+#include "player.h"
 #include "Button.h"
 
 #include <QMouseEvent>
@@ -45,6 +46,10 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
     query.exec("CREATE TABLE IF NOT EXISTS Users (username TEXT, password TEXT)");
 
 
+    //delete usernames and passwords if needed:
+    query.exec("DELETE FROM Users");
+
+
 
 
     //set up the scene
@@ -54,9 +59,8 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
 
     ConnectionStateText = new QGraphicsTextItem();
     setConnectionState("nothing");
-    dataReceivedText = new QGraphicsTextItem();
-    dataReceivedIpPortText = new QGraphicsTextItem();
-    setDataReceived(" ", " ", " ");
+    dataReceivedText = new QGraphicsTextItem(QString(""));
+    dataReceivedIpPortText = new QGraphicsTextItem(QString(""));
 }
 
 void ServerWindow::setConnectionState(QString state){
@@ -64,50 +68,54 @@ void ServerWindow::setConnectionState(QString state){
     ConnectionStateText->setPlainText(QString("Connection state: ") + state);
 }
 
-void ServerWindow::setDataReceived(QString ip, QString port, QString data){
+void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
+    QString connectionIP = socket->peerAddress().toString();              //see source ip
+    QString connectionSourcePort = QString::number(socket->peerPort());   //see source port
+
+    qDebug() << "New data from client: " << connectionIP << " from port: " << connectionSourcePort;
+
+    QString ResponseMessage;
+
     //change QGraphicsTextItem
     dataReceivedText->setPlainText(QString("Last data received: ") + data);
-    dataReceivedIpPortText->setPlainText(QString("IP: ") + ip + QString(" | Source Port: ") + port);
+    dataReceivedIpPortText->setPlainText(QString("IP: ") + connectionIP + QString(" | Source Port: ") + connectionSourcePort);
+
+    //determine response to the client
     if (data.left(5) == QString("REGIS")){
         //read pretended username and password
         int changeIndex = data.indexOf("|");
-        QString thisUserName = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
+        QString thisUsername = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
         QString thisPassword = data.mid(changeIndex + 1, data.size() - 1 - changeIndex);
-        qDebug() << thisUserName;
+        qDebug() << thisUsername;
         qDebug() << thisPassword;
-
-        //Add username and password to database
-        QSqlQuery query(database);                                                                //Create query
-        query.prepare("INSERT INTO Users (username, password) VALUES (:username, :password)");    //prepare a insert in users table command
-        query.bindValue(":username", thisUserName);                                               //bind pretended username
-        query.bindValue(":password", thisPassword);                                               //bind pretended password
-        query.exec();                                                                             //execute
-
-
+        ResponseMessage = setRegisterResponse(thisUsername, thisPassword);
+        if (ResponseMessage == QString("LOGCO")){
+            //create player for this server session
+            Player* player = new Player(thisUsername, connectionIP, connectionSourcePort);
+            Players.append(player); //add player to list
+        }
+        gameServer->writeToClient(socket, ResponseMessage);
     }
     else if (data.mid(0,5) == QString("LOGIN")){
         //read pretended username and password
         int changeIndex = data.indexOf("|");
-        QString thisUserName = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
+        QString thisUsername = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
         QString thisPassword = data.mid(changeIndex + 1, data.size() - 1 - changeIndex);
-        qDebug() << thisUserName;
+        qDebug() << thisUsername;
         qDebug() << thisPassword;
-
-        //check if username and password exist and match
-        QSqlQuery query(database);                                                                     //Create query
-        query.prepare("SELECT * FROM Users WHERE username = :username AND password = :password");      //prepares a SELECT command to select all rows from the Users table
-        query.bindValue(":username", thisUserName);                                                    //bind pretended username
-        query.bindValue(":password", thisPassword);                                                    //bind pretended password
-        query.exec();                                                                                  //execute
-
-        if (query.next()) { //there is a row with matched username and password
-            qDebug() << "username/password correct"; // The username and password exist and match in the database.
-        }
-        else {
-            qDebug() << "username/password incorrect" ; // The username and password do not exist or do not match in the database.
-        }
-
+        ResponseMessage = setLoginResponse(thisUsername, thisPassword); //run new login function
+        gameServer->writeToClient(socket, ResponseMessage);
     }
+    else if (data.mid(0,5) == QString("SETRO")){ //set room
+        for (Player* player : Players) {
+            if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
+                // Found player with the given IP and source, set its game room
+                setRoomResponse(player, data);
+            }
+        }
+    }
+
+
 }
 
 void ServerWindow::displayVariables(){
@@ -175,5 +183,55 @@ void ServerWindow::drawPanel(int x, int y, int width, int height, QColor color, 
     panel->setOpacity(opacity); //set transparency of panel
     scene->addItem(panel);
 }
+
+QString ServerWindow::setLoginResponse(QString receivedUsername, QString receivedPassword){
+    //check if username and password exist and match
+    QSqlQuery query(database);                                                                     //Create query
+    query.prepare("SELECT * FROM Users WHERE username = :username AND password = :password");      //prepares a SELECT command to select all rows from the Users table
+    query.bindValue(":username", receivedUsername);                                                //bind pretended username
+    query.bindValue(":password", receivedPassword);                                                //bind pretended password
+    query.exec();                                                                                  //execute query
+
+    QString message;
+    if (query.next()) { //there is a row with matched username and password
+        qDebug() << "username/password correct"; // The username and password exist and match in the database.
+        message = "LOGCO"; //login correct
+        //if login correct, create new player with this name
+    }
+    else {
+        qDebug() << "username/password incorrect" ; // The username and password do not exist or do not match in the database.
+        message = "LOGFA"; //login failed
+    }
+    return message;
+}
+
+QString ServerWindow::setRegisterResponse(QString receivedUsername, QString receivedPassword){
+    //check if username exists
+    QSqlQuery query(database);                                                                     //Create query
+    query.prepare("SELECT * FROM Users WHERE username = :username");                               //prepares a SELECT command to select all rows from the Users table
+    query.bindValue(":username", receivedUsername);                                                //bind pretended username
+    query.exec();                                                                                  //execute query
+
+    QString message;
+    if (!query.next()) { //there isnt a row with matched username
+        query.prepare("INSERT INTO Users (username, password) VALUES (:username, :password)");     //prepare a insert in users table command
+        query.bindValue(":username", receivedUsername);                                            //bind pretended username
+        query.bindValue(":password", receivedPassword);                                            //bind pretended password
+        query.exec();                                                                              //rexecute created query
+        qDebug() << "New account registered"; //The username doesnt exist and new account is registered
+        message = "REGCO"; //register correct
+    }
+    else {
+        qDebug() << "Username already exists" ; // The username already exists and no new acount is registered
+        message = "REGFA"; //register failed
+    }
+    return message;
+}
+
+QString ServerWindow::setRoomResponse(Player* player, QString data){
+
+}
+
+
 
 

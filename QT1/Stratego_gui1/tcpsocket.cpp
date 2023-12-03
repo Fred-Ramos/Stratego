@@ -1,6 +1,10 @@
+#include "Game.h"
+
 #include "tcpsocket.h"
 
 #include <QGraphicsTextItem>
+
+extern Game* game; //import global variable
 
 TCPsocket::TCPsocket(QObject* parent){
     socket = new QTcpSocket(this);
@@ -45,6 +49,6 @@ void TCPsocket::onReadyRead(){
     // Read data from the socket
     QByteArray data = socket->readAll();
     QString receivedData = QString::fromUtf8(data);
-    qDebug() << "Received from server: " << receivedData;
+    game->setDataReceived(receivedData);
 }
 

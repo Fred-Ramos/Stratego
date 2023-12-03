@@ -25,6 +25,9 @@ public:
     void removeFromPanel(Piece* piece, QString player);
     bool getArePiecesSetUp();
 
+    //public network methods
+    void setDataReceived(QString data);
+
     //event
     void mouseMoveEvent(QMouseEvent* event); //when moving mouse in the game
     void mousePressEvent(QMouseEvent* event); //check if left or right click
@@ -57,13 +60,19 @@ private:
     void SetRoomMessage(QString room);
     void SetPiecesMessage();
 
+    //private network methods
+
     //private atributes
+    QString thisPlayerName;
+    bool LoggedIn;
     QString AccountName;
     QString AccountPassword;
 
     TCPsocket* ThisClientSocket;
     bool ArePiecesSetUp;
     QString Turn;                //string with which turn is it
+    QGraphicsTextItem* player1NameText;
+    QGraphicsTextItem* player2NameText;
     QGraphicsTextItem* TurnText; //QT text of the turn
     QList<Piece*> UnassignedUnplacedPieces; //List of pieces
     QString MessageToSend;

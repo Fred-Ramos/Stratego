@@ -4,16 +4,20 @@
 
 extern Game* game;
 
-Textbox::Textbox(int maxlength, int textsize, int width, int height, QGraphicsItem *parent){
-    thisTextSize = textsize;
-    textMaxLength = maxlength;
+Textbox::Textbox(int maxlength, int textsize, bool visibility, int width, int height, QGraphicsItem *parent){
+    //set visibility
+    isVisible = visibility;
+    //draw rectangle
     setRect(0, 0, width, height);
     setZValue(1);
+    //paint rectangle
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(QColor(237, 214, 181));
     setBrush(brush);
     //draw box text
+    thisTextSize = textsize;
+    textMaxLength = maxlength;
     thisToWrite = QString("");
     thisToWriteText = new QGraphicsTextItem(this);
     thisToWriteText->setPlainText(thisToWrite);
@@ -49,13 +53,17 @@ void Textbox::keyPressEvent(QKeyEvent *event){
         qDebug() << "number is being pressed";
         // The key pressed is a number
         thisToWrite.append(QString(event->text()));
-        thisToWriteText->setPlainText(thisToWrite);
         qDebug() << thisToWrite;
     }
     if (event->key() == Qt::Key_Backspace){
         thisToWrite.chop(1);
-        thisToWriteText->setPlainText(thisToWrite);
         qDebug() << thisToWrite;
+    }
+    if (isVisible == true){ //if intended to be visible, show written text
+        thisToWriteText->setPlainText(thisToWrite);
+    }
+    else{ //if not intended to be visible, show * instead of written text
+        thisToWriteText->setPlainText(QString("*").repeated(thisToWrite.size()));
     }
 }
 

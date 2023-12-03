@@ -13,5 +13,6 @@ int main(int argc, char *argv[])
 
     game->show();
     game->loginGame(); //start the game
+    //game->displayMainMenu();
     return a.exec();
 }

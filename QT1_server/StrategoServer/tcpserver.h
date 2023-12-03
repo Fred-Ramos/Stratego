@@ -15,6 +15,10 @@ public:
     explicit TCPServer(QObject* parent = 0);
 
     //public atributes
+
+    //public methods
+    int writeToClient(QTcpSocket* socket, QString data);
+
 signals:
 
 public slots:

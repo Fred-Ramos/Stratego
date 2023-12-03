@@ -1,9 +1,13 @@
 #ifndef SERVERWINDOW_H
 #define SERVERWINDOW_H
 
+#include "player.h"
+
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QMouseEvent>
+
+#include <QTcpSocket>
 
 #include <QtSql/QSqlDatabase>
 
@@ -18,7 +22,7 @@ public:
 
     //public methods
     void displayVariables();
-    void setDataReceived(QString ip, QString port, QString data);
+    void setDataReceived(QTcpSocket* socket, QString data);
 
     //public attributes
     QGraphicsScene* scene;
@@ -27,10 +31,21 @@ public slots:
 
 
 private:
+    //player this session data
+    QList<Player*> Players; //List of players
+
+
     //database
     QSqlDatabase database;
     //private methods
     void drawPanel(int x, int y, int width, int height, QColor color, double opacity);
+
+    QString setLoginResponse(QString receivedUsername, QString receivedPassword);
+
+    QString setRegisterResponse(QString receivedUsername, QString receivedPassword);
+
+    QString setRoomResponse(Player* player, QString data);
+
 
     QGraphicsTextItem* ConnectionStateText; //QT text of the connection state
     QGraphicsTextItem* dataReceivedText; //QT text of the last data received

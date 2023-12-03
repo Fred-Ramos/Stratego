@@ -28,6 +28,13 @@ Game::Game(QWidget *parent){ //constructor
     ThisClientSocket = new TCPsocket(); //connect later in ready button
 
     //initialize mainmenu attributes
+    LoggedIn = false;
+    waitingLoginText = new QGraphicsTextItem(QString(""));
+
+    //initialize game variables
+    player1NameText = new QGraphicsTextItem(QString(""));
+    player2NameText = new QGraphicsTextItem(QString(""));
+
 
 
 }
@@ -115,7 +122,7 @@ void Game::loginGame(){
     qDebug() << "3";
 
     //create textBox to write Login Name
-    loginNameTextbox = new Textbox(15, 15, 170, 25);
+    loginNameTextbox = new Textbox(15, 15, true, 170, 25);
     int xloginNameTextbox = xLoginNameText + loginNameText->boundingRect().width() + 2;
     int yloginNameTextbox = yLoginNameText;
     loginNameTextbox->setPos(xloginNameTextbox, yloginNameTextbox);
@@ -134,7 +141,7 @@ void Game::loginGame(){
     qDebug() << "5";
 
     //create textBox to write Login Password
-    loginPasswordTextbox = new Textbox(15, 15, 170, 25);
+    loginPasswordTextbox = new Textbox(15, 15, false, 170, 25);
     int xloginPasswordTextbox = xloginNameTextbox;
     int yloginPasswordTextbox = yLoginPasswordText;
     loginPasswordTextbox->setPos(xloginPasswordTextbox, yloginPasswordTextbox);
@@ -175,7 +182,8 @@ void Game::loginGame(){
 
 void Game::waitForLogin(){
     if (loginNameTextbox->getWriten().size() > 4 && loginPasswordTextbox->getWriten().size() > 4){
-        SetLoginMessage(true, loginNameTextbox->getWriten(), loginPasswordTextbox->getWriten());
+        thisPlayerName = loginNameTextbox->getWriten();
+        SetLoginMessage(true, thisPlayerName, loginPasswordTextbox->getWriten());
         //create message to send
         qDebug() << "Send new Login Message: " << MessageToSend;
         ThisClientSocket->writeData(MessageToSend);
@@ -188,7 +196,6 @@ void Game::waitForLogin(){
                 break;
             }
         }
-        waitingLoginText = new QGraphicsTextItem();
         waitingLoginText->setPlainText(QString("Name/Password have 5-15 digits"));
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
         int yLogin = 453 - 75 - 50;
@@ -212,7 +219,6 @@ void Game::waitForRegister(){
                 break;
             }
         }
-        waitingLoginText = new QGraphicsTextItem();
         waitingLoginText->setPlainText(QString("Registered Name/Password needs to have 5-15 digits"));
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
         int yLogin = 453 - 75 - 50;
@@ -319,7 +325,7 @@ void Game::createRoom(){
     scene->addItem(roomText);
 
     //create textBox to write Room number
-    roomTextbox = new Textbox(6, 15, 90, 25); //QString "number" does nothing, change later
+    roomTextbox = new Textbox(6, 15, true, 90, 25); //QString "number" does nothing, change later
     int xRoomTextBox = xRoom;
     int yRoomTextBox = yRoom + 50;
     roomTextbox->setPos(xRoomTextBox, yRoomTextBox);
@@ -474,15 +480,15 @@ void Game::drawGUI(){
     //draw right panel
     drawPanel(scene->width() - 145, 0, 145, scene->height(), QColor(237, 214, 181), 1);
 
-    //place red player text
-    QGraphicsTextItem* rplayer = new QGraphicsTextItem("Player 1 pieces");
-    rplayer->setPos(145/2 - rplayer->boundingRect().width()/2, 0);
-    scene->addItem(rplayer);
+    //place player 1 text
+    player1NameText->setPlainText(thisPlayerName);
+    player1NameText->setPos(145/2 - player1NameText->boundingRect().width()/2, 0);
+    scene->addItem(player1NameText);
 
-    //place blue player text
-    QGraphicsTextItem* bplayer = new QGraphicsTextItem("Player 2 pieces");
-    bplayer->setPos(scene->width() - 145/2 - bplayer->boundingRect().width()/2 , 0);
-    scene->addItem(bplayer);
+    //place player 2 text
+    player2NameText->setPlainText(QString("player2"));
+    player2NameText->setPos(scene->width() - 145/2 - player2NameText->boundingRect().width()/2 , 0);
+    scene->addItem(player2NameText);
 
     //place whose turn text
     TurnText = new QGraphicsTextItem(); //turn is changed in setTurn function
@@ -637,6 +643,10 @@ void Game::drawPieces(){
     //    }
 }
 
+bool Game::getArePiecesSetUp(){
+    return ArePiecesSetUp;
+}
+
 bool Game::ArePiecesPlaced(){
     for (size_t i = 0, n = UnassignedUnplacedPieces.size(); i < n; i++){
         if (UnassignedUnplacedPieces[i]->pos().x() < 150){ //if at least 1 piece still in panel, return false
@@ -676,7 +686,33 @@ void Game::SetRoomMessage(QString room){
     MessageToSend.append(room + "|");
 }
 
-
-bool Game::getArePiecesSetUp(){
-    return ArePiecesSetUp;
+//determines what to do with data from server
+void Game::setDataReceived(QString data){
+    qDebug() << "Received from server: " << data;
+    QString identifier = data.left(5);
+    if (identifier == QString("LOGFA")){
+        waitingLoginText->setPlainText(QString("Your Name or Password do not match")   );
+        int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
+        int yLogin = 453 - 75 - 50;
+        waitingLoginText->setPos(xLogin, yLogin);
+        scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
+    }
+    else if (identifier == QString("LOGCO")){
+        LoggedIn = true;
+        displayMainMenu();
+    }
+    else if (identifier == QString("REGFA")){
+        waitingLoginText->setPlainText(QString("Account with that name already exists")   );
+        int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
+        int yLogin = 453 - 75 - 50;
+        waitingLoginText->setPos(xLogin, yLogin);
+        scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
+    }
+    else if (identifier == QString("REGCO")){
+        waitingLoginText->setPlainText(QString("Account created sucessfuly")   );
+        int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
+        int yLogin = 453 - 75 - 50;
+        waitingLoginText->setPos(xLogin, yLogin);
+        scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
+    }
 }

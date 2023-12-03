@@ -5,23 +5,26 @@
 
 class Player{
 public:
-    Player(QString IP, QString SOURCEPORT);
+    Player(QString NAME, QString IP, QString SOURCEPORT);
 
     //setters
-    QString setIP();
-    QString setSourcePort();
+    void setIP(QString ip);
+    void setSourcePort(QString port);
+    void setRoom(QString room);
 
     //getters
     QString getIP();
     QString getSourcePort();
+    QString getRoom();
 
 
 
 private:
     //private attributes
-    QString name; //see later
-    QString ip;
-    QString sourcePort;
+    QString playerName; //see later
+    QString playerIp;
+    QString playerSourcePort;
+    QString playerRoom; //room player is playing at
 };
 
 #endif // PLAYER_H
