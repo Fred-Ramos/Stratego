@@ -229,7 +229,7 @@ QString ServerWindow::setRegisterResponse(QString receivedUsername, QString rece
 }
 
 QString ServerWindow::setRoomResponse(Player* player, QString data){
-
+    return QString("mudaristo");
 }
 
 
