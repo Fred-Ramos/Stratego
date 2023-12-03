@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
     //game->displayGameOver(); //start the game
 
-    //game->loginGame(); //start the game
-    game->displayMainMenu();
+    game->loginGame(); //start the game
+    //game->displayMainMenu();
     return a.exec();
 }

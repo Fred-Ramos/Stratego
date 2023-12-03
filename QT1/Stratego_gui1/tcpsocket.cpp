@@ -14,18 +14,36 @@ TCPsocket::TCPsocket(QObject* parent){
 
 void TCPsocket::Connect(){
     if (socket->state() != QAbstractSocket::ConnectedState) { //if not connected, connect
-        socket->connectToHost("127.0.0.1", 1234);
+        //look for local ip address
 
-        connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
-
-        if (socket->waitForConnected(2000)){ //wait 2 seconds to connect
-            ConnectionToServerStateText->setPlainText(QString("Server Connection: Connected"));
-            qDebug() << "Connected!";
-
+        QList<QHostAddress> allAddresses = QNetworkInterface::allAddresses();
+        QString localIP;
+        for (const QHostAddress &address : allAddresses) {
+            if (!address.isLoopback() && address.protocol() == QAbstractSocket::IPv4Protocol) {
+                localIP = address.toString();
+                break;
+            }
         }
-        else{
-            ConnectionToServerStateText->setPlainText(QString("Server Connection: Unsucessful Connection"));
-            qDebug() << "Not Connected!";
+
+
+
+        if (!localIP.isEmpty()) {
+            socket->connectToHost(localIP, 1234);
+
+            connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+
+            if (socket->waitForConnected(2000)){ //wait 2 seconds to connect
+                ConnectionToServerStateText->setPlainText(QString("Server Connection: Connected"));
+                qDebug() << "Connected!";
+
+            }
+            else{
+                ConnectionToServerStateText->setPlainText(QString("Server Connection: Unsucessful Connection"));
+                qDebug() << "Not Connected!";
+            }
+        } else {
+            ConnectionToServerStateText->setPlainText(QString("Server Connection: No non-localhost IPv4 address found"));
+            qDebug() << "No non-localhost IPv4 address found!";
         }
     }
 }

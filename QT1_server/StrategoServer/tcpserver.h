@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QNetworkInterface>
 
 class TCPServer: public QObject{
     Q_OBJECT
