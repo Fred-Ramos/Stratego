@@ -1,5 +1,4 @@
 #include "tcpserver.h"
-#include "player.h"
 #include "ServerWindow.h"
 
 extern ServerWindow* serverwindow; //import global variable
@@ -25,24 +24,8 @@ void TCPServer::onNewConnection(){ //handle connections while they come in
     QTcpSocket* socket = server->nextPendingConnection();
     QString connectionIP = socket->peerAddress().toString();
     QString connectionSourcePort = QString::number(socket->peerPort());
-    qDebug() << "New client connected: " << connectionIP << " on port: " << connectionSourcePort;
 
-    bool found = false;
-    for(Player *player : players) {
-        if(player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
-            // Search for player
-            qDebug() << "Player found";
-            found = true;
-            break;
-        }
-    }
-
-    if(!found) {                //if not found
-        // Create a new player
-        qDebug() << "New player added";
-        Player* newPlayer = new Player(connectionIP, connectionSourcePort);
-        players.append(newPlayer); //add to players list
-    }
+    qDebug() << "New client connected: " << connectionIP << " from port: " << connectionSourcePort;
 
     connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onClientDisconnected()));
@@ -56,25 +39,32 @@ void TCPServer::onNewConnection(){ //handle connections while they come in
 //QString clientKey = socket->peerAddress().toString() + ":" + QString::number(socket->peerPort()); ADD IDENTIFIER???
 
 
-
-
-
-
-
 void TCPServer::onReadyRead(){
-    QTcpSocket *senderSocket = dynamic_cast<QTcpSocket*>(sender());
+    QTcpSocket* senderSocket = dynamic_cast<QTcpSocket*>(sender());
+
     if(senderSocket) {
         QByteArray data = senderSocket->readAll();
-        receivedfromClientData = QString::fromUtf8(data);
-//        if(receivedfromClientData.left(5) == QString("SETUP")){
-
-//        }
-
-        serverwindow->setDataReceived(receivedfromClientData);
-        // Now we can use strData
+        receivedfromClientData = QString::fromUtf8(data); //tansform data to QString
+        serverwindow->setDataReceived(senderSocket, receivedfromClientData); // Now we can use the data
     }
 }
 
+int TCPServer::writeToClient(QTcpSocket* socket, QString data){
+    if(socket->state() == QAbstractSocket::ConnectedState){
+        QByteArray byteArray = data.toUtf8();        // convert QString to QByteArray
+        int bytesWritten = socket->write(byteArray); //write the data itself
+        socket->waitForBytesWritten();
+        return bytesWritten;
+    }
+    else
+        return -1; // return -1 or some other error code if the socket is not connected
+}
+
 void TCPServer::onClientDisconnected(){
-    serverwindow->setConnectionState("Client disconnected");
+    QTcpSocket *senderSocket = dynamic_cast<QTcpSocket*>(sender());
+    if(senderSocket) {
+        senderSocket->deleteLater(); // schedule the socket for deletion
+        // remove the socket from list of connected sockets
+    }
+    serverwindow->setConnectionState("Client disconnected"); //update client disconnected message in the scene
 }

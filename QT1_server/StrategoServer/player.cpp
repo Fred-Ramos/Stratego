@@ -1,16 +1,32 @@
 #include "player.h"
 
 
-Player::Player(QString IP, QString SOURCEPORT){
-    ip = IP;
-    sourcePort = SOURCEPORT;
+Player::Player(QString NAME, QString IP, QString SOURCEPORT){
+    playerName = NAME;
+    playerIp = IP;
+    playerSourcePort = SOURCEPORT;
+}
 
+void Player::setIP(QString ip){
+    playerIp = ip;
+}
+
+void Player::setSourcePort(QString port){
+    playerSourcePort = port;
+}
+
+void Player::setRoom(QString room){
+    playerRoom = room;
 }
 
 QString Player::getIP(){
-    return ip;
+    return playerIp;
 }
 
 QString Player::getSourcePort(){
-    return sourcePort;
+    return playerSourcePort;
+}
+
+QString Player::getRoom(){
+    return playerRoom;
 }
