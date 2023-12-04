@@ -339,18 +339,18 @@ void ServerWindow::setJoinRoomResponse(Player* thisPlayer, QTcpSocket* thisSocke
                 if (otherSocket != nullptr){ //if not null
                     double random = QRandomGenerator::global()->generateDouble(); //generate random number
                     if (random < 0.5){
-                        thisMessage = QString("RED") + otherName;
-                        otherMessage = QString("BLUE") + thisName;
-                        thisPlayer->setColor(QString("RED"));
-                        otherPlayer->setColor(QString("BLUE"));
+                        thisMessage = QString("SETRE") + otherName;
+                        otherMessage = QString("SETBL") + thisName;
+                        thisPlayer->setColor(QString("REDPLAYER"));
+                        otherPlayer->setColor(QString("BLUEPLAYER"));
                         gameServer->writeToClient(thisSocket, thisMessage); //Join as red, and other player's name
                         gameServer->writeToClient(otherSocket, otherMessage); //Join as blue, and other player's name
                     }
                     else{
-                        thisMessage = QString("BLUE") + otherName;
-                        otherMessage = QString("RED") + thisName;
-                        thisPlayer->setColor(QString("BLUE"));
-                        otherPlayer->setColor(QString("RED"));
+                        thisMessage = QString("SETBL") + otherName;
+                        otherMessage = QString("SETRE") + thisName;
+                        thisPlayer->setColor(QString("BLUEPLAYER"));
+                        otherPlayer->setColor(QString("REDPLAYER"));
                         gameServer->writeToClient(thisSocket, thisMessage); //Join as red, and other player's name
                         gameServer->writeToClient(otherSocket, otherMessage); //Join as blue, and other player's name
                     }
