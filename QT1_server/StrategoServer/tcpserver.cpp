@@ -68,6 +68,7 @@ int TCPServer::writeToClient(QTcpSocket* socket, QString data){
         QByteArray byteArray = data.toUtf8();        // convert QString to QByteArray
         int bytesWritten = socket->write(byteArray); //write the data itself
         socket->waitForBytesWritten();
+        qDebug() << "Sent Message" << data;
         return bytesWritten;
     }
     else
@@ -81,4 +82,16 @@ void TCPServer::onClientDisconnected(){
         // remove the socket from list of connected sockets
     }
     serverwindow->setConnectionState("Client disconnected"); //update client disconnected message in the scene
+}
+
+#include <QTcpSocket>
+
+QTcpSocket *TCPServer::findConnection(QString ip, QString port){ //see through sockets and find the one with correspondent ip and port
+    QList<QTcpSocket*> sockets = this->findChildren<QTcpSocket*>(); //this == server
+    for (QTcpSocket* socket : sockets) {
+        if (socket->peerAddress().toString() == ip && QString::number(socket->peerPort()) == port) {
+            return socket;
+        }
+    }
+    return nullptr;
 }

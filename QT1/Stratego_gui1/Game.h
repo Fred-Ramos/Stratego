@@ -43,8 +43,10 @@ public slots:
     void waitForRegister();
     void displayMainMenu();
     void displayGameOver();
+    void joinRoom();
     void createRoom();
-    void waitForJoin();
+    void createRoomClicked();
+    void joinRoomClicked();
     void start();
     void ready();
     void setUpDefaultPositions();
@@ -59,12 +61,15 @@ private:
     bool ArePiecesPlaced();
     void SetLoginMessage(bool existingAcc, QString name, QString password);
     void SetRoomMessage(QString room);
+    void SetJoinRoomMessage(QString room);
     void SetPiecesMessage();
 
     //private network methods
 
     //private atributes
-    QString thisPlayerName;
+    QString thisPlayerColor; //the color of the player of this client
+    QString thisPlayerName;  //the name of the player of this client
+    QString otherPlayerName; //enemy player's name;
     bool LoggedIn;
     QString AccountName;
     QString AccountPassword;
@@ -101,6 +106,8 @@ private:
     Button* createRoomButton;
             //create room
     QGraphicsTextItem* waitingJoinText;
+        //join game
+    Button* joinRoomButton;
 };
 
 #endif // GAME_H

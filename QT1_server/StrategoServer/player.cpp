@@ -5,6 +5,11 @@ Player::Player(QString NAME, QString IP, QString SOURCEPORT){
     playerName = NAME;
     playerIp = IP;
     playerSourcePort = SOURCEPORT;
+    playerRoom = QString("");
+}
+
+void Player::setColor(QString color){
+    playerColor = color;
 }
 
 void Player::setIP(QString ip){
@@ -17,6 +22,14 @@ void Player::setSourcePort(QString port){
 
 void Player::setRoom(QString room){
     playerRoom = room;
+}
+
+QString Player::getName(){
+    return playerName;
+}
+
+QString Player::getColor(){
+    return playerColor;
 }
 
 QString Player::getIP(){

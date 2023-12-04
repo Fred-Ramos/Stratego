@@ -20,6 +20,8 @@ public:
     //public methods
     int writeToClient(QTcpSocket* socket, QString data);
 
+    QTcpSocket *findConnection(QString ip, QString port);
+
 signals:
 
 public slots:
