@@ -80,7 +80,7 @@ private:
     QGraphicsTextItem* player1NameText;
     QGraphicsTextItem* player2NameText;
     QGraphicsTextItem* TurnText; //QT text of the turn
-    QList<Piece*> UnassignedUnplacedPieces; //List of pieces
+    QList<Piece*> ThisPlayerPieces; //List of pieces
     QString MessageToSend;
     QString roomNumber;
 
