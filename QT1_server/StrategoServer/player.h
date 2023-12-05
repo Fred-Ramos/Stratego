@@ -7,6 +7,9 @@ class Player{
 public:
     Player(QString NAME, QString IP, QString SOURCEPORT);
 
+    //print check matrix method
+    void PrintBoard();
+
     //setters
     void setColor(QString color);
     void setIP(QString ip);
@@ -21,7 +24,7 @@ public:
     QString getRoom();
 
 
-
+    QVector<QVector<QString>> gameBoard; //gameboard to save the pieces allocation
 private:
     //private attributes
     QString playerName; //see later
@@ -29,6 +32,7 @@ private:
     QString playerIp;
     QString playerSourcePort;
     QString playerRoom; //room player is playing at
+    //QVector<QVector<QString>> gameBoard; //gameboard to save the pieces allocation
 };
 
 #endif // PLAYER_H

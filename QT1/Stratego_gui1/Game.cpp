@@ -984,40 +984,45 @@ void Game::SetJoinRoomMessage(QString room){
 void Game::setDataReceived(QString data){
     qDebug() << "Received from server: " << data;
     QString identifier = data.left(5);
-    if (identifier == QString("LOGFA")){
+    if (identifier == QString("LOGFA")){ //login failed
         waitingLoginText->setPlainText(QString("Your Name or Password do not match")   );
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
         int yLogin = 453 - 75 - 50;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }
-    else if (identifier == QString("LOGCO")){
+    else if (identifier == QString("LOGCO")){ //login completed
         LoggedIn = true;
         displayMainMenu();
     }
-    else if (identifier == QString("REGFA")){
+    else if (identifier == QString("REGFA")){ //register failed
         waitingLoginText->setPlainText(QString("Account with that name already exists")   );
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
         int yLogin = 453 - 75 - 50;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }
-    else if (identifier == QString("REGCO")){
+    else if (identifier == QString("REGCO")){ //register completed
         waitingLoginText->setPlainText(QString("Account created sucessfuly")   );
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
         int yLogin = 453 - 75 - 50;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }
-    else if (identifier == QString("ROCSU")){
+    else if (identifier == QString("ROCSU")){ //Room creation sucessfull
         roomNumber = roomTextbox->getWriten();
         qDebug() << "Room set to: " << roomNumber;
         waitingJoinText->setPlainText(QString("Room Created, waiting for another player to join"));
         int xJoin = this->width()/2 - waitingJoinText->boundingRect().width()/2;
         waitingJoinText->setX(xJoin);
     }
-    else if (identifier == QString("ROCFA")){
+    else if (identifier == QString("ROCFA")){ //Room creation failed
         waitingJoinText->setPlainText(QString("Room already exists, choose another"));
+        int xJoin = this->width()/2 - waitingJoinText->boundingRect().width()/2;
+        waitingJoinText->setX(xJoin);
+    }
+    else if(identifier == QString("JOIFA")){ //Join failed
+        waitingJoinText->setPlainText(QString("Room you are trying to join does not exist"));
         int xJoin = this->width()/2 - waitingJoinText->boundingRect().width()/2;
         waitingJoinText->setX(xJoin);
     }

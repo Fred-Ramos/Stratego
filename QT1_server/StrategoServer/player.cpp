@@ -1,11 +1,39 @@
 #include "player.h"
 
+#include <QDebug>
+
 
 Player::Player(QString NAME, QString IP, QString SOURCEPORT){
     playerName = NAME;
     playerIp = IP;
     playerSourcePort = SOURCEPORT;
     playerRoom = QString("");
+
+    //initialize gameboard
+    gameBoard = QVector<QVector<QString>>(10, QVector<QString>(10));
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if ( (i == 4 || i == 5) && (j == 2 || j == 3 || j == 6 || j == 7) ){ //if it is a water position, put Water
+                gameBoard[i][j] = QString("W"); //water
+            }
+            else{
+                gameBoard[i][j] = QString("N"); //empty
+            }
+        }
+    }
+
+
+}
+
+void Player::PrintBoard(){
+    qDebug() << "Matrix:";
+    for (int i = 0; i < 10; i++) {
+        QString row;
+        for (int j = 0; j < 10; j++) {
+            row += QString("%1 ").arg(gameBoard[i][j]);
+        }
+        qDebug() << row;
+    }
 }
 
 void Player::setColor(QString color){

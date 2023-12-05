@@ -84,7 +84,7 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
 
     QString identifier = data.left(5);
     //determine response to the client
-    if (identifier == QString("REGIS")){
+    if (identifier == QString("REGIS")){ //Register message
         //read pretended username and password
         int changeIndex = data.indexOf("|");
         QString thisUsername = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
@@ -94,7 +94,7 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         ResponseMessage = setRegisterResponse(thisUsername, thisPassword);
         gameServer->writeToClient(socket, ResponseMessage);
     }
-    else if (identifier == QString("LOGIN")){
+    else if (identifier == QString("LOGIN")){ //Login message
         //read pretended username and password
         int changeIndex = data.indexOf("|");
         QString thisUsername = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
@@ -103,17 +103,18 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         qDebug() << thisPassword;
         ResponseMessage = setLoginResponse(thisUsername, thisPassword); //run new login function
 
-        if (ResponseMessage == QString("LOGCO")){
+        if (ResponseMessage == QString("LOGCO")){ //if login was completed, add account to players
             qDebug() << "response being sent, new player being added";
             Player* newplayer;
             newplayer = new Player(thisUsername, connectionIP, connectionSourcePort);
             Players.append(newplayer);
-            qDebug() << Players.size();
-
+            qDebug() << "New Player gameboard: ";
+            newplayer->PrintBoard();
+            qDebug() << "Number of Player: " << Players.size();
         }
         gameServer->writeToClient(socket, ResponseMessage);
     }
-    else if (identifier == QString("SETRO")){ //set room
+    else if (identifier == QString("SETRO")){ //set room message
         qDebug() << "Room message received";
         int endIndex = data.indexOf("|");
         qDebug() << endIndex;
@@ -129,7 +130,7 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         }
         gameServer->writeToClient(socket, ResponseMessage);
     }
-    else if (identifier == QString("JOIRO")){ //join room
+    else if (identifier == QString("JOIRO")){ //join room message
         qDebug() << "Join Room message received";
         int endIndex = data.indexOf("|");
         qDebug() << endIndex;
@@ -145,6 +146,9 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
                 setJoinRoomResponse(thisPlayer, socket, connectionIP, connectionSourcePort, room);
             }
         }
+    }
+    else if(identifier == QString("SETUP")){ //setting up pieces
+
     }
 }
 
