@@ -504,6 +504,11 @@ void Game::pickUpPiece(Piece* piece){
         if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
             piece->originalPos = piece->pos();
             piece->originalZ = piece->zValue();
+<<<<<<< HEAD
+           piece->originalPos = piece->pos();
+           piece->originalZ = piece->zValue();
+=======
+>>>>>>> 272cbbf9a6839fd87deea4620f7aa30f1b84015a
         }
         return;
     }
