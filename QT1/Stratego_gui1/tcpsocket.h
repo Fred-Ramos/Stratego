@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QNetworkInterface>
 #include <QGraphicsView>
 #include <QDebug>
 
@@ -24,6 +25,7 @@ public:
 signals:
 
 public slots:
+    void onDisconnected();
     void onReadyRead();
     void Connect();
 

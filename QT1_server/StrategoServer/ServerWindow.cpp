@@ -7,6 +7,8 @@
 #include <QGraphicsTextItem>
 #include <QBrush>
 
+#include <QRandomGenerator>
+
 #include <QDir>
 #include <QStandardPaths>
 #include <QtSql/QSqlDatabase>
@@ -44,11 +46,11 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
     //create user table in database
     QSqlQuery query(database);
     query.exec("CREATE TABLE IF NOT EXISTS Users (username TEXT, password TEXT)");
-
+    query.exec("CREATE TABLE IF NOT EXISTS GameRooms (roomName TEXT, password TEXT)");
 
     //delete usernames and passwords if needed:
     query.exec("DELETE FROM Users");
-
+    query.exec("DELETE FROM GameRooms");
 
 
 
@@ -80,8 +82,9 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
     dataReceivedText->setPlainText(QString("Last data received: ") + data);
     dataReceivedIpPortText->setPlainText(QString("IP: ") + connectionIP + QString(" | Source Port: ") + connectionSourcePort);
 
+    QString identifier = data.left(5);
     //determine response to the client
-    if (data.left(5) == QString("REGIS")){
+    if (identifier == QString("REGIS")){ //Register message
         //read pretended username and password
         int changeIndex = data.indexOf("|");
         QString thisUsername = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
@@ -89,14 +92,9 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         qDebug() << thisUsername;
         qDebug() << thisPassword;
         ResponseMessage = setRegisterResponse(thisUsername, thisPassword);
-        if (ResponseMessage == QString("LOGCO")){
-            //create player for this server session
-            Player* player = new Player(thisUsername, connectionIP, connectionSourcePort);
-            Players.append(player); //add player to list
-        }
         gameServer->writeToClient(socket, ResponseMessage);
     }
-    else if (data.mid(0,5) == QString("LOGIN")){
+    else if (identifier == QString("LOGIN")){ //Login message
         //read pretended username and password
         int changeIndex = data.indexOf("|");
         QString thisUsername = data.mid(5, changeIndex - 5); //from position 5, read "changeIndex - 5" characters
@@ -104,18 +102,54 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         qDebug() << thisUsername;
         qDebug() << thisPassword;
         ResponseMessage = setLoginResponse(thisUsername, thisPassword); //run new login function
+
+        if (ResponseMessage == QString("LOGCO")){ //if login was completed, add account to players
+            qDebug() << "response being sent, new player being added";
+            Player* newplayer;
+            newplayer = new Player(thisUsername, connectionIP, connectionSourcePort);
+            Players.append(newplayer);
+            qDebug() << "New Player gameboard: ";
+            newplayer->PrintBoard();
+            qDebug() << "Number of Player: " << Players.size();
+        }
         gameServer->writeToClient(socket, ResponseMessage);
     }
-    else if (data.mid(0,5) == QString("SETRO")){ //set room
+    else if (identifier == QString("SETRO")){ //set room message
+        qDebug() << "Room message received";
+        int endIndex = data.indexOf("|");
+        qDebug() << endIndex;
+        QString room = data.mid(5, endIndex - 5); //from position 5, read "changeIndex - 5" characters
+        qDebug() << "whole data: " << data;
+        qDebug() << "New Room: " << room;
         for (Player* player : Players) {
+            qDebug() << "1st Running through player's IPs: " << player->getIP();
             if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
                 // Found player with the given IP and source, set its game room
-                setRoomResponse(player, data);
+                ResponseMessage = setRoomResponse(player, room);
+            }
+        }
+        gameServer->writeToClient(socket, ResponseMessage);
+    }
+    else if (identifier == QString("JOIRO")){ //join room message
+        qDebug() << "Join Room message received";
+        int endIndex = data.indexOf("|");
+        qDebug() << endIndex;
+        QString room = data.mid(5, endIndex - 5); //from position 5, read "changeIndex - 5" characters
+        qDebug() << "whole data: " << data;
+        qDebug() << "New Room: " << room;
+        Player* thisPlayer = nullptr;
+        for (Player* player : Players) {
+            qDebug() << "2nd Running through player's IPs/Ports: " << player->getIP() << player->getSourcePort();
+            if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
+                // Found player with the given IP and source, set its game room
+                thisPlayer = player;
+                setJoinRoomResponse(thisPlayer, socket, connectionIP, connectionSourcePort, room);
             }
         }
     }
+    else if(identifier == QString("SETUP")){ //setting up pieces
 
-
+    }
 }
 
 void ServerWindow::displayVariables(){
@@ -228,10 +262,110 @@ QString ServerWindow::setRegisterResponse(QString receivedUsername, QString rece
     return message;
 }
 
-QString ServerWindow::setRoomResponse(Player* player, QString data){
+QString ServerWindow::setRoomResponse(Player* player, QString thisRoom){
+    //check if room exists
+    QSqlQuery query(database);                                                                     //Create query
+    query.prepare("SELECT * FROM GameRooms WHERE roomName = :roomName");                           //prepares a SELECT command to select all rows from the Users table
+    query.bindValue(":roomName", thisRoom);                                                        //bind pretended room
+    query.exec();                                                                                  //execute query
 
+    QString message;
+    if (!query.next()) { //there isnt a row with matched room
+        query.prepare("INSERT INTO GameRooms (roomName) VALUES (:roomName)");                      //prepare a insert in users table command
+        query.bindValue(":roomName", thisRoom);                                                    //bind pretended room
+        query.exec();                                                                              //rexecute created query
+        qDebug() << "New room registered: " << thisRoom ;                                                         //The room doesnt exist and new room is registered
+        player->setRoom(thisRoom); //atribute room to player
+        message = "ROCSU"; //Room registered
+    }
+    else {
+        qDebug() << "Room already exists" ; // The username already exists and no new acount is registered
+        message = "ROCFA"; //Room already exists
+    }
+    return message;
 }
 
+void ServerWindow::setJoinRoomResponse(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort, QString thisRoom){
+    //check if room exists
+    QSqlQuery query(database);                                                                     //Create query
+    query.prepare("SELECT * FROM GameRooms WHERE roomName = :roomName");                           //prepares a SELECT command to select all rows from the Users table
+    query.bindValue(":roomName", thisRoom);                                                        //bind pretended room
+    query.exec();                                                                                  //execute query
+
+    QString message;
+    if (!query.next()) { //there isnt a row with matched room
+        qDebug() << "Couldnt join " << thisRoom;                                                  //The room doesnt exist
+        message = "JOIFA"; //Join failed
+        gameServer->writeToClient(thisSocket, message);
+    }
+    else {
+        qDebug() << "Joined room" << thisRoom ; // The room exists
+        thisPlayer->setRoom(thisRoom); //atribute room to this player
+       //find ip and port of the other player with the same room and respective socket:
+        Player* otherPlayer = nullptr;
+        QString otherIP;
+        QString otherSourcePort;
+        QString otherRoom;
+        QTcpSocket* otherSocket;
+        //send start as red/start as blue message to both clients
+        for (Player* player : Players) {
+            otherIP = player->getIP();
+            otherSourcePort = player->getSourcePort();
+            otherRoom = player->getRoom();
+            qDebug() << "4th Running through player's IPs: " << player->getIP() <<player->getSourcePort() <<player->getRoom();
+            qDebug() << "this IP: " << thisIp;
+            qDebug() << "other IP: " << otherIP;
+            qDebug() << "this source Port: " << thisSourcePort;
+            qDebug() << "other source Port" << otherSourcePort;
+            qDebug() << "this room: " << thisRoom;
+            qDebug() << "other room: " << otherRoom;
+            if ( (otherIP != thisIp || otherSourcePort != thisSourcePort) && player->getRoom() == thisRoom ) { //if sources are not the same, and they share the same room, start the game for both players, each with a diferent color
+                qDebug() << "found other player " << player->getIP() << player->getSourcePort();
+                otherPlayer = player;
+
+                // Found player with the given IP and source, get his socket
+                otherSocket = gameServer->findConnection(otherIP, otherSourcePort);
+                qDebug() << "socket" << otherSocket;
+
+                qDebug() << "other guy IPs" << otherSocket->peerAddress().toString();
+                qDebug() << "other guy SourcePort" << QString::number(otherSocket->peerPort());;
+
+                QString thisName = thisPlayer->getName();
+                qDebug() << "This Player's name: " << thisName;
+                QString otherName = otherPlayer->getName();
+                qDebug() << "Other Player's name: " << otherName;
+
+
+                QString thisMessage;
+                QString otherMessage;
+
+
+                if (otherSocket != nullptr){ //if not null
+                    double random = QRandomGenerator::global()->generateDouble(); //generate random number
+                    if (random < 0.5){
+                        thisMessage = QString("SETRE") + otherName;
+                        otherMessage = QString("SETBL") + thisName;
+                        thisPlayer->setColor(QString("REDPLAYER"));
+                        otherPlayer->setColor(QString("BLUEPLAYER"));
+                        gameServer->writeToClient(thisSocket, thisMessage); //Join as red, and other player's name
+                        gameServer->writeToClient(otherSocket, otherMessage); //Join as blue, and other player's name
+                    }
+                    else{
+                        thisMessage = QString("SETBL") + otherName;
+                        otherMessage = QString("SETRE") + thisName;
+                        thisPlayer->setColor(QString("BLUEPLAYER"));
+                        otherPlayer->setColor(QString("REDPLAYER"));
+                        gameServer->writeToClient(thisSocket, thisMessage); //Join as red, and other player's name
+                        gameServer->writeToClient(otherSocket, otherMessage); //Join as blue, and other player's name
+                    }
+                }
+                else{
+                    qDebug() << "Error, no socket found";
+                }
+            }
+        }
+    }
+}
 
 
 

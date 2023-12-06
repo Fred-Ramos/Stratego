@@ -7,16 +7,30 @@ TCPServer::TCPServer(QObject *parent): QObject(parent){
     server = new QTcpServer(this);
     connect(server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 
-    if (!server->listen(QHostAddress("127.0.0.1"),1234)){ //checking if the server is not able to start listening for connections on all network interfaces of the machine on port 1234
-
-        qDebug() << "Server could not start!";
-        serverwindow->setConnectionState("Server could not start");
+    //look for lan ip address
+    QList<QHostAddress> allAddresses = QNetworkInterface::allAddresses();
+    QString localIP;
+    for (const QHostAddress &address : allAddresses) {
+        if (!address.isLoopback() && address.protocol() == QAbstractSocket::IPv4Protocol) {
+            localIP = address.toString();
+            break;
+        }
     }
-    else{
-        qDebug() << "Server started";
-        serverwindow->setConnectionState("Stratego Server started");
-    }
 
+    //start listening to connections
+    if (localIP.isEmpty()) {
+        qDebug() << "No non-localhost IPv4 address found!";
+        serverwindow->setConnectionState("No non-localhost IPv4 address found");
+    } else {
+        if (!server->listen(QHostAddress(localIP),1234)){
+            qDebug() << "Server could not start!";
+            serverwindow->setConnectionState("Server could not start");
+        }
+        else{
+            qDebug() << "Server started in local IP: " << localIP << " || In port: 1234";
+            serverwindow->setConnectionState("Stratego Server started");
+        }
+    }
 }
 
 void TCPServer::onNewConnection(){ //handle connections while they come in
@@ -36,7 +50,7 @@ void TCPServer::onNewConnection(){ //handle connections while they come in
     socket->waitForBytesWritten(3000);
 }
 
-//QString clientKey = socket->peerAddress().toString() + ":" + QString::number(socket->peerPort()); ADD IDENTIFIER???
+//QString clientID = socket->peerAddress().toString() + ":" + QString::number(socket->peerPort()); ADD IDENTIFIER???
 
 
 void TCPServer::onReadyRead(){
@@ -54,6 +68,7 @@ int TCPServer::writeToClient(QTcpSocket* socket, QString data){
         QByteArray byteArray = data.toUtf8();        // convert QString to QByteArray
         int bytesWritten = socket->write(byteArray); //write the data itself
         socket->waitForBytesWritten();
+        qDebug() << "Sent Message" << data;
         return bytesWritten;
     }
     else
@@ -67,4 +82,16 @@ void TCPServer::onClientDisconnected(){
         // remove the socket from list of connected sockets
     }
     serverwindow->setConnectionState("Client disconnected"); //update client disconnected message in the scene
+}
+
+#include <QTcpSocket>
+
+QTcpSocket *TCPServer::findConnection(QString ip, QString port){ //see through sockets and find the one with correspondent ip and port
+    QList<QTcpSocket*> sockets = this->findChildren<QTcpSocket*>(); //this == server
+    for (QTcpSocket* socket : sockets) {
+        if (socket->peerAddress().toString() == ip && QString::number(socket->peerPort()) == port) {
+            return socket;
+        }
+    }
+    return nullptr;
 }

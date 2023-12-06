@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QNetworkInterface>
 
 class TCPServer: public QObject{
     Q_OBJECT
@@ -18,6 +19,8 @@ public:
 
     //public methods
     int writeToClient(QTcpSocket* socket, QString data);
+
+    QTcpSocket *findConnection(QString ip, QString port);
 
 signals:
 

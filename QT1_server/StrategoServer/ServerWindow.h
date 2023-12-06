@@ -45,7 +45,7 @@ private:
     QString setRegisterResponse(QString receivedUsername, QString receivedPassword);
 
     QString setRoomResponse(Player* player, QString data);
-
+    void setJoinRoomResponse(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort, QString thisRoom);
 
     QGraphicsTextItem* ConnectionStateText; //QT text of the connection state
     QGraphicsTextItem* dataReceivedText; //QT text of the last data received

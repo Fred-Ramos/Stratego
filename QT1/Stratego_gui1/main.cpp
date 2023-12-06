@@ -20,8 +20,13 @@ int main(int argc, char *argv[])
 
     //game->displayGameOver(); //start the game
 
+<<<<<<< HEAD
     //game->loginGame(); //start the game
     game->displayMainMenu();
 >>>>>>> 272cbbf9a6839fd87deea4620f7aa30f1b84015a
+=======
+    game->loginGame(); //start the game
+    //game->displayMainMenu();
+>>>>>>> 660572f81de2dac00486afb821984f8e0e0b5105
     return a.exec();
 }
