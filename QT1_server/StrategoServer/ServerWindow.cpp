@@ -148,6 +148,19 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         }
     }
     else if(identifier == QString("SETUP")){ //setting up pieces
+        qDebug() << "Setup pieces message received";
+        int dataLength = data.size();
+        QString positions = data.mid(5, dataLength - 5);
+        qDebug() << "positions data: " << positions;
+        Player* thisPlayer = nullptr;
+        for (Player* player : Players) {
+            qDebug() << "2nd Running through player's IPs/Ports: " << player->getIP() << player->getSourcePort();
+            if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
+                // Found player with the given IP and source, set its game board
+                thisPlayer = player;
+                setPiecesResponse(thisPlayer, socket, connectionIP, connectionSourcePort, positions);
+            }
+        }
 
     }
 }
@@ -365,6 +378,24 @@ void ServerWindow::setJoinRoomResponse(Player* thisPlayer, QTcpSocket* thisSocke
             }
         }
     }
+}
+
+void ServerWindow::setPiecesResponse(Player *thisPlayer, QTcpSocket *thisSocket, QString thisIp, QString thisSourcePort, QString PositionData){
+    if (thisPlayer->getColor() == QString("REDPLAYER")){
+
+        for (int k = 0; k < 40; k++){ //every 4 characters
+
+
+
+        }
+
+
+    }
+
+    thisPlayer->PrintBoard();
+    qDebug() << "Rotate: ";
+    thisPlayer->invertBoard();
+    thisPlayer->PrintBoard();
 }
 
 

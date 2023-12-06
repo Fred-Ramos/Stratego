@@ -25,8 +25,6 @@ void TCPsocket::Connect(){
             }
         }
 
-
-
         if (!localIP.isEmpty()) {
             socket->connectToHost(localIP, 1234);
 

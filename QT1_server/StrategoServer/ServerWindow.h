@@ -51,6 +51,9 @@ private:
     QGraphicsTextItem* dataReceivedText; //QT text of the last data received
     QGraphicsTextItem* dataReceivedIpPortText; //QT text of the source ip and port of the data
 
+    void setPiecesResponse(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort, QString PositionData);
+
+
 };
 
 #endif // SERVERWINDOW_H
