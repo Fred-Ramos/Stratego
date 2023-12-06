@@ -109,7 +109,7 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
             newplayer = new Player(thisUsername, connectionIP, connectionSourcePort);
             Players.append(newplayer);
             qDebug() << "New Player gameboard: ";
-            newplayer->PrintBoard();
+            newplayer->PrintBoard(false); //not inverted board
             qDebug() << "Number of Player: " << Players.size();
         }
         gameServer->writeToClient(socket, ResponseMessage);
@@ -325,13 +325,6 @@ void ServerWindow::setJoinRoomResponse(Player* thisPlayer, QTcpSocket* thisSocke
             otherIP = player->getIP();
             otherSourcePort = player->getSourcePort();
             otherRoom = player->getRoom();
-            qDebug() << "4th Running through player's IPs: " << player->getIP() <<player->getSourcePort() <<player->getRoom();
-            qDebug() << "this IP: " << thisIp;
-            qDebug() << "other IP: " << otherIP;
-            qDebug() << "this source Port: " << thisSourcePort;
-            qDebug() << "other source Port" << otherSourcePort;
-            qDebug() << "this room: " << thisRoom;
-            qDebug() << "other room: " << otherRoom;
             if ( (otherIP != thisIp || otherSourcePort != thisSourcePort) && player->getRoom() == thisRoom ) { //if sources are not the same, and they share the same room, start the game for both players, each with a diferent color
                 qDebug() << "found other player " << player->getIP() << player->getSourcePort();
                 otherPlayer = player;
@@ -381,22 +374,78 @@ void ServerWindow::setJoinRoomResponse(Player* thisPlayer, QTcpSocket* thisSocke
 }
 
 void ServerWindow::setPiecesResponse(Player *thisPlayer, QTcpSocket *thisSocket, QString thisIp, QString thisSourcePort, QString PositionData){
-    if (thisPlayer->getColor() == QString("REDPLAYER")){
-
-        for (int k = 0; k < 40; k++){ //every 4 characters
-
-
-
-        }
-
-
+    if (thisPlayer->getSetUpData() == QString("")){
+        thisPlayer->setSetUpData(PositionData);
     }
+    QString thisSetUpData = PositionData;
+    QString thisRoom = thisPlayer->getRoom(); //room of this player
+    QString thisColor = thisPlayer->getColor(); //color of this player
+    //find ip and port of the other player with the same room and blue color
+    Player* otherPlayer = nullptr;
+    QString otherIP;
+    QString otherSourcePort;
+    QString otherColor;
+    QString otherSetUpData;
+    QTcpSocket* otherSocket;
+    for (Player* player : Players) {
+        otherIP = player->getIP();
+        otherSourcePort = player->getSourcePort();
+        otherColor = player->getRoom();
+        if ( player->getRoom() == thisRoom && player->getColor() != thisColor ) { //if they share the same room and have diferent colors
+            qDebug() << "setup found other player " << player->getIP() << player->getSourcePort();
+            otherPlayer = player;
+            if (otherPlayer->getSetUpData() != QString("")){ //if other player has no setup data, SETUP the initial board for both players, and send message back confirming game starting
+                otherSetUpData = otherPlayer->getSetUpData();
+                QString thisC; //this color identifier
+                QString otherC; //other color identifier
+                if (thisPlayer->getColor() == QString("REDPLAYER")){//if this player is red:
+                    thisC = QString("R");
+                    otherC = QString("B");
+                }
+                else{
+                    thisC = QString("B");
+                    otherC = QString("R");
+                }
+                //First place this pieces in this's board
+                for (int k = 0; k < 40; k++){ //every 4 characters
+                    thisPlayer->gameBoard[thisSetUpData.at(4*k + 0).digitValue()][thisSetUpData.at(4*k + 1).digitValue()] = thisC + thisSetUpData.at(4*k + 2) + thisSetUpData.at(4*k + 3); //last 2 characters of each 4 characters
+                }
+                //Then place other pieces in other's board
+                for (int k = 0; k < 40; k++){ //every 4 characters
+                    otherPlayer->gameBoard[otherSetUpData.at(4*k + 0).digitValue()][otherSetUpData.at(4*k + 1).digitValue()] = otherC + otherSetUpData.at(4*k + 2) + otherSetUpData.at(4*k + 3);
+                }
+                //Then complete each player's board with the other's inverted half board:
+                QVector<QVector<QString>> invertedThisPlayerBoard = thisPlayer->invertBoard();
+                // Copy the first 4 lines from inverted redBoard to blueBoard
+                for(int i = 0; i < 4; ++i) {
+                    for(int j = 0; j < 10; j++){
+                        otherPlayer->gameBoard[i][j] = invertedThisPlayerBoard[i][j];
+                    }
+                }
+                QVector<QVector<QString>> invertedOtherPlayerBoard = otherPlayer->invertBoard();
+                // Copy the first 4 lines from inverted blueBoard to redBoard
+                for(int i = 0; i < 4; ++i) {
+                    for(int j = 0; j < 10; j++){
+                        thisPlayer->gameBoard[i][j] = invertedOtherPlayerBoard[i][j];
+                    }
+                }
+                qDebug() << "this: ";
+                thisPlayer->PrintBoard(false);
+                qDebug() << "other: ";
+                otherPlayer->PrintBoard(false);
 
-    thisPlayer->PrintBoard();
-    qDebug() << "Rotate: ";
-    thisPlayer->invertBoard();
-    thisPlayer->PrintBoard();
+                //Initial boards organized for both players, now send message to both clients to start game
+                // get other player's socket
+                otherSocket = gameServer->findConnection(otherIP, otherSourcePort);
+                //send start game message
+                QString message = QString("START");
+                gameServer->writeToClient(thisSocket, message);
+                gameServer->writeToClient(otherSocket, message);
+            }
+        }
+    }
 }
+
 
 
 

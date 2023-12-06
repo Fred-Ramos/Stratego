@@ -8,7 +8,7 @@ Player::Player(QString NAME, QString IP, QString SOURCEPORT){
     playerIp = IP;
     playerSourcePort = SOURCEPORT;
     playerRoom = QString("");
-
+    playerSetUpData = QString("");
     //initialize gameboard
     gameBoard = QVector<QVector<QString>>(10, QVector<QString>(10));
     for (int i = 0; i < 10; i++) {
@@ -19,23 +19,33 @@ Player::Player(QString NAME, QString IP, QString SOURCEPORT){
             else{
                 gameBoard[i][j] = QString("N"); //empty
             }
-            if (i == j ){
-                gameBoard[i][j] = QString("M"); //teste
-            }
         }
     }
 
 
 }
 
-void Player::PrintBoard(){
-    qDebug() << "Matrix:";
-    for (int i = 0; i < 10; i++) {
-        QString row;
-        for (int j = 0; j < 10; j++) {
-            row += QString("%1 ").arg(gameBoard[i][j]);
+void Player::PrintBoard(bool inv){
+    if (inv == false){
+        qDebug() << "Board:";
+        for (int i = 0; i < 10; i++) {
+            QString row;
+            for (int j = 0; j < 10; j++) {
+                row += QString("%1 ").arg(gameBoard[i][j]);
+            }
+            qDebug() << row;
         }
-        qDebug() << row;
+    }
+    else{
+        qDebug() << "Inverted Board:";
+        QVector<QVector<QString>> invertedBoard = invertBoard();
+        for (int i = 0; i < 10; i++) {
+            QString row;
+            for (int j = 0; j < 10; j++) {
+                row += QString("%1 ").arg(invertedBoard[i][j]);
+            }
+            qDebug() << row;
+        }
     }
 }
 
@@ -53,6 +63,10 @@ void Player::setSourcePort(QString port){
 
 void Player::setRoom(QString room){
     playerRoom = room;
+}
+
+void Player::setSetUpData(QString data){
+    playerSetUpData = data;
 }
 
 QString Player::getName(){
@@ -75,6 +89,10 @@ QString Player::getRoom(){
     return playerRoom;
 }
 
+QString Player::getSetUpData(){
+    return playerSetUpData;
+}
+
 QVector<QVector<QString>> Player::invertBoard(){
     QVector<QVector<QString>> rotatedBoard(10, QVector<QString>(10));
     for(int i = 0; i < 10; i++) {
@@ -84,6 +102,5 @@ QVector<QVector<QString>> Player::invertBoard(){
             rotatedBoard[rotatedI][rotatedJ] = gameBoard[i][j];
         }
     }
-    gameBoard = rotatedBoard;
     return rotatedBoard;
 }

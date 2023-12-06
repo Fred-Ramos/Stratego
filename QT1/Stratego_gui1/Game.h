@@ -57,7 +57,8 @@ private:
     void drawGUI();
     void createNewPiece(QString player, QString pieceRank);
     void createInitialPieces(QString player);
-    void drawPieces();
+    void drawThisPieces();
+    void drawOtherPieces();
     bool ArePiecesPlaced();
     void SetLoginMessage(bool existingAcc, QString name, QString password);
     void SetRoomMessage(QString room);
@@ -81,6 +82,7 @@ private:
     QGraphicsTextItem* player2NameText;
     QGraphicsTextItem* TurnText; //QT text of the turn
     QList<Piece*> ThisPlayerPieces; //List of pieces
+    QList<Piece*> OtherPlayerPieces; //List of pieces of other player(we dont know the ranks)
     QString MessageToSend;
     QString roomNumber;
 

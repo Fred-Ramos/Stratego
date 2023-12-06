@@ -498,7 +498,7 @@ void Game::setTurn(QString player){
 
 void Game::pickUpPiece(Piece* piece){
     //picks up the specified card
-    if (piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to player and no piece picked up yet
+    if (piece->getOwner() == thisPlayerColor && pieceToPlace == NULL){ //if piece to pick up belongs to player and no piece picked up yet
         piece->setZValue(10);
         pieceToPlace = piece;
         if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
@@ -525,7 +525,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
         }
     }else if(getArePiecesSetUp() == true){
         if(pieceToPlace->getRank() == "2"){ //scout
-            if(pieceToReplace->getRank() == "N"){ // empty square
+            if(pieceToReplace->getRank() == "N" && pieceToReplace->getOwner() == "NOONE"){ // empty square
                 if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
@@ -696,14 +696,11 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                 }
             }
         }
+        //make it the next players turn if piece was placed and ArePiecesSetup == true
+        if (pieceToPlace == NULL){
+            nextPlayersTurn();
+        }
     }
-
-
-    //make it the next players turn if piece was placed
-    if (pieceToPlace == NULL){
-        //nextPlayersTurn(); COMMENTED, CHANGE LATER
-    }
-
 }
 
 void Game::nextPlayersTurn(){
@@ -805,15 +802,18 @@ void Game::drawGUI(){
 
 void Game::createNewPiece(QString player, QString pieceRank){
     Piece* initialpiece = new Piece();  //Create piece
-    initialpiece->setOwner(player);     //Set to player(red or blue)
     initialpiece->setRank(pieceRank);
-    initialpiece->setIsPlaced(false);
     //add card to proper list
     if (player == thisPlayerColor){
+        initialpiece->setIsPlaced(false);
+        initialpiece->setOwner(player);     //Set to player(red or blue)
         ThisPlayerPieces.append(initialpiece);
     }
-    //draw the pieces
-    drawPieces();
+    else {
+        initialpiece->setIsPlaced(true);
+        initialpiece->setOwner(player);
+        OtherPlayerPieces.append(initialpiece);
+    }
 }
 
 void Game::createInitialPieces(QString player){
@@ -845,11 +845,24 @@ void Game::createInitialPieces(QString player){
     createNewPiece(player, "10"); //create 1 Marshal
     for (size_t i = 0; i < 6; i++){
         createNewPiece(player, "B"); //create 6 Bombs
-    drawPieces();
     }
+    //create other player's pieces:
+    QString otherPlayer;
+    if (player == QString("REDPLAYER")){
+        otherPlayer = QString("BLUEPLAYER");
+    }
+    else if (player == QString("BLUEPLAYER")){
+        otherPlayer = QString("REDPLAYER");
+    }
+    for (size_t i = 0; i < 40; i++){
+        createNewPiece(otherPlayer,"N");
+    }
+
+    drawThisPieces();
 }
 
-void Game::drawPieces(){
+
+void Game::drawThisPieces(){
     //traverse through list of pieces and draw them on side panels
 
     //remove all of this players pieces from the scene(to avoid overlap)
@@ -857,7 +870,7 @@ void Game::drawPieces(){
         scene->removeItem(ThisPlayerPieces[i]);
     }
 
-    //draw red player's pieces
+    //draw this player's pieces
     for (size_t i = 0, n = ThisPlayerPieces.size(); i < n; i++){
         Piece* initialpiece = ThisPlayerPieces[i];
         //draw Flag and Spy
@@ -918,18 +931,21 @@ void Game::drawPieces(){
         initialpiece->originalPos = initialpiece->pos();
         initialpiece->originalZ = initialpiece->zValue();
         scene->addItem(initialpiece);
-
     }
+}
 
-    //draw blue player's pieces
-//    for (size_t i = 0, n = blueUnplacedPieces.size(); i < n; i++){
-//        Piece* initialpiece = blueUnplacedPieces[i];
-//        initialpiece->setPos(scene->width() - 140, 23 + i*15 );
-//        initialpiece->originalPos = initialpiece->pos();
-//        initialpiece->setZValue(i);
-//        initialpiece->originalZ = initialpiece->zValue();
-//        scene->addItem(initialpiece);
-    //    }
+void Game::drawOtherPieces(){
+    //draw other player's pieces
+    for (size_t i = 0; i < 40; i++){
+        Piece* initialpiece = OtherPlayerPieces[i];
+        qDebug() << 150 + 5 + 55*(i%10) << "||" << 18 + 5 + 55*(i/10);
+        initialpiece->setPos(150 + 5 + 55*(i%10), 18 + 5 + 55*(i/10));
+        initialpiece->setZValue(0);
+        initialpiece->originalPos = QPoint(0,0);
+        initialpiece->originalZ = 1;
+        initialpiece->setVisible(false);
+        scene->addItem(initialpiece);
+    }
 }
 
 bool Game::getArePiecesSetUp(){
@@ -966,7 +982,7 @@ void Game::SetPiecesMessage(){ //Initial Pieces setup message to send to the ser
         if (thisRank.length() == 1){
             thisRank = QString("0") + thisRank;
         }
-        MessageToSend.append(QString::number(xPosition) + QString::number(yPosition) + thisRank);
+        MessageToSend.append(QString::number(yPosition) + QString::number(xPosition) + thisRank);
     }
 }
 
@@ -1026,17 +1042,22 @@ void Game::setDataReceived(QString data){
         int xJoin = this->width()/2 - waitingJoinText->boundingRect().width()/2;
         waitingJoinText->setX(xJoin);
     }
-    else if(identifier == QString("SETRE")){
+    else if(identifier == QString("SETRE")){ //Set this player as red, and save other player's name
         thisPlayerColor = QString("REDPLAYER");
         int datalength = data.size();
         otherPlayerName = data.mid(5, datalength-5);
         start();
     }
-    else if(identifier == QString("SETBL")){
+    else if(identifier == QString("SETBL")){ //Set this player as blue, and save other player's name
         thisPlayerColor = QString("BLUEPLAYER");
         int datalength = data.size();
         otherPlayerName = data.mid(5, datalength-5);
         start();
+    }
+    else if(identifier == QString("START")){
+        drawOtherPieces(); //show unranked enemy pieces(because we dont know the ranks
+        ArePiecesSetUp = true;
+        setTurn(QString("REDPLAYER"));
     }
 }
 
