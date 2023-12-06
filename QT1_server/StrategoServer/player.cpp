@@ -19,6 +19,9 @@ Player::Player(QString NAME, QString IP, QString SOURCEPORT){
             else{
                 gameBoard[i][j] = QString("N"); //empty
             }
+            if (i == j ){
+                gameBoard[i][j] = QString("M"); //teste
+            }
         }
     }
 
@@ -70,4 +73,17 @@ QString Player::getSourcePort(){
 
 QString Player::getRoom(){
     return playerRoom;
+}
+
+QVector<QVector<QString>> Player::invertBoard(){
+    QVector<QVector<QString>> rotatedBoard(10, QVector<QString>(10));
+    for(int i = 0; i < 10; i++) {
+        for(int j = 0; j < 10; j++) {
+            int rotatedI = 9 - i; // Rotate around the center of the board
+            int rotatedJ = 9 - j; // Rotate around the center of the board
+            rotatedBoard[rotatedI][rotatedJ] = gameBoard[i][j];
+        }
+    }
+    gameBoard = rotatedBoard;
+    return rotatedBoard;
 }

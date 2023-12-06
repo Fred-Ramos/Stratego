@@ -23,7 +23,10 @@ public:
     QString getSourcePort();
     QString getRoom();
 
+    //public methods
+    QVector<QVector<QString>> invertBoard();
 
+    //public attributes
     QVector<QVector<QString>> gameBoard; //gameboard to save the pieces allocation
 private:
     //private attributes
