@@ -161,7 +161,9 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
                 setPiecesResponse(thisPlayer, socket, connectionIP, connectionSourcePort, positions);
             }
         }
-
+    }
+    else if (identifier == QString("MOVEP")){ //piece move
+        qDebug() << "Dividing message:";
     }
 }
 

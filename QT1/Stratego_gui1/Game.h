@@ -66,7 +66,7 @@ private:
     void SetRoomMessage(QString room);
     void SetJoinRoomMessage(QString room);
     void SetPiecesMessage();
-    void pieceMoveMessage(Piece* thisPiece, Piece* otherPiece);
+    void pieceMoveMessage(int srcRow, int srcCol, int destRow, int destCol, int originX, int originY, int originZ);
 
     //private network methods
 

@@ -28,8 +28,10 @@ public:
     void setVisible(bool v); //set rank visible or not
 
     //atributes
-    QPointF originalPos;
-    int originalZ;
+    QPointF originalPos; //original position for this turn
+    int originalZ; //original z for this turn
+    QPointF originalPanelPos; //original side panel position
+    int originalPanelZ; //original side panel Z
 
 
 private:

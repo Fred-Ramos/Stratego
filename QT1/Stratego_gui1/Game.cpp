@@ -531,14 +531,22 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
     else if(getArePiecesSetUp() == true){ //if GAME already started(pieces are set up)
         if(pieceToPlace->getRank() == "2"){ //scout
             qDebug() << "atempting to place scout";
-            bool legalMove = true;
+            bool legalMove = false; //the scout may be moving diagonally, so legalmove = false
             int iSrcRow = pieceToPlace->getiX();
             int iSrcCol = pieceToPlace->getiY();
             int iDestRow = pieceToReplace->getiX();
             int iDestCol = pieceToReplace->getiY();
             qDebug() << "Source Square: " << iSrcRow << "||" << iSrcCol;
             qDebug() << "Destination Square: " << iDestRow << "||" << iDestCol;
-            if((iSrcRow == iDestRow) && (iSrcCol != iDestCol)){ // if moving in a row(same row; increasing or decreasing column)
+            if(iSrcRow == iDestRow && iSrcCol == iDestCol){ //if placing piece in same place, it is set, but no "new move" message is sent to server
+                pieceToPlace->setPos(pieceToReplace->pos());
+                pieceToPlace->setZValue(1);
+                pieceToPlace->setIsPlaced(true);
+                pieceToPlace = NULL;
+
+            }
+            else if((iSrcRow == iDestRow) && (iSrcCol != iDestCol)){ // if moving in a row(same row; increasing or decreasing column)
+                legalMove = true; //if it is moving in a row, legalMove starts as true
                 //check if trajectory is clean of other pieces/water
                 int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;   //1 if increasing in column, -1 if decreasing in column
                 qDebug() << "moving in a row";
@@ -550,20 +558,14 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                         Piece* piece = dynamic_cast<Piece*>(item);
                         if(piece != nullptr) { // The item is a Piece object
                             if (piece->getOwner() != QString("NOONE") || piece->getOwner() == QString("GAME") ){ //check squares are not empty (if it is a piece with owner or water)
-                                legalMove = false; //if not empty, scout doesnt move
+                                legalMove = false; //if not empty, scout doesnt move, change legalmove to false
                             }
                         }
                     }
                 }
-                if (legalMove == true){ //if it was a legal move, place piece
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    //pieceMoveMessage(pieceToPlace, pieceToReplace); //TESTTTTT
-                    pieceToPlace = NULL;
-                }
             }
             else if((iSrcRow != iDestRow) && (iSrcCol == iDestCol)){ // if moving in a column(same column; increasing or decreasing row)
+                legalMove = true; //if it is moving in a column, legalMove starts as true
                 //check if trajectory is clean of other pieces/water
                 int iRowOffset = (iDestRow - iSrcRow > 0) ? 1 : -1; //1 if increasing in row, -1 if decreasing in row
                 for (int iCheckRow = iSrcRow + iRowOffset; iCheckRow !=  iDestRow; iCheckRow = iCheckRow + iRowOffset) {  //check row trajectory
@@ -578,124 +580,50 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                         }
                     }
                 }
-                if (legalMove == true){ //if it was a legal move, place piece
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    //pieceMoveMessage(pieceToPlace, pieceToReplace); //TESTTTTT
-                    pieceToPlace = NULL;
-                }
+            }
+            if (legalMove == true){ //if it was a legal move, place piece
+                pieceToPlace->setPos(pieceToReplace->pos());
+                pieceToPlace->setZValue(1);
+                pieceToPlace->setIsPlaced(true);
+                pieceMoveMessage(iSrcRow, iSrcCol, iDestRow, iDestCol, pieceToPlace->originalPanelPos.x(), pieceToPlace->originalPanelPos.y(), pieceToPlace->originalPanelZ); //TESTTTTT
+                pieceToPlace = NULL;
             }
         }
-        //WORKS UNTIL HERE//////////////////////
+        //Other pieces movement:
         else if(pieceToPlace->getRank() != "2" && pieceToPlace->getRank() != "B" && pieceToPlace->getRank() != "F"){ //other pieces
-            if(pieceToReplace->getRank() == 'N'){ // empty square
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
+            qDebug() << "atempting to place simple moving piece";
+            bool legalMove = false; //the piece may be moving diagonally, so legalmove = false
+            int iSrcRow = pieceToPlace->getiX();
+            int iSrcCol = pieceToPlace->getiY();
+            int iDestRow = pieceToReplace->getiX();
+            int iDestCol = pieceToReplace->getiY();
+            qDebug() << "Source Square: " << iSrcRow << "||" << iSrcCol;
+            qDebug() << "Destination Square: " << iDestRow << "||" << iDestCol;
+            if(iSrcRow == iDestRow && iSrcCol == iDestCol){ //if placing piece in same place, it is set, but no "new move" message is sent to server
+                pieceToPlace->setPos(pieceToReplace->pos());
+                pieceToPlace->setZValue(1);
+                pieceToPlace->setIsPlaced(true);
+                pieceToPlace = NULL;
+
+            }
+            else if (iSrcRow == iDestRow) { //if moving in a row (same row)
+                legalMove = true; //if it is moving in a row, legalMove starts as true
+                if ( abs(iSrcCol - iDestCol) != 1 ){ //if moving 1 square exactly
+                    legalMove = false;
                 }
             }
-            else if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
+            else if (iDestCol == iSrcCol) {  //if moving in a column (same column)
+                legalMove = true; //if it is moving in a column, legalMove starts as true
+                if ( abs(iSrcRow - iDestRow) != 1 ){ //if moving 1 square exactly
+                    legalMove = false;
                 }
             }
-            else if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(0);
-                    pieceToReplace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(0);
-                    pieceToReplace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(0);
-                    pieceToReplace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(0);
-                    pieceToReplace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-            }
-            else if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
-                    pieceToPlace->setZValue(-1);
-                    pieceToReplace->setZValue(-1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() + 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards left
-                    pieceToReplace->setZValue(-1);
-                    pieceToPlace->setZValue(-1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() + 55)){ // "eat" backwards
-                    pieceToReplace->setZValue(-1);
-                    pieceToPlace->setZValue(-1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y() - 55)){ // "eat" upwards
-                    pieceToPlace->setZValue(-1);
-                    pieceToReplace->setZValue(-1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
+            if (legalMove == true){ //if it was a legal move, place piece
+                pieceToPlace->setPos(pieceToReplace->pos());
+                pieceToPlace->setZValue(1);
+                pieceToPlace->setIsPlaced(true);
+                pieceMoveMessage(iSrcRow, iSrcCol, iDestRow, iDestCol, pieceToPlace->originalPanelPos.x(), pieceToPlace->originalPanelPos.y(), pieceToPlace->originalPanelZ); //TESTTTTT
+                pieceToPlace = NULL;
             }
         }
         //make it the next players turn if piece was placed and ArePiecesSetup == true
@@ -932,6 +860,8 @@ void Game::drawThisPieces(){
         }
         initialpiece->originalPos = initialpiece->pos();
         initialpiece->originalZ = initialpiece->zValue();
+        initialpiece->originalPanelPos = initialpiece->pos();
+        initialpiece->originalPanelZ = initialpiece->zValue();
         scene->addItem(initialpiece);
     }
 }
@@ -944,7 +874,9 @@ void Game::drawOtherPieces(){
         initialpiece->setPos(150 + 5 + 55*(i%10), 18 + 5 + 55*(i/10));
         initialpiece->setZValue(0);
         initialpiece->originalPos = initialpiece->pos();
-        initialpiece->originalZ = 1;
+        initialpiece->originalZ = initialpiece->zValue();
+        initialpiece->originalPanelPos = initialpiece->pos();
+        initialpiece->originalPanelZ = initialpiece->zValue();
         initialpiece->setVisible(false);
         scene->addItem(initialpiece);
     }
@@ -988,8 +920,11 @@ void Game::SetPiecesMessage(){ //Initial Pieces setup message to send to the ser
     }
 }
 
-void Game::pieceMoveMessage(Piece *thisPiece, Piece *otherPiece){
-
+void Game::pieceMoveMessage(int srcRow, int srcCol, int destRow, int destCol, int originX, int originY, int originZ){
+    QString message = QString("MOVEP") + thisPlayerColor.left(1); //MOVE PIECE
+    message.append(QString::number(srcRow) + QString::number(srcCol) + QString::number(destRow) + QString::number(destCol)); //add source and destination square
+    message.append( QString("|") + QString::number(originX) + QString("|") + QString::number(originY) + QString("|") + QString::number(originZ)); //add Original side penal location for if piece dies, it can be placed there in the enemy's screen
+    ThisClientSocket->writeData(message);
 }
 
 void Game::SetRoomMessage(QString room){

@@ -72,6 +72,7 @@ void TCPsocket::writeData(QString data){
         socket->write(data.toUtf8());
         socket->waitForBytesWritten(3000);
     }
+    qDebug() << "sent data: " << data;
 }
 
 void TCPsocket::onReadyRead(){
