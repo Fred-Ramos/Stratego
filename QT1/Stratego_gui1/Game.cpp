@@ -39,6 +39,10 @@ Game::Game(QWidget *parent){ //constructor
 
 }
 
+QPointF Game::toSceneCoord(int x, int y){
+     return QPointF(x*55+155, y*55 + 23);
+}
+
 void Game::start(){
     //clear the screen
     scene->clear();
@@ -498,7 +502,7 @@ void Game::setTurn(QString player){
 
 void Game::pickUpPiece(Piece* piece){
     //picks up the specified card
-    if (piece->getOwner() == thisPlayerColor && pieceToPlace == NULL){ //if piece to pick up belongs to player and no piece picked up yet
+    if (piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
         piece->setZValue(10);
         pieceToPlace = piece;
         if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
@@ -523,70 +527,68 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
             //removeFromPanel(pieceToPlace, getTurn());
             pieceToPlace = NULL; //piece already placed
         }
-    }else if(getArePiecesSetUp() == true){
+    }
+    else if(getArePiecesSetUp() == true){ //if GAME already started(pieces are set up)
         if(pieceToPlace->getRank() == "2"){ //scout
-            if(pieceToReplace->getRank() == "N" && pieceToReplace->getOwner() == "NOONE"){ // empty square
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
+            qDebug() << "atempting to place scout";
+            bool legalMove = true;
+            int iSrcRow = pieceToPlace->getiX();
+            int iSrcCol = pieceToPlace->getiY();
+            int iDestRow = pieceToReplace->getiX();
+            int iDestCol = pieceToReplace->getiY();
+            qDebug() << "Source Square: " << iSrcRow << "||" << iSrcCol;
+            qDebug() << "Destination Square: " << iDestRow << "||" << iDestCol;
+            if((iSrcRow == iDestRow) && (iSrcCol != iDestCol)){ // if moving in a row(same row; increasing or decreasing column)
+                //check if trajectory is clean of other pieces/water
+                int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;   //1 if increasing in column, -1 if decreasing in column
+                qDebug() << "moving in a row";
+                for (int iCheckCol = iSrcCol + iColOffset; iCheckCol !=  iDestCol; iCheckCol = iCheckCol + iColOffset) {  //check column trajectory
+                    QPointF position = toSceneCoord(iSrcRow, iCheckCol);
+                    qDebug() << "Position checking: " << position;
+                    QList<QGraphicsItem*> itemsAtPosition = scene->items(position);
+                    for(QGraphicsItem* item : itemsAtPosition) { //check items at position
+                        Piece* piece = dynamic_cast<Piece*>(item);
+                        if(piece != nullptr) { // The item is a Piece object
+                            if (piece->getOwner() != QString("NOONE") || piece->getOwner() == QString("GAME") ){ //check squares are not empty (if it is a piece with owner or water)
+                                legalMove = false; //if not empty, scout doesnt move
+                            }
+                        }
+                    }
                 }
-                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
+                if (legalMove == true){ //if it was a legal move, place piece
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
+                    //pieceMoveMessage(pieceToPlace, pieceToReplace); //TESTTTTT
                     pieceToPlace = NULL;
                 }
             }
-            else if(pieceToPlace->getRank() > pieceToReplace->getRank()){ // "good" move
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
+            else if((iSrcRow != iDestRow) && (iSrcCol == iDestCol)){ // if moving in a column(same column; increasing or decreasing row)
+                //check if trajectory is clean of other pieces/water
+                int iRowOffset = (iDestRow - iSrcRow > 0) ? 1 : -1; //1 if increasing in row, -1 if decreasing in row
+                for (int iCheckRow = iSrcRow + iRowOffset; iCheckRow !=  iDestRow; iCheckRow = iCheckRow + iRowOffset) {  //check row trajectory
+                    QPointF position = toSceneCoord(iCheckRow, iSrcCol);
+                    QList<QGraphicsItem*> itemsAtPosition = scene->items(position);
+                    for(QGraphicsItem* item : itemsAtPosition) { //check items at position
+                        Piece* piece = dynamic_cast<Piece*>(item);
+                        if(piece != nullptr) { // The item is a Piece object
+                            if (piece->getOwner() != QString("NOONE") || piece->getOwner() == QString("GAME") ){ //check squares are not empty (if it is a piece with owner or water)
+                                legalMove = false; //if not empty, scout doesnt move
+                            }
+                        }
+                    }
+                }
+                if (legalMove == true){ //if it was a legal move, place piece
                     pieceToPlace->setPos(pieceToReplace->pos());
                     pieceToPlace->setZValue(1);
                     pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-            }
-            else if(pieceToPlace->getRank() < pieceToReplace->getRank()){ //"bad" move
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(0);
-                    pieceToReplace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
-                    pieceToPlace->setPos(pieceToReplace->pos());
-                    pieceToPlace->setZValue(0);
-                    pieceToReplace->setZValue(1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-            }
-            else if(pieceToPlace->getRank() == pieceToReplace->getRank()){ // both lose a piece
-                if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() != pieceToReplace->pos().y())){ // "eat" in own column
-                    pieceToPlace->setZValue(-1);
-                    pieceToReplace->setZValue(-1);
-                    pieceToPlace->setIsPlaced(true);
-                    pieceToPlace = NULL;
-                }
-                else if((pieceToPlace->originalPos.x() != pieceToReplace->pos().x()) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" in own line
-                    pieceToPlace->setZValue(-1);
-                    pieceToReplace->setZValue(-1);
-                    pieceToPlace->setIsPlaced(true);
+                    //pieceMoveMessage(pieceToPlace, pieceToReplace); //TESTTTTT
                     pieceToPlace = NULL;
                 }
             }
         }
-        else if(pieceToPlace->getRank() == "3" || pieceToPlace->getRank() == "4" || pieceToPlace->getRank() == "5" ||
-           pieceToPlace->getRank() == "6" || pieceToPlace->getRank() == "7" || pieceToPlace->getRank() == "8" ||
-           pieceToPlace->getRank() == "9" || pieceToPlace->getRank() == "10" || pieceToPlace->getRank() == "1"){ //other pieces
+        //WORKS UNTIL HERE//////////////////////
+        else if(pieceToPlace->getRank() != "2" && pieceToPlace->getRank() != "B" && pieceToPlace->getRank() != "F"){ //other pieces
             if(pieceToReplace->getRank() == 'N'){ // empty square
                 if((pieceToPlace->originalPos.x() == pieceToReplace->pos().x() - 55) || (pieceToPlace->originalPos.y() == pieceToReplace->pos().y())){ // "eat" towards right
                     pieceToPlace->setPos(pieceToReplace->pos());
@@ -698,7 +700,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
         }
         //make it the next players turn if piece was placed and ArePiecesSetup == true
         if (pieceToPlace == NULL){
-            nextPlayersTurn();
+            //nextPlayersTurn(); UNCOMMENT LATER
         }
     }
 }
@@ -941,7 +943,7 @@ void Game::drawOtherPieces(){
         qDebug() << 150 + 5 + 55*(i%10) << "||" << 18 + 5 + 55*(i/10);
         initialpiece->setPos(150 + 5 + 55*(i%10), 18 + 5 + 55*(i/10));
         initialpiece->setZValue(0);
-        initialpiece->originalPos = QPoint(0,0);
+        initialpiece->originalPos = initialpiece->pos();
         initialpiece->originalZ = 1;
         initialpiece->setVisible(false);
         scene->addItem(initialpiece);
@@ -984,6 +986,10 @@ void Game::SetPiecesMessage(){ //Initial Pieces setup message to send to the ser
         }
         MessageToSend.append(QString::number(yPosition) + QString::number(xPosition) + thisRank);
     }
+}
+
+void Game::pieceMoveMessage(Piece *thisPiece, Piece *otherPiece){
+
 }
 
 void Game::SetRoomMessage(QString room){

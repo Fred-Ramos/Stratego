@@ -13,6 +13,8 @@ public:
     QString getRank();
     bool getIsPlaced();
     QString getOwner();
+    int getiY();
+    int getiX();
 
 
     //event

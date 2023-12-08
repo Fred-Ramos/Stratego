@@ -17,6 +17,7 @@ public:
     Game(QWidget* parent = NULL); //Option of passing on a parent widget
 
     //public methods
+    QPointF toSceneCoord(int x, int y);
     QString getTurn();
     void setTurn(QString player);
     void pickUpPiece(Piece* piece);
@@ -33,6 +34,7 @@ public:
     void mousePressEvent(QMouseEvent* event); //check if left or right click
 
     //public attributes
+    QString thisPlayerColor; //the color of the player of this client
     QGraphicsScene* scene;
     Board* Gameboard;            //game board
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
@@ -64,11 +66,11 @@ private:
     void SetRoomMessage(QString room);
     void SetJoinRoomMessage(QString room);
     void SetPiecesMessage();
+    void pieceMoveMessage(Piece* thisPiece, Piece* otherPiece);
 
     //private network methods
 
     //private atributes
-    QString thisPlayerColor; //the color of the player of this client
     QString thisPlayerName;  //the name of the player of this client
     QString otherPlayerName; //enemy player's name;
     bool LoggedIn;

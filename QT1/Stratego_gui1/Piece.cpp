@@ -30,6 +30,14 @@ QString Piece::getOwner(){
     return owner;
 }
 
+int Piece::getiY(){
+    return (this->originalPos.y() - 23)/55;
+}
+
+int Piece::getiX(){
+    return (this->originalPos.x() - 155)/55;
+}
+
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
     qDebug() << game->pieceToPlace;
     if (event->button() == Qt::LeftButton){       //left click picks up piece or places it
@@ -38,10 +46,10 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
             qDebug() << "piece not placed clicked";
         }
         else{ //if a piece is already picked up
-            qDebug() << "there is a piece picked up";
+            qDebug() << "there is a piece picked up, going to try to place it";
 
-            if (getIsPlaced() == true && this->owner==QString("NOONE")){ //if destiny is a empty placed piece, place piece down
-                qDebug() << "piece placed clicked";
+            if (getIsPlaced() == true && this->getOwner() != QString("GAME") && this->owner!=game->thisPlayerColor){ //if destiny is not water, and is not a piece of this player's color
+                qDebug() << "piece placed clicked of owner: " << this->getOwner();
                 game->placePiece(this);
             }
         }
