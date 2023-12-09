@@ -489,8 +489,8 @@ void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, Q
 
             QString thisRank = thisPlayer->gameBoard[SrcRow][SrcCol].right(2);
             QString otherRank = thisPlayer->gameBoard[DestRow][DestCol].right(2);
-            int atackResult = ComparePiece(thisRank, otherRank);
             qDebug() << thisRank << "is atacking " << otherRank;
+            int atackResult = ComparePiece(thisRank, otherRank);
 
             QString thisMessage = QString("MOVAR"); //MOVE ATACK RESPONSE
             QString otherMessage = QString("MOVDR"); //MOVE DEFENSE RESPONSE
@@ -500,10 +500,10 @@ void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, Q
             if (atackResult == 1){ //if atacking piece wins
                 QString atackingPiece = thisPlayer->gameBoard[SrcRow][SrcCol];
                 thisPlayer->gameBoard[DestRow][DestCol] = atackingPiece;
-                thisPlayer->gameBoard[SrcRow][SrcCol] = "N";
+                thisPlayer->gameBoard[SrcRow][SrcCol] = "0N";
 
                 otherPlayer->gameBoard[9 - DestRow][9 - DestCol] = atackingPiece;
-                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "N";
+                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "0N";
 
                 thisMessage.append("W"); //atacker wins
                 otherMessage.append("L"); //defender looses
@@ -513,11 +513,11 @@ void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, Q
                 otherMessage.append(thisRank); //defending piece knows atacking piece rank;
             }
             else if(atackResult == 0 ){ //if both pieces loose
-                thisPlayer->gameBoard[DestRow][DestCol] = "N";
-                thisPlayer->gameBoard[SrcRow][SrcCol] = "N";
+                thisPlayer->gameBoard[DestRow][DestCol] = "0N";
+                thisPlayer->gameBoard[SrcRow][SrcCol] = "0N";
 
-                otherPlayer->gameBoard[9 - DestRow][9 - DestCol] = "N";
-                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "N";
+                otherPlayer->gameBoard[9 - DestRow][9 - DestCol] = "0N";
+                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "0N";
 
                 thisMessage.append("D"); //draw
                 otherMessage.append("D"); //draw
@@ -527,9 +527,9 @@ void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, Q
                 otherMessage.append(thisRank); //defending piece knows atacking piece rank;
             }
             else if(atackResult == -1 ){ //if atacking piece looses
-                thisPlayer->gameBoard[SrcRow][SrcCol] = "N"; //only atacking source square is cleaned, end square stays with defending piece, that survived
+                thisPlayer->gameBoard[SrcRow][SrcCol] = "0N"; //only atacking source square is cleaned, end square stays with defending piece, that survived
 
-                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "N";
+                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "0N";
 
                 thisMessage.append("L"); //atacker looses
                 otherMessage.append("W"); //defender wins
@@ -559,7 +559,7 @@ void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, Q
 int ServerWindow::ComparePiece(QString thisRank, QString otherRank) {                      // check if rank of piece is higher
     bool numeric;
     int O = otherRank.toInt(&numeric);       //other rank, numeric
-    if (otherRank == "N"){                  //if empty
+    if (otherRank == "0N"){                  //if empty
         return 1;
     }
     else if (numeric){ //if is a ranked piece(is a number)

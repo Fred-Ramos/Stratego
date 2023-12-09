@@ -514,14 +514,21 @@ void Game::setTurn(QString player){
 
 void Game::pickUpPiece(Piece* piece){
     //picks up the specified card
-    if (piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
-        piece->setZValue(10);
-        pieceToPlace = piece;
-        if (getArePiecesSetUp() == true){ //if pieces already setup, change original position; else original position is in the side panel
+    if (getArePiecesSetUp() == false){
+        if (piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
+            piece->setZValue(10);
+            pieceToPlace = piece;
+            return;
+        }
+    }
+    else{ //if pieces already setup, change original position; else original position is in the side panel; cant pick up piece on the side panel(now its the graveyard)
+        if (piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && piece->pos().x() > 150 && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
+            piece->setZValue(10);
+            pieceToPlace = piece;
             piece->originalPos = piece->pos();
             piece->originalZ = piece->zValue();
+            return;
         }
-        return;
     }
 }
 
@@ -597,7 +604,9 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                 pieceToPlace->setPos(pieceToReplace->pos());
                 pieceToPlace->setZValue(1);
                 pieceToPlace->setIsPlaced(true);
-                pieceMoveMessage(iSrcRow, iSrcCol, iDestRow, iDestCol); //TESTTTTT
+                pieceToPlace->originalPos = pieceToPlace->pos();
+                pieceToPlace->originalZ = pieceToPlace->zValue();
+                pieceMoveMessage(iSrcRow, iSrcCol, iDestRow, iDestCol);
                 atackingPiece = pieceToPlace;
                 defendingPiece = pieceToReplace;
                 pieceToPlace = NULL;
@@ -607,28 +616,26 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
         else if(pieceToPlace->getRank() != "2" && pieceToPlace->getRank() != "B" && pieceToPlace->getRank() != "F"){ //other pieces
             qDebug() << "atempting to place simple moving piece";
             bool legalMove = false; //the piece may be moving diagonally, so legalmove = false
-            int iSrcRow = pieceToPlace->getiX();
-            int iSrcCol = pieceToPlace->getiY();
-            int iDestRow = pieceToReplace->getiX();
-            int iDestCol = pieceToReplace->getiY();
-            qDebug() << "Source Square: " << iSrcCol << "||" << iSrcRow;
-            qDebug() << "Destination Square: " << iDestCol << "||" << iDestRow;
+            int iSrcCol = pieceToPlace->getiX();
+            int iSrcRow = pieceToPlace->getiY();
+            int iDestCol = pieceToReplace->getiX();
+            int iDestRow = pieceToReplace->getiY();
+            qDebug() << "Source Square: " << iSrcRow << "||" << iSrcCol;
+            qDebug() << "Destination Square: " << iDestRow << "||" << iDestCol;
             if(iSrcRow == iDestRow && iSrcCol == iDestCol){ //if placing piece in same place, it is set, but no "new move" message is sent to server
                 pieceToPlace->setPos(pieceToReplace->pos());
                 pieceToPlace->setZValue(1);
                 pieceToPlace->setIsPlaced(true);
-                atackingPiece = pieceToPlace;
-                defendingPiece = pieceToReplace;
                 pieceToPlace = NULL;
 
             }
-            else if (iSrcRow == iDestRow) { //if moving in a row (same row)
+            else if (iSrcRow == iDestRow) { //if moving in a row (same row, +-1 column)
                 legalMove = true; //if it is moving in a row, legalMove starts as true
                 if ( abs(iSrcCol - iDestCol) != 1 ){ //if moving 1 square exactly
                     legalMove = false;
                 }
             }
-            else if (iDestCol == iSrcCol) {  //if moving in a column (same column)
+            else if (iDestCol == iSrcCol) {  //if moving in a column (same column, +-1 row)
                 legalMove = true; //if it is moving in a column, legalMove starts as true
                 if ( abs(iSrcRow - iDestRow) != 1 ){ //if moving 1 square exactly
                     legalMove = false;
@@ -638,7 +645,11 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                 pieceToPlace->setPos(pieceToReplace->pos());
                 pieceToPlace->setZValue(1);
                 pieceToPlace->setIsPlaced(true);
-                pieceMoveMessage(iSrcRow, iSrcCol, iDestRow, iDestCol); //TESTTTTT
+                pieceToPlace->originalPos = pieceToPlace->pos();
+                pieceToPlace->originalZ = pieceToPlace->zValue();
+                pieceMoveMessage(iSrcRow, iSrcCol, iDestRow, iDestCol);
+                atackingPiece = pieceToPlace;
+                defendingPiece = pieceToReplace;
                 pieceToPlace = NULL;
             }
         }
@@ -1102,31 +1113,45 @@ void Game::setDataReceived(QString data){
 void Game::atackMoveResponse(QString response){
     QString result = response.at(0);
     QString otherRank = response.mid(1,2);
-    qDebug() << "atacking piece killed a " << otherRank;
     if (otherRank.at(0) == QString("0")){ //if it is not a 10, ignore the first character of the rank( a 0)
+        qDebug() << "1";
         otherRank = otherRank.at(1);
     }
-    else if (otherRank.at(0) == QString("N")){ //if it is empty, do nothing
-        otherRank = otherRank.at(0);
-    }
+    qDebug() << "atacking piece atacked a " << otherRank;
     if (result == "W"){ //atacking moved piece wins
+        qDebug() << "3";
         if (otherRank != "N"){ //if not moving to empty square
+            qDebug() << "4";
             placeOtherDefeatedPiece(defendingPiece, otherRank);
             defendingPiece->setRank(otherRank);
             defendingPiece->setVisible(true); //rank is visible when dead
         }
     }
     else if (result == "D"){ //both pieces loose
+        qDebug() << "5";
         placeOtherDefeatedPiece(defendingPiece, otherRank);
         defendingPiece->setRank(otherRank);
         defendingPiece->setVisible(true); //rank is visible when dead
         atackingPiece->setPos(atackingPiece->originalPanelPos);
         atackingPiece->setZValue(atackingPiece->originalPanelZ);
     }
-    demoThisPiece->setRank(atackingPiece->getRank());
-    demoOtherPiece->setRank(defendingPiece->getRank());
+    else if (result == "L"){ //atacking piece dies
+        qDebug() << "6";
+        atackingPiece->setPos(atackingPiece->originalPanelPos);
+        atackingPiece->setZValue(atackingPiece->originalPanelZ);
+    }
+    qDebug() << "7";
+    QString thisRank = atackingPiece->getRank();
+    if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
+        qDebug() << "8";
+        demoThisPiece->setRank(thisRank);
+        demoOtherPiece->setRank(otherRank);
+    }
+    qDebug() << "9";
     defendingPiece = NULL;
+    qDebug() << "10";
     atackingPiece = NULL;
+    qDebug() << "11";
 }
 
 void Game::placeOtherDefeatedPiece(Piece *piece, QString rank){

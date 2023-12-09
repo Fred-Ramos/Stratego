@@ -55,9 +55,16 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
         }
     }
     else if (event->button() == Qt::RightButton && this->getOwner()==game->thisPlayerColor){ //right click sends piece to original position
-        setPos(this->originalPos);
-        setZValue(this->originalZ);
-        return;
+        if (game->getArePiecesSetUp() == false){
+            setPos(this->originalPos);
+            setZValue(this->originalZ);
+            return;
+        }
+        else if (this->pos().x() > 150){ //if pieces setup, cant reset position of a piece in the side panel(now its the graveyard)
+            setPos(this->originalPos);
+            setZValue(this->originalZ);
+            return;
+        }
     }
 }
 
