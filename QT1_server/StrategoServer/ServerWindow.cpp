@@ -154,7 +154,7 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         qDebug() << "positions data: " << positions;
         Player* thisPlayer = nullptr;
         for (Player* player : Players) {
-            qDebug() << "2nd Running through player's IPs/Ports: " << player->getIP() << player->getSourcePort();
+            qDebug() << "3rd Running through player's IPs/Ports: " << player->getIP() << player->getSourcePort();
             if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
                 // Found player with the given IP and source, set its game board
                 thisPlayer = player;
@@ -163,9 +163,21 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
         }
     }
     else if (identifier == QString("MOVEP")){ //piece move
-        qDebug() << "Dividing message:";
+        int dataLength = data.size();
+        QString move = data.mid(5, dataLength - 5);
+        qDebug() << "move data: " << move;
+        Player* thisPlayer = nullptr;
+        for (Player* player : Players) {
+            qDebug() << "4th Running through player's IPs/Ports: " << player->getIP() << player->getSourcePort();
+            if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
+                // Found player with the given IP and source, set its game board
+                thisPlayer = player;
+                setMoveResponse(thisPlayer, socket, connectionIP, connectionSourcePort, move);
+            }
+        }
     }
 }
+
 
 void ServerWindow::displayVariables(){
     scene->clear();
@@ -382,7 +394,7 @@ void ServerWindow::setPiecesResponse(Player *thisPlayer, QTcpSocket *thisSocket,
     QString thisSetUpData = PositionData;
     QString thisRoom = thisPlayer->getRoom(); //room of this player
     QString thisColor = thisPlayer->getColor(); //color of this player
-    //find ip and port of the other player with the same room and blue color
+    //find ip and port of the other player with the same room and diferent color
     Player* otherPlayer = nullptr;
     QString otherIP;
     QString otherSourcePort;
@@ -392,7 +404,7 @@ void ServerWindow::setPiecesResponse(Player *thisPlayer, QTcpSocket *thisSocket,
     for (Player* player : Players) {
         otherIP = player->getIP();
         otherSourcePort = player->getSourcePort();
-        otherColor = player->getRoom();
+        otherColor = player->getColor();
         if ( player->getRoom() == thisRoom && player->getColor() != thisColor ) { //if they share the same room and have diferent colors
             qDebug() << "setup found other player " << player->getIP() << player->getSourcePort();
             otherPlayer = player;
@@ -431,9 +443,10 @@ void ServerWindow::setPiecesResponse(Player *thisPlayer, QTcpSocket *thisSocket,
                         thisPlayer->gameBoard[i][j] = invertedOtherPlayerBoard[i][j];
                     }
                 }
-                qDebug() << "this: ";
+                qDebug() << "Boards after setup:";
+                qDebug() << "This Board:";
                 thisPlayer->PrintBoard(false);
-                qDebug() << "other: ";
+                qDebug() << "Other Board:";
                 otherPlayer->PrintBoard(false);
 
                 //Initial boards organized for both players, now send message to both clients to start game
@@ -446,6 +459,137 @@ void ServerWindow::setPiecesResponse(Player *thisPlayer, QTcpSocket *thisSocket,
             }
         }
     }
+}
+
+void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, QString thisIp, QString thisSourcePort, QString thisMove){
+    int SrcRow = thisMove.at(0).digitValue();
+    int SrcCol = thisMove.at(1).digitValue();
+    int DestRow = thisMove.at(2).digitValue();
+    int DestCol = thisMove.at(3).digitValue();
+    qDebug() << "confirm data: ";
+    qDebug() << SrcRow << "|" << SrcCol << "|" << DestRow << "|" << DestCol;
+
+    QString thisRoom = thisPlayer->getRoom(); //room of this player
+    QString thisColor = thisPlayer->getColor(); //color of this player
+    //find ip and port of the other player with the same room and diferent color
+    Player* otherPlayer = nullptr;
+    QString otherIP;
+    QString otherSourcePort;
+    QString otherColor;
+    QTcpSocket* otherSocket;
+    for (Player* player : Players) {
+        otherIP = player->getIP();
+        otherSourcePort = player->getSourcePort();
+        otherColor = player->getColor();
+        if ( player->getRoom() == thisRoom && player->getColor() != thisColor ) { //if they share the same room and have diferent colors, found other player!
+            qDebug() << "move found other player " << player->getIP() << player->getSourcePort();
+            otherPlayer = player;
+
+            //do move for both boards and both players
+
+            QString thisRank = thisPlayer->gameBoard[SrcRow][SrcCol].right(2);
+            QString otherRank = thisPlayer->gameBoard[DestRow][DestCol].right(2);
+            int atackResult = ComparePiece(thisRank, otherRank);
+            qDebug() << thisRank << "is atacking " << otherRank;
+
+            QString thisMessage = QString("MOVAR"); //MOVE ATACK RESPONSE
+            QString otherMessage = QString("MOVDR"); //MOVE DEFENSE RESPONSE
+
+
+
+            if (atackResult == 1){ //if atacking piece wins
+                QString atackingPiece = thisPlayer->gameBoard[SrcRow][SrcCol];
+                thisPlayer->gameBoard[DestRow][DestCol] = atackingPiece;
+                thisPlayer->gameBoard[SrcRow][SrcCol] = "N";
+
+                otherPlayer->gameBoard[9 - DestRow][9 - DestCol] = atackingPiece;
+                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "N";
+
+                thisMessage.append("W"); //atacker wins
+                otherMessage.append("L"); //defender looses
+
+                thisMessage.append(otherRank); //atacking player now knows rank of defending piece
+                otherMessage.append(QString::number(9 - SrcRow) + QString::number(9 - SrcCol) + QString::number(9 - DestRow) + QString::number(9 - DestCol)); //defending player knows what piece moved and to where
+                otherMessage.append(thisRank); //defending piece knows atacking piece rank;
+            }
+            else if(atackResult == 0 ){ //if both pieces loose
+                thisPlayer->gameBoard[DestRow][DestCol] = "N";
+                thisPlayer->gameBoard[SrcRow][SrcCol] = "N";
+
+                otherPlayer->gameBoard[9 - DestRow][9 - DestCol] = "N";
+                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "N";
+
+                thisMessage.append("D"); //draw
+                otherMessage.append("D"); //draw
+
+                thisMessage.append(otherRank); //atacking player knows destination square and now knows rank of defending piece
+                otherMessage.append(QString::number(9 - SrcRow) + QString::number(9 - SrcCol) + QString::number(9 - DestRow) + QString::number(9 - DestCol)); //defending player knows what piece moved and to where
+                otherMessage.append(thisRank); //defending piece knows atacking piece rank;
+            }
+            else if(atackResult == -1 ){ //if atacking piece looses
+                thisPlayer->gameBoard[SrcRow][SrcCol] = "N"; //only atacking source square is cleaned, end square stays with defending piece, that survived
+
+                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "N";
+
+                thisMessage.append("L"); //atacker looses
+                otherMessage.append("W"); //defender wins
+
+                thisMessage.append(otherRank); //atacking player now knows rank of defending piece
+                otherMessage.append(QString::number(9 - SrcRow) + QString::number(9 - SrcCol) + QString::number(9 - DestRow) + QString::number(9 - DestCol)); //defending player knows what piece moved and to where
+                otherMessage.append(thisRank); //defending piece knows atacking piece rank;
+            }
+            //ATACKING FLAG CONDITION MISSING!!!!!!!!!!!!!!!!!!!!!!!
+
+            qDebug() << "Boards after move:";
+            qDebug() << "This Board:";
+            thisPlayer->PrintBoard(false);
+            qDebug() << "Other Board:";
+            otherPlayer->PrintBoard(false);
+            // get other player's socket
+            otherSocket = gameServer->findConnection(otherIP, otherSourcePort);
+            //server boards have been updated, now send message to clients about the move result
+            gameServer->writeToClient(thisSocket, thisMessage);
+            gameServer->writeToClient(otherSocket, otherMessage);
+        }
+    }
+}
+
+
+//Compare function, returns: 0(both pieces die), 1(atacking piece wins), -1(defending piece wins)
+int ServerWindow::ComparePiece(QString thisRank, QString otherRank) {                      // check if rank of piece is higher
+    bool numeric;
+    int O = otherRank.toInt(&numeric);       //other rank, numeric
+    if (otherRank == "N"){                  //if empty
+        return 1;
+    }
+    else if (numeric){ //if is a ranked piece(is a number)
+        int T = thisRank.toInt();
+
+        if ((T == 0) && (O == 9)){ //if spy is atacking and marshal defending, spy wins(only exception to rank rule)
+            return 1; //nothing changes, defending piece is deleted
+        }
+        else if (T > O){
+            return 1; //ATACKING PIECE WINS
+        }
+        else if (O > T){
+            return -1; //DEFENDING PIECE WINS
+        }
+        else if(T == O){
+            return 0; //BOTH PIECES LOOSE
+        }
+    }
+    else if (otherRank == "0B"){
+        if (thisRank == "02"){
+            return 1; //Miner disarms bomb, bomb piece looses
+        }
+        else{
+            return 0; //Bomb explodes, both pieces loose
+        }
+    }
+    else if (otherRank == "0F"){ //defending piece is a flag
+        return 2; //atacking player wins
+    }
+    return 1;
 }
 
 

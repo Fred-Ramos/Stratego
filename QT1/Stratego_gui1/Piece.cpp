@@ -54,7 +54,7 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
             }
         }
     }
-    else if (event->button() == Qt::RightButton){ //right click sends piece to original position
+    else if (event->button() == Qt::RightButton && this->getOwner()==game->thisPlayerColor){ //right click sends piece to original position
         setPos(this->originalPos);
         setZValue(this->originalZ);
         return;
@@ -97,6 +97,18 @@ void Piece::setOwner(QString player){
         setBrush(brush);
     }
     else if (player == QString("BLUEPLAYER")){
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::blue);
+        setBrush(brush);
+    }
+    else if (player == QString("DEMORED")){
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::red);
+        setBrush(brush);
+    }
+    else if (player == QString("DEMOBLUE")){
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);
         brush.setColor(Qt::blue);

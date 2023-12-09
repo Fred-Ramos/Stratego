@@ -46,12 +46,15 @@ private:
 
     QString setRoomResponse(Player* player, QString data);
     void setJoinRoomResponse(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort, QString thisRoom);
+    void setMoveResponse(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort, QString thisMove);
 
     QGraphicsTextItem* ConnectionStateText; //QT text of the connection state
     QGraphicsTextItem* dataReceivedText; //QT text of the last data received
     QGraphicsTextItem* dataReceivedIpPortText; //QT text of the source ip and port of the data
 
     void setPiecesResponse(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort, QString PositionData);
+
+    int ComparePiece(QString thisRank, QString otherRank);
 
 
 };

@@ -33,12 +33,11 @@ public:
     QPointF originalPanelPos; //original side panel position
     int originalPanelZ; //original side panel Z
 
-
+    QGraphicsTextItem* rankText;
 private:
     bool isPlaced; //placed or not
     QString owner; //belongs to which player
     QString rank; //get piece rank/type
-    QGraphicsTextItem* rankText;
 };
 
 #endif // PIECE_H
