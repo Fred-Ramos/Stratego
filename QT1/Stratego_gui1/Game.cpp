@@ -54,7 +54,7 @@ Game::Game(QWidget *parent){ //constructor
 QPointF Game::toSceneCoord(int Col, int Row){
      return QPointF(Col*55+155, Row*55 + 23);
 }
-//QPointF position = toSceneCoord(iSrcCol, iCheckRow);
+
 void Game::start(){
     //clear the screen
     scene->clear();
@@ -627,7 +627,6 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                 pieceToPlace->setZValue(1);
                 pieceToPlace->setIsPlaced(true);
                 pieceToPlace = NULL;
-
             }
             else if (iSrcRow == iDestRow) { //if moving in a row (same row, +-1 column)
                 legalMove = true; //if it is moving in a row, legalMove starts as true
@@ -655,7 +654,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
         }
         //make it the next players turn if piece was placed and ArePiecesSetup == true
         if (pieceToPlace == NULL){
-            //nextPlayersTurn(); UNCOMMENT LATER
+            nextPlayersTurn(); //1move per play
         }
     }
 }
@@ -1108,6 +1107,11 @@ void Game::setDataReceived(QString data){
         QString atackResponse = data.mid(5, 5 - datalength);
         atackMoveResponse(atackResponse);
     }
+    else if(identifier == QString("MOVDR")){ //MOVE defense response
+        int datalength = data.size();
+        QString defenseResponse = data.mid(5, 5 - datalength);
+        defenseMoveResponse(defenseResponse);
+    }
 }
 
 void Game::atackMoveResponse(QString response){
@@ -1143,6 +1147,80 @@ void Game::atackMoveResponse(QString response){
     defendingPiece = NULL;
     atackingPiece = NULL;
 }
+
+void Game::defenseMoveResponse(QString response){
+    QString result = response.at(0);
+    int SrcRow = response.at(1).digitValue();
+    int SrcCol = response.at(2).digitValue();
+    int DestRow = response.at(3).digitValue();
+    int DestCol = response.at(4).digitValue();
+    QString otherRank = response.right(2);
+    if (otherRank.at(0) == QString("0")){ //if it is not a 10, ignore the first character of the rank( a 0)
+        otherRank = otherRank.at(1);
+    }
+    qDebug() << otherRank << " atacking piece atacked a defending piece ";
+    QPointF position;
+    QList<QGraphicsItem*> itemsAtPosition;
+    //find atacking piece
+    position = toSceneCoord(SrcCol, SrcRow);
+    qDebug() << "Position checking for atacking piece: " << position;
+    itemsAtPosition = scene->items(position);
+    for(QGraphicsItem* item : itemsAtPosition) { //check items at position
+        Piece* piece = dynamic_cast<Piece*>(item);
+        if(piece != nullptr) { // The item is a Piece object
+            qDebug() << "this piece has owner: " << piece->getOwner();
+            if (piece->getOwner() != QString("NOONE") && piece->getOwner() != thisPlayerColor ){ //it must be an enemy piece
+                atackingPiece = piece;
+            }
+        }
+    }
+    //find defending piece
+    position = toSceneCoord(DestCol, DestRow);
+    qDebug() << "Position checking for defending piece: " << position;
+    itemsAtPosition = scene->items(position);
+    for(QGraphicsItem* item : itemsAtPosition) { //check items at position
+        Piece* piece = dynamic_cast<Piece*>(item);
+        if(piece != nullptr) { // The item is a Piece object
+            qDebug() << "this piece has owner: " << piece->getOwner();
+            if (piece->getOwner() == thisPlayerColor ){ //if it is this players piece
+                defendingPiece = piece;
+            }
+            else if (piece->getOwner() == QString("NOONE") && defendingPiece == NULL){ //if there is no player piece, it is a empty piece
+                defendingPiece = piece;
+            }
+        }
+    }
+    atackingPiece->setPos(defendingPiece->pos());
+    atackingPiece->originalPos = atackingPiece->pos();
+    QString thisRank = defendingPiece->getRank();
+    //determine which piece survives
+    if (result == "L"){ //atacking moved piece looses
+        if (thisRank != "N"){ //if not moving to empty square
+            placeOtherDefeatedPiece(atackingPiece, otherRank);
+            atackingPiece->setRank(otherRank);
+            atackingPiece->setVisible(true); //rank is visible when dead
+        }
+    }
+    else if (result == "D"){ //both pieces loose
+        placeOtherDefeatedPiece(atackingPiece, otherRank);
+        atackingPiece->setRank(otherRank);
+        atackingPiece->setVisible(true); //rank is visible when dead
+        defendingPiece->setPos(defendingPiece->originalPanelPos);
+        defendingPiece->setZValue(defendingPiece->originalPanelZ);
+    }
+    else if (result == "W"){ //atacking moved piece wins
+        defendingPiece->setPos(defendingPiece->originalPanelPos);
+        defendingPiece->setZValue(defendingPiece->originalPanelZ);
+    }
+    if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
+        demoThisPiece->setRank(thisRank);
+        demoOtherPiece->setRank(otherRank);
+    }
+    defendingPiece = NULL;
+    atackingPiece = NULL;
+    nextPlayersTurn(); //now it is this player's turn
+}
+
 
 void Game::placeOtherDefeatedPiece(Piece *piece, QString rank){
     int StartingX = scene->width() - 145;
@@ -1204,26 +1282,5 @@ void Game::placeOtherDefeatedPiece(Piece *piece, QString rank){
 }
 
 
-// QPointF position = toSceneCoord(iSrcCol, iCheckRow);
-// qDebug() << "Position checking: " << position;
-// QList<QGraphicsItem*> itemsAtPosition = scene->items(position);
-// for(QGraphicsItem* item : itemsAtPosition) { //check items at position
-//     Piece* piece = dynamic_cast<Piece*>(item);
-//     if(piece != nullptr) { // The item is a Piece object
-//         if (piece->getOwner() != QString("NOONE") || piece->getOwner() == QString("GAME") ){ //check squares are not empty (if it is a piece with owner or water)
-//             legalMove = false; //if not empty, scout doesnt move
-//         }
-//     }
-// }
-
-// //draw Scouts
-// else if (2 <= i && i < 10){
-//     initialpiece->setPos(50/3, 75 + 10 + (i - 2)*5 );
-//     initialpiece->setZValue(i - 1);
-//     if (i == 2){
-//         otherPosition2 = initialpiece->pos();
-//     }
-// }
-// //draw Miners
 
 

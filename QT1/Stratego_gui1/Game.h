@@ -29,6 +29,7 @@ public:
     //public network methods
     void setDataReceived(QString data);
     void atackMoveResponse(QString response);
+    void defenseMoveResponse(QString response);
 
     //event
     void mouseMoveEvent(QMouseEvent* event); //when moving mouse in the game
