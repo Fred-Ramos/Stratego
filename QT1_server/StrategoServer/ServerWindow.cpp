@@ -557,6 +557,7 @@ void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, Q
 
 //Compare function, returns: 0(both pieces die), 1(atacking piece wins), -1(defending piece wins)
 int ServerWindow::ComparePiece(QString thisRank, QString otherRank) {                      // check if rank of piece is higher
+    qDebug() << "Comparing atacking: " << thisRank << "with defendind: " << otherRank;
     bool numeric;
     int O = otherRank.toInt(&numeric);       //other rank, numeric
     if (otherRank == "0N"){                  //if empty
@@ -565,7 +566,7 @@ int ServerWindow::ComparePiece(QString thisRank, QString otherRank) {           
     else if (numeric){ //if is a ranked piece(is a number)
         int T = thisRank.toInt();
 
-        if ((T == 0) && (O == 9)){ //if spy is atacking and marshal defending, spy wins(only exception to rank rule)
+        if ((T == 1) && (O == 10)){ //if spy is atacking and marshal defending, spy wins(only exception to rank rule)
             return 1; //nothing changes, defending piece is deleted
         }
         else if (T > O){
@@ -579,7 +580,7 @@ int ServerWindow::ComparePiece(QString thisRank, QString otherRank) {           
         }
     }
     else if (otherRank == "0B"){
-        if (thisRank == "02"){
+        if (thisRank == "03"){
             return 1; //Miner disarms bomb, bomb piece looses
         }
         else{

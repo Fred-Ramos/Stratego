@@ -1114,21 +1114,17 @@ void Game::atackMoveResponse(QString response){
     QString result = response.at(0);
     QString otherRank = response.mid(1,2);
     if (otherRank.at(0) == QString("0")){ //if it is not a 10, ignore the first character of the rank( a 0)
-        qDebug() << "1";
         otherRank = otherRank.at(1);
     }
     qDebug() << "atacking piece atacked a " << otherRank;
     if (result == "W"){ //atacking moved piece wins
-        qDebug() << "3";
         if (otherRank != "N"){ //if not moving to empty square
-            qDebug() << "4";
             placeOtherDefeatedPiece(defendingPiece, otherRank);
             defendingPiece->setRank(otherRank);
             defendingPiece->setVisible(true); //rank is visible when dead
         }
     }
     else if (result == "D"){ //both pieces loose
-        qDebug() << "5";
         placeOtherDefeatedPiece(defendingPiece, otherRank);
         defendingPiece->setRank(otherRank);
         defendingPiece->setVisible(true); //rank is visible when dead
@@ -1136,22 +1132,16 @@ void Game::atackMoveResponse(QString response){
         atackingPiece->setZValue(atackingPiece->originalPanelZ);
     }
     else if (result == "L"){ //atacking piece dies
-        qDebug() << "6";
         atackingPiece->setPos(atackingPiece->originalPanelPos);
         atackingPiece->setZValue(atackingPiece->originalPanelZ);
     }
-    qDebug() << "7";
     QString thisRank = atackingPiece->getRank();
     if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
-        qDebug() << "8";
         demoThisPiece->setRank(thisRank);
         demoOtherPiece->setRank(otherRank);
     }
-    qDebug() << "9";
     defendingPiece = NULL;
-    qDebug() << "10";
     atackingPiece = NULL;
-    qDebug() << "11";
 }
 
 void Game::placeOtherDefeatedPiece(Piece *piece, QString rank){
@@ -1165,6 +1155,51 @@ void Game::placeOtherDefeatedPiece(Piece *piece, QString rank){
         count2+=1;
         piece->setPos(StartingX + otherPosition2.x(),otherPosition2.y() + count2*5);
         piece->setZValue(1+count2);
+    }
+    else if (rank == QString("3")){
+        count3+=1;
+        piece->setPos(StartingX + otherPosition3.x(),otherPosition3.y() + count3*5);
+        piece->setZValue(1+count3);
+    }
+    else if (rank == QString("4")){
+        count4+=1;
+        piece->setPos(StartingX + otherPosition4.x(),otherPosition4.y() + count4*5);
+        piece->setZValue(1+count4);
+    }
+    else if (rank == QString("5")){
+        count5+=1;
+        piece->setPos(StartingX + otherPosition5.x(),otherPosition5.y() + count5*5);
+        piece->setZValue(1+count5);
+    }
+    else if (rank == QString("6")){
+        count6+=1;
+        piece->setPos(StartingX + otherPosition6.x(),otherPosition6.y() + count6*5);
+        piece->setZValue(1+count6);
+    }
+    else if (rank == QString("7")){
+        count2+=1;
+        piece->setPos(StartingX + otherPosition7.x(),otherPosition7.y() + count7*5);
+        piece->setZValue(1+count7);
+    }
+    else if (rank == QString("8")){
+        count8+=1;
+        piece->setPos(StartingX + otherPosition8.x(),otherPosition8.y() + count8*5);
+        piece->setZValue(1+count8);
+    }
+    else if (rank == QString("9")){
+        count9+=1;
+        piece->setPos(StartingX + otherPosition9.x(),otherPosition9.y() + count9*5);
+        piece->setZValue(1+count9);
+    }
+    else if (rank == QString("10")){
+        count10+=1;
+        piece->setPos(StartingX + otherPosition2.x(),otherPosition2.y() + count10*5);
+        piece->setZValue(1+count10);
+    }
+    else if (rank == QString("B")){
+        countB+=1;
+        piece->setPos(StartingX + otherPositionB.x(),otherPositionB.y() + countB*5);
+        piece->setZValue(1+countB);
     }
 }
 
