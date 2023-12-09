@@ -36,6 +36,7 @@ public:
     void mousePressEvent(QMouseEvent* event); //check if left or right click
 
     //public attributes
+    bool isGameOver;
     QString thisPlayerColor; //the color of the player of this client
     QGraphicsScene* scene;
     Board* Gameboard;            //game board
@@ -119,6 +120,9 @@ private:
         //join game
             //join room
     Button* joinRoomButton;
+                //ready buttons
+    Button* readyButton;
+    Button* defaultPositionsButton;
 
     //otherPlayer attributes
     Piece* demoThisPiece;

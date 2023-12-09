@@ -539,7 +539,21 @@ void ServerWindow::setMoveResponse(Player *thisPlayer, QTcpSocket *thisSocket, Q
                 otherMessage.append(thisRank); //defending piece knows atacking piece rank;
             }
             //ATACKING FLAG CONDITION MISSING!!!!!!!!!!!!!!!!!!!!!!!
+            else if (atackResult == 2){ //if atacked a flag
+                QString atackingPiece = thisPlayer->gameBoard[SrcRow][SrcCol];
+                thisPlayer->gameBoard[DestRow][DestCol] = atackingPiece;
+                thisPlayer->gameBoard[SrcRow][SrcCol] = "0N";
 
+                otherPlayer->gameBoard[9 - DestRow][9 - DestCol] = atackingPiece;
+                otherPlayer->gameBoard[9 - SrcRow][9 - SrcCol] = "0N";
+
+                thisMessage.append("G"); //atacker wins
+                otherMessage.append("G"); //defender looses
+
+                thisMessage.append(otherRank); //atacking player now knows rank of defending piece
+                otherMessage.append(QString::number(9 - SrcRow) + QString::number(9 - SrcCol) + QString::number(9 - DestRow) + QString::number(9 - DestCol)); //defending player knows what piece moved and to where
+                otherMessage.append(thisRank); //defending piece knows atacking piece rank;
+            }
             qDebug() << "Boards after move:";
             qDebug() << "This Board:";
             thisPlayer->PrintBoard(false);

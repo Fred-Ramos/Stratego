@@ -49,6 +49,9 @@ Game::Game(QWidget *parent){ //constructor
     count10 = -1;
     countB = -1;
 
+    //gameOVer starts as false
+    isGameOver = false;
+
 }
 
 QPointF Game::toSceneCoord(int Col, int Row){
@@ -514,7 +517,7 @@ void Game::setTurn(QString player){
 
 void Game::pickUpPiece(Piece* piece){
     //picks up the specified card
-    if (getArePiecesSetUp() == false){
+    if (isGameOver == false && getArePiecesSetUp() == false){
         if (piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
             piece->setZValue(10);
             pieceToPlace = piece;
@@ -522,7 +525,7 @@ void Game::pickUpPiece(Piece* piece){
         }
     }
     else{ //if pieces already setup, change original position; else original position is in the side panel; cant pick up piece on the side panel(now its the graveyard)
-        if (piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && piece->pos().x() > 150 && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
+        if (isGameOver == false && piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && piece->pos().x() > 150 && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
             piece->setZValue(10);
             pieceToPlace = piece;
             piece->originalPos = piece->pos();
@@ -537,7 +540,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
     qDebug() << "Unplaced pieces list size-> " << ThisPlayerPieces[39];
 
 
-    if (getArePiecesSetUp() == false){    //if pieces not setup yet, a piece can be placed anywhere in the stup area
+    if (isGameOver == false && getArePiecesSetUp() == false){    //if pieces not setup yet, a piece can be placed anywhere in the stup area
         if(pieceToReplace->pos().y() >= 18 + 5 + 6*55){ //if in initial squares
             //replace specified piece with pieceToPlace
             pieceToPlace->setPos(pieceToReplace->pos());
@@ -546,7 +549,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
             pieceToPlace = NULL; //piece already placed
         }
     }
-    else if(getArePiecesSetUp() == true){ //if GAME already started(pieces are set up)
+    else if(isGameOver == false && getArePiecesSetUp() == true){ //if GAME already started(pieces are set up)
         if(pieceToPlace->getRank() == "2"){ //scout
             qDebug() << "atempting to place scout";
             bool legalMove = false; //the scout may be moving diagonally, so legalmove = false
@@ -668,18 +671,6 @@ void Game::nextPlayersTurn(){
     }
 }
 
-//void Game::removeFromPanel(Piece *piece, QString player){
-//    if (player == QString("REDPLAYER")){
-//        //remove from red player
-//        ThisPlayerPieces.removeAll(piece);
-//    }
-//    if (player == QString("BLUEPLAYER")){
-//        //remove from blue player
-//        blueUnplacedPieces.removeAll(piece);
-//    }
-
-//}
-
 void Game::mouseMoveEvent(QMouseEvent* event){
     //if there is a piecetoplace, then make it follow the mouse
     if (pieceToPlace){
@@ -783,7 +774,7 @@ void Game::drawGUI(){
     scene->addItem(demoOtherPiece);
 
     //place Ready button
-    Button* readyButton = new Button(QString("Ready"), 100, 50);
+    readyButton = new Button(QString("Ready"), 100, 50);
     int xreadyButton = scene->width() - 150/2 - readyButton->boundingRect().width()/2;
     int yreadyButton = scene->height() - 5 - readyButton->boundingRect().height();
     readyButton->setPos(xreadyButton, yreadyButton);
@@ -791,7 +782,7 @@ void Game::drawGUI(){
     scene->addItem(readyButton);
 
     //place Default Piece Positions button
-    Button* defaultPositionsButton = new Button(QString("Default"), 100, 50);
+    defaultPositionsButton = new Button(QString("Default"), 100, 50);
     int xdefaultButton = 150/2 - defaultPositionsButton->boundingRect().width()/2;
     int ydefaultButton = scene->height() - 5 - defaultPositionsButton->boundingRect().height();
     defaultPositionsButton->setPos(xdefaultButton, ydefaultButton);
@@ -1098,6 +1089,8 @@ void Game::setDataReceived(QString data){
         start();
     }
     else if(identifier == QString("START")){ //START game, red starts
+        scene->removeItem(readyButton);           //remove unecessary buttons
+        scene->removeItem(defaultPositionsButton);
         drawOtherPieces(); //show unranked enemy pieces(because we dont know the ranks
         ArePiecesSetUp = true;
         setTurn(QString("REDPLAYER"));
@@ -1138,6 +1131,13 @@ void Game::atackMoveResponse(QString response){
     else if (result == "L"){ //atacking piece dies
         atackingPiece->setPos(atackingPiece->originalPanelPos);
         atackingPiece->setZValue(atackingPiece->originalPanelZ);
+    }
+    else if (result == "G"){ //This player(atacking player) wins
+        placeOtherDefeatedPiece(defendingPiece, otherRank); //place enemy flag on side panel
+        defendingPiece->setRank(otherRank);
+        defendingPiece->setVisible(true); //rank is visible when dead
+        isGameOver = true;
+        qDebug() << "GAMEOVER, YOU WON!";
     }
     QString thisRank = atackingPiece->getRank();
     if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
@@ -1211,6 +1211,12 @@ void Game::defenseMoveResponse(QString response){
     else if (result == "W"){ //atacking moved piece wins
         defendingPiece->setPos(defendingPiece->originalPanelPos);
         defendingPiece->setZValue(defendingPiece->originalPanelZ);
+    }
+    else if (result == "G"){ //This player(defending player) looses
+        defendingPiece->setPos(defendingPiece->originalPanelPos); //place this flag on side panel
+        defendingPiece->setZValue(defendingPiece->originalPanelZ);
+        isGameOver = true;
+        qDebug() << "GAMEOVER, YOU LOST!";
     }
     if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
         demoThisPiece->setRank(thisRank);

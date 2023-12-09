@@ -40,7 +40,7 @@ int Piece::getiX(){
 
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
     qDebug() << game->pieceToPlace;
-    if (event->button() == Qt::LeftButton){       //left click picks up piece or places it
+    if (game->isGameOver == false && event->button() == Qt::LeftButton){       //left click picks up piece or places it
         if (game->pieceToPlace == NULL){ //if no piece is picked up
             game->pickUpPiece(this);
             qDebug() << "piece not placed clicked";
@@ -55,7 +55,7 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
         }
     }
     else if (event->button() == Qt::RightButton && this->getOwner()==game->thisPlayerColor){ //right click sends piece to original position
-        if (game->getArePiecesSetUp() == false){
+        if (game->isGameOver == false && game->getArePiecesSetUp() == false){
             setPos(this->originalPos);
             setZValue(this->originalZ);
             return;
