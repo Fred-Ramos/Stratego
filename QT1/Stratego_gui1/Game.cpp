@@ -1194,12 +1194,10 @@ void Game::defenseMoveResponse(QString response){
     atackingPiece->originalPos = atackingPiece->pos();
     QString thisRank = defendingPiece->getRank();
     //determine which piece survives
-    if (result == "L"){ //atacking moved piece looses
-        if (thisRank != "N"){ //if not moving to empty square
-            placeOtherDefeatedPiece(atackingPiece, otherRank);
-            atackingPiece->setRank(otherRank);
-            atackingPiece->setVisible(true); //rank is visible when dead
-        }
+    if (result == "W"){ //defending piece wins
+        placeOtherDefeatedPiece(atackingPiece, otherRank);
+        atackingPiece->setRank(otherRank);
+        atackingPiece->setVisible(true); //rank is visible when dead
     }
     else if (result == "D"){ //both pieces loose
         placeOtherDefeatedPiece(atackingPiece, otherRank);
@@ -1208,9 +1206,11 @@ void Game::defenseMoveResponse(QString response){
         defendingPiece->setPos(defendingPiece->originalPanelPos);
         defendingPiece->setZValue(defendingPiece->originalPanelZ);
     }
-    else if (result == "W"){ //atacking moved piece wins
-        defendingPiece->setPos(defendingPiece->originalPanelPos);
-        defendingPiece->setZValue(defendingPiece->originalPanelZ);
+    else if (result == "L"){ //defending piece looses
+        if (thisRank != "N"){ //if atacking piece not moving to empty square
+            defendingPiece->setPos(defendingPiece->originalPanelPos); //put defending piece in graveyard
+            defendingPiece->setZValue(defendingPiece->originalPanelZ);
+        }
     }
     else if (result == "G"){ //This player(defending player) looses
         defendingPiece->setPos(defendingPiece->originalPanelPos); //place this flag on side panel
