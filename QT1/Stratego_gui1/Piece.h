@@ -13,6 +13,8 @@ public:
     QString getRank();
     bool getIsPlaced();
     QString getOwner();
+    int getiY();
+    int getiX();
 
 
     //event
@@ -26,15 +28,16 @@ public:
     void setVisible(bool v); //set rank visible or not
 
     //atributes
-    QPointF originalPos;
-    int originalZ;
+    QPointF originalPos; //original position for this turn
+    int originalZ; //original z for this turn
+    QPointF originalPanelPos; //original side panel position
+    int originalPanelZ; //original side panel Z
 
-
+    QGraphicsTextItem* rankText;
 private:
     bool isPlaced; //placed or not
     QString owner; //belongs to which player
     QString rank; //get piece rank/type
-    QGraphicsTextItem* rankText;
 };
 
 #endif // PIECE_H

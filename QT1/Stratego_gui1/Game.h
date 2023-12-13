@@ -17,25 +17,32 @@ public:
     Game(QWidget* parent = NULL); //Option of passing on a parent widget
 
     //public methods
+    QPointF toSceneCoord(int Col, int Row);
     QString getTurn();
     void setTurn(QString player);
     void pickUpPiece(Piece* piece);
     void placePiece(Piece* pieceToReplace);
     void nextPlayersTurn();
-    void removeFromPanel(Piece* piece, QString player);
+    //void removeFromPanel(Piece* piece, QString player);
     bool getArePiecesSetUp();
 
     //public network methods
     void setDataReceived(QString data);
+    void atackMoveResponse(QString response);
+    void defenseMoveResponse(QString response);
 
     //event
     void mouseMoveEvent(QMouseEvent* event); //when moving mouse in the game
     void mousePressEvent(QMouseEvent* event); //check if left or right click
 
     //public attributes
+    bool isGameOver;
+    QString thisPlayerColor; //the color of the player of this client
     QGraphicsScene* scene;
     Board* Gameboard;            //game board
     Piece* pieceToPlace;     //piece to place in the board(clicked piece)
+    Piece* atackingPiece; //piece that is atacking
+    Piece* defendingPiece; //piece that is defending
 
 public slots:
     void loginGame();
@@ -57,17 +64,18 @@ private:
     void drawGUI();
     void createNewPiece(QString player, QString pieceRank);
     void createInitialPieces(QString player);
-    void drawPieces();
+    void drawThisPieces();
+    void drawOtherPieces();
     bool ArePiecesPlaced();
     void SetLoginMessage(bool existingAcc, QString name, QString password);
     void SetRoomMessage(QString room);
     void SetJoinRoomMessage(QString room);
     void SetPiecesMessage();
+    void pieceMoveMessage(int srcRow, int srcCol, int destRow, int destCol);
 
     //private network methods
 
     //private atributes
-    QString thisPlayerColor; //the color of the player of this client
     QString thisPlayerName;  //the name of the player of this client
     QString otherPlayerName; //enemy player's name;
     bool LoggedIn;
@@ -80,7 +88,10 @@ private:
     QGraphicsTextItem* player1NameText;
     QGraphicsTextItem* player2NameText;
     QGraphicsTextItem* TurnText; //QT text of the turn
+    QGraphicsTextItem* lastBattleText; //last atack text
+    QGraphicsTextItem* vsBattleText; //last atack text
     QList<Piece*> ThisPlayerPieces; //List of pieces
+    QList<Piece*> OtherPlayerPieces; //List of pieces of other player(we dont know the ranks)
     QString MessageToSend;
     QString roomNumber;
 
@@ -107,7 +118,42 @@ private:
             //create room
     QGraphicsTextItem* waitingJoinText;
         //join game
+            //join room
     Button* joinRoomButton;
+                //ready buttons
+    Button* readyButton;
+    Button* defaultPositionsButton;
+
+    //otherPlayer attributes
+    Piece* demoThisPiece;
+    Piece* demoOtherPiece;
+    void placeOtherDefeatedPiece(Piece* piece, QString rank);
+    int countF;
+    QPointF otherPositionF;
+    int count1; //number of dead spies
+    QPointF otherPosition1; //position of dead spies
+    int count2;
+    QPointF otherPosition2;
+    int count3;
+    QPointF otherPosition3;
+    int count4;
+    QPointF otherPosition4;
+    int count5;
+    QPointF otherPosition5;
+    int count6;
+    QPointF otherPosition6;
+    int count7;
+    QPointF otherPosition7;
+    int count8;
+    QPointF otherPosition8;
+    int count9;
+    QPointF otherPosition9;
+    int count10;
+    QPointF otherPosition10;
+    int countB;
+    QPointF otherPositionB;
+
+
 };
 
 #endif // GAME_H

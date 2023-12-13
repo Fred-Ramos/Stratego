@@ -8,13 +8,14 @@ public:
     Player(QString NAME, QString IP, QString SOURCEPORT);
 
     //print check matrix method
-    void PrintBoard();
+    void PrintBoard(bool inv);
 
     //setters
     void setColor(QString color);
     void setIP(QString ip);
     void setSourcePort(QString port);
     void setRoom(QString room);
+    void setSetUpData(QString data);
 
     //getters
     QString getName();
@@ -22,6 +23,7 @@ public:
     QString getIP();
     QString getSourcePort();
     QString getRoom();
+    QString getSetUpData();
 
     //public methods
     QVector<QVector<QString>> invertBoard();
@@ -35,6 +37,7 @@ private:
     QString playerIp;
     QString playerSourcePort;
     QString playerRoom; //room player is playing at
+    QString playerSetUpData;
     //QVector<QVector<QString>> gameBoard; //gameboard to save the pieces allocation
 };
 

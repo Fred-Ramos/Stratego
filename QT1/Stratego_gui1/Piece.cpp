@@ -30,26 +30,41 @@ QString Piece::getOwner(){
     return owner;
 }
 
+int Piece::getiY(){
+    return (this->originalPos.y() - 23)/55;
+}
+
+int Piece::getiX(){
+    return (this->originalPos.x() - 155)/55;
+}
+
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *event){
     qDebug() << game->pieceToPlace;
-    if (event->button() == Qt::LeftButton){       //left click picks up piece or places it
+    if (game->isGameOver == false && event->button() == Qt::LeftButton){       //left click picks up piece or places it
         if (game->pieceToPlace == NULL){ //if no piece is picked up
             game->pickUpPiece(this);
             qDebug() << "piece not placed clicked";
         }
         else{ //if a piece is already picked up
-            qDebug() << "there is a piece picked up";
+            qDebug() << "there is a piece picked up, going to try to place it";
 
-            if (getIsPlaced() == true && this->owner==QString("NOONE")){ //if destiny is a empty placed piece, place piece down
-                qDebug() << "piece placed clicked";
+            if (getIsPlaced() == true && this->getOwner() != QString("GAME") && this->owner!=game->thisPlayerColor){ //if destiny is not water, and is not a piece of this player's color
+                qDebug() << "piece placed clicked of owner: " << this->getOwner();
                 game->placePiece(this);
             }
         }
     }
-    else if (event->button() == Qt::RightButton){ //right click sends piece to original position
-        setPos(this->originalPos);
-        setZValue(this->originalZ);
-        return;
+    else if (event->button() == Qt::RightButton && this->getOwner()==game->thisPlayerColor){ //right click sends piece to original position
+        if (game->isGameOver == false && game->getArePiecesSetUp() == false){
+            setPos(this->originalPos);
+            setZValue(this->originalZ);
+            return;
+        }
+        else if (this->pos().x() > 150){ //if pieces setup, cant reset position of a piece in the side panel(now its the graveyard)
+            setPos(this->originalPos);
+            setZValue(this->originalZ);
+            return;
+        }
     }
 }
 
@@ -89,6 +104,18 @@ void Piece::setOwner(QString player){
         setBrush(brush);
     }
     else if (player == QString("BLUEPLAYER")){
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::blue);
+        setBrush(brush);
+    }
+    else if (player == QString("DEMORED")){
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::red);
+        setBrush(brush);
+    }
+    else if (player == QString("DEMOBLUE")){
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);
         brush.setColor(Qt::blue);
