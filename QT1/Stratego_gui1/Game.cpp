@@ -1182,15 +1182,16 @@ void Game::defenseMoveResponse(QString response){
         Piece* piece = dynamic_cast<Piece*>(item);
         if(piece != nullptr) { // The item is a Piece object
             qDebug() << "this piece has owner: " << piece->getOwner();
-            if (piece->getOwner() == thisPlayerColor ){ //if it is this players piece
+            if (piece->getOwner() == QString("NOONE") ){ //if it is an empty piece
                 defendingPiece = piece;
             }
-            else if (piece->getOwner() == QString("NOONE") && defendingPiece == NULL){ //if there is no player piece, it is a empty piece
+            else if (piece->getOwner() == thisPlayerColor ){ //if it is this players piece
                 defendingPiece = piece;
+                break;
             }
         }
     }
-    atackingPiece->setPos(defendingPiece->pos());
+    atackingPiece->setPos(defendingPiece->pos()); //put both pieces in defending position and then determine outcome
     atackingPiece->originalPos = atackingPiece->pos();
     QString thisRank = defendingPiece->getRank();
     //determine which piece survives
