@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QGraphicsTextItem>
 #include <QBrush>
+#include <QLabel>
 
 #include <QDebug>
 
@@ -294,6 +295,7 @@ void Game::displayMainMenu(){
     int yinstButton = yjgButton + 75;
     instButton->setPos(xinstButton, yinstButton);
     instButton->setZValue(1);
+    connect(instButton, SIGNAL(clicked()), this, SLOT(displayInstructions()));
     scene->addItem(instButton);
 
     //create the quit button
@@ -306,37 +308,64 @@ void Game::displayMainMenu(){
     scene->addItem(quitButton);
 }
 
-
-void Game::displayGameOver(){
+void Game::displayInstructions(){
     //clean unnecessary items
     QList<QGraphicsItem *> items = scene->items();
     for(QGraphicsItem *item : items) {
-        if(item != titleText || item != ngButton || item != jgButton || item != instButton || item != quitButton) {
             scene->removeItem(item);
-        }
     }
 
     //create middle panel
-    drawPanel(this->width()/2 - 300/2, 100, 300, 430, QColor(237, 214, 181), 1);
+    int xPanel = this->width()/2 - 800/2;
+    int yPanel = this->height()/2 - 500/2;
+    drawPanel(xPanel, yPanel, 800, 500, QColor(237, 214, 181), 1);
 
-    //create the title text
-    titleText = new QGraphicsTextItem(QString("GAME OVER"));
-    QFont titleFont("GothicI", 50); //set font and size
-    titleText->setFont(titleFont);
-    int xTitle = this->width()/2 - titleText->boundingRect().width()/2;
-    int yTitle = 100;
-    titleText->setPos(xTitle, yTitle);
-    titleText->setZValue(1);
-    scene->addItem(titleText);
-
-    //create the Back button
-    backButton = new Button(QString("Back"), 200, 50);
-    int xbackButton = this->width()/2 - backButton->boundingRect().width()/2;
-    int ybackButton = 100 + titleText->boundingRect().height() + 25;
+    //create back to menu button
+    backButton = new Button(QString("Back"), 100, 50);
+    int xbackButton = xPanel + 800 - 110;
+    int ybackButton = yPanel + 500 - 60;
     backButton->setPos(xbackButton, ybackButton);
-    backButton->setZValue(1);
+    disconnect(backButton, SIGNAL(clicked()), 0,0); //disconnect previous signal/slot pair
     connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
     scene->addItem(backButton);
+
+
+    // QLabel *label = new QLabel;
+    // QPixmap pixmap("/path/to/image.jpg");
+    // label->setPixmap(pixmap);
+
+    //create the objective text
+    QGraphicsTextItem* objectiveText = new QGraphicsTextItem();
+    objectiveText->setHtml("<p><b>OBJECTIVE:</b> To capture your<br>opponent's Flag</p> <p></p> <p><b>AN ARMY:</b> Each army consists of:</p>");
+    QFont instructionsFont("Sans Serif 10", 10); //set font and size
+    objectiveText->setFont(instructionsFont);
+    int xobjective = xPanel + 5;
+    int yobjective = yPanel + 5;
+    objectiveText->setPos(xobjective, yobjective);
+    objectiveText->setZValue(1);
+    scene->addItem(objectiveText);
+
+    //Place pieces to show ranks
+
+
+}
+
+
+void Game::displayGameOver(){
+    isGameOver = true;
+
+    double opacityLevel = 0.8;
+
+    //create the GameOver text
+    gameOverText = new QGraphicsTextItem(QString("GAME OVER"));
+    QFont gameOverFont("GothicI", 25); //set font and size
+    gameOverText->setFont(gameOverFont);
+    int xTitle = this->width()/2 - gameOverText->boundingRect().width()/2;
+    int yTitle = 100;
+    gameOverText->setPos(xTitle, yTitle);
+    gameOverText->setZValue(3);
+    gameOverText->setOpacity(opacityLevel + 0.1);
+    scene->addItem(gameOverText);
 }
 
 void Game::joinRoom(){
@@ -402,6 +431,7 @@ void Game::joinRoom(){
     int xbackButton = this->width()/2 - 300/2 + 190;
     int ybackButton = 530 - 50 - 10;
     backButton->setPos(xbackButton, ybackButton);
+    disconnect(backButton, SIGNAL(clicked()), 0,0); //disconnect previous signal/slot pair
     connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
     scene->addItem(backButton);
 }
@@ -484,6 +514,7 @@ void Game::createRoom(){
     int xbackButton = this->width()/2 - 300/2 + 190;
     int ybackButton = 530 - 50 - 10;
     backButton->setPos(xbackButton, ybackButton);
+    disconnect(backButton, SIGNAL(clicked()), 0,0); //disconnect previous signal/slot pair
     connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
     scene->addItem(backButton);
 }
@@ -789,6 +820,14 @@ void Game::drawGUI(){
     connect(defaultPositionsButton, SIGNAL(clicked()), this, SLOT(setUpDefaultPositions()));
     scene->addItem(defaultPositionsButton);
 
+    //create leave to menu button
+    leaveButton = new Button(QString("Leave"), 100, 50);
+    int xleaveButton = xreadyButton;
+    int yleaveButton = yreadyButton - 5 - leaveButton->boundingRect().height();
+    leaveButton->setPos(xleaveButton, yleaveButton);
+    //connect(leaveButton, SIGNAL(clicked()), this, SLOT(displayMainMenu())); conectar depois
+    scene->addItem(leaveButton);
+
 }
 
 void Game::createNewPiece(QString player, QString pieceRank){
@@ -974,6 +1013,12 @@ void Game::drawOtherPieces(){
         initialpiece->setVisible(false);
         scene->addItem(initialpiece);
     }
+
+    //move the leave button(because the ready button disappears
+    int xleaveButton = leaveButton->pos().x();
+    int yleaveButton = leaveButton->pos().y() + 5 + leaveButton->boundingRect().height();
+    leaveButton->setPos(xleaveButton, yleaveButton);
+    leaveButton->setZValue(1);
 }
 
 bool Game::getArePiecesSetUp(){
@@ -1136,8 +1181,8 @@ void Game::atackMoveResponse(QString response){
         placeOtherDefeatedPiece(defendingPiece, otherRank); //place enemy flag on side panel
         defendingPiece->setRank(otherRank);
         defendingPiece->setVisible(true); //rank is visible when dead
-        isGameOver = true;
         qDebug() << "GAMEOVER, YOU WON!";
+        displayGameOver();
     }
     QString thisRank = atackingPiece->getRank();
     if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
@@ -1218,6 +1263,7 @@ void Game::defenseMoveResponse(QString response){
         defendingPiece->setZValue(defendingPiece->originalPanelZ);
         isGameOver = true;
         qDebug() << "GAMEOVER, YOU LOST!";
+        displayGameOver();
     }
     if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
         demoThisPiece->setRank(thisRank);
