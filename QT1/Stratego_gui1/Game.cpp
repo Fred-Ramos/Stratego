@@ -50,6 +50,8 @@ Game::Game(QWidget *parent){ //constructor
     count10 = -1;
     countB = -1;
 
+    //server text starts as empty string
+    gameServerIP = QString("");
     //gameOVer starts as false
     isGameOver = false;
 
@@ -114,9 +116,22 @@ void Game::setUpDefaultPositions(){
     }
 }
 
+void Game::firstConnect(){
+    gameServerIP = IPTextbox->getWriten();
+    ThisClientSocket->Connect();
+}
+
 void Game::loginGame(){
-    ThisClientSocket->Connect(); //connect to socket(if not connected)
+    //ThisClientSocket->Connect(); //connect to socket(if not connected)
     qDebug() << "1";
+
+    //clean unnecessary items
+    QList<QGraphicsItem *> items = scene->items();
+    for(QGraphicsItem *item : items) {
+        if(item != backgroundItem && item != titleText &&  item != quitButton) {
+            scene->removeItem(item);
+        }
+    }
 
     //create middle panel
     int xPanel = this->width()/2 - 300/2;
@@ -134,19 +149,26 @@ void Game::loginGame(){
     titleText->setPos(xTitle, yTitle);
     scene->addItem(titleText);
 
-    //Create retry connection button
-    retryConButton = new Button(QString("Retry"), 50, 25);
+    //Create connection button
+    retryConButton = new Button(QString("Connect"), 50, 25);
     int xretryConButton = this->width()/2 - 300/2 + 5;
     int yretryConButton = titleText->pos().y() + titleText->boundingRect().height() - 10;
     retryConButton->setPos(xretryConButton, yretryConButton);
-    connect(retryConButton, SIGNAL(clicked()), ThisClientSocket, SLOT(Connect()));
+    connect(retryConButton, SIGNAL(clicked()), this, SLOT(firstConnect()));
     scene->addItem(retryConButton);
 
     //Create Connection state text
-    int xConStateText = xretryConButton + retryConButton->boundingRect().width() + 5;
-    int yConStateText = yretryConButton;
+    int xConStateText = xretryConButton;
+    int yConStateText = yretryConButton + retryConButton->boundingRect().height() + 1;
     ThisClientSocket->ConnectionToServerStateText->setPos(xConStateText, yConStateText);
     scene->addItem(ThisClientSocket->ConnectionToServerStateText);
+
+    //create textBox to write server's IP
+    IPTextbox = new Textbox(15, 15, true, 170, 25);
+    int xIPbox = xretryConButton + retryConButton->boundingRect().width() + 5;
+    int yIPbox = yretryConButton;
+    IPTextbox->setPos(xIPbox, yIPbox);
+    scene->addItem(IPTextbox);
 
 
     qDebug() << "2";
@@ -240,7 +262,7 @@ void Game::waitForLogin(){
         }
         waitingLoginText->setPlainText(QString("Name/Password have 5-15 digits"));
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
-        int yLogin = 453 - 75 - 50;
+        int yLogin = 453 - 75 ;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }
@@ -263,7 +285,7 @@ void Game::waitForRegister(){
         }
         waitingLoginText->setPlainText(QString("Registered Name/Password needs to have 5-15 digits"));
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
-        int yLogin = 453 - 75 - 50;
+        int yLogin = 453 - 75 ;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }
@@ -878,6 +900,10 @@ void Game::createRoomClicked(){
 
 QString Game::getTurn(){
     return Turn;
+}
+
+QString Game::getServerIP(){
+    return gameServerIP;
 }
 
 void Game::setTurn(QString player){
@@ -1507,7 +1533,7 @@ void Game::setDataReceived(QString data){
     if (identifier == QString("LOGFA")){ //login failed
         waitingLoginText->setPlainText(QString("Your Name or Password do not match")   );
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
-        int yLogin = 453 - 75 - 50;
+        int yLogin = 453 - 75 ;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }
@@ -1518,14 +1544,14 @@ void Game::setDataReceived(QString data){
     else if (identifier == QString("REGFA")){ //register failed
         waitingLoginText->setPlainText(QString("Account with that name already exists")   );
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
-        int yLogin = 453 - 75 - 50;
+        int yLogin = 453 - 75 ;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }
     else if (identifier == QString("REGCO")){ //register completed
         waitingLoginText->setPlainText(QString("Account created sucessfuly")   );
         int xLogin = this->width()/2 - waitingLoginText->boundingRect().width()/2;
-        int yLogin = 453 - 75 - 50;
+        int yLogin = 453 - 75 ;
         waitingLoginText->setPos(xLogin, yLogin);
         scene->addItem(waitingLoginText); //add join to scene after clicking "login" if necessary
     }

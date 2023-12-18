@@ -19,6 +19,7 @@ public:
 
     //setters
     void setConnectionState(QString state);
+    void setIPText(QString IP);
 
     //public methods
     void displayVariables();
@@ -53,6 +54,7 @@ private:
     QGraphicsTextItem* dataReceivedIpPortText; //QT text of the source ip and port of the data
 
     void setPiecesResponse(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort, QString PositionData);
+    QGraphicsTextItem* serverIPText; //QT text of the connection state
 
     int ComparePiece(QString thisRank, QString otherRank);
 

@@ -48,8 +48,8 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
     query.exec("CREATE TABLE IF NOT EXISTS Users (username TEXT, password TEXT)");
     query.exec("CREATE TABLE IF NOT EXISTS GameRooms (roomName TEXT, password TEXT)");
 
-    //delete usernames and passwords if needed:
-    query.exec("DELETE FROM Users");
+    //delete usernames and passwords if needed: (uncomment to delete, or delete sql file manually)
+    //query.exec("DELETE FROM Users");
 
     //when server starts, delete all previous rooms
     query.exec("DELETE FROM GameRooms");
@@ -65,11 +65,18 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
     setConnectionState("nothing");
     dataReceivedText = new QGraphicsTextItem(QString(""));
     dataReceivedIpPortText = new QGraphicsTextItem(QString(""));
+
+    serverIPText = new QGraphicsTextItem();
+    serverIPText->setPlainText(QString("Server's IP: ..."));
 }
 
 void ServerWindow::setConnectionState(QString state){
     //change QGraphicsTextItem
     ConnectionStateText->setPlainText(QString("Connection state: ") + state);
+}
+
+void ServerWindow::setIPText(QString IP){
+    serverIPText->setPlainText(QString("Server's IP: ") + IP);
 }
 
 void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
@@ -223,6 +230,13 @@ void ServerWindow::displayVariables(){
     QFont infoFont("Segoe", 6); //set font and size
     ConnectionStateText->setFont(infoFont);
     scene->addItem(ConnectionStateText);
+
+    //display server's IP
+    int xIP = this->width()/2 - serverIPText->boundingRect().width()/2;
+    int yIP = yCon;
+    serverIPText->setPos(xIP, yIP);
+    serverIPText->setFont(infoFont);
+    scene->addItem(serverIPText);
 
     //display last recieved data
     int xDataText = this->width()/2 - 825/2 + 5;

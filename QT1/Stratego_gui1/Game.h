@@ -19,6 +19,7 @@ public:
     //public methods
     QPointF toSceneCoord(int Col, int Row);
     QString getTurn();
+    QString getServerIP();
     void setTurn(QString player);
     void pickUpPiece(Piece* piece);
     void placePiece(Piece* pieceToReplace);
@@ -45,6 +46,7 @@ public:
     Piece* defendingPiece; //piece that is defending
 
 public slots:
+    void firstConnect();
     void loginGame();
     void waitForLogin();
     void waitForRegister();
@@ -81,6 +83,7 @@ private:
     //private network methods
 
     //private atributes
+    QString gameServerIP;
     QGraphicsPixmapItem *backgroundItem; //background picture
     QGraphicsRectItem* boardbackground; //board background
     QString thisPlayerName;  //the name of the player of this client
@@ -105,6 +108,7 @@ private:
     //private login attributes
     QGraphicsTextItem* loginNameText;
     QGraphicsTextItem* loginPasswordText;
+    Textbox* IPTextbox;
     Textbox* loginNameTextbox;
     Textbox* loginPasswordTextbox;
     Button* loginButton;

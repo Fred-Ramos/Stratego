@@ -29,6 +29,7 @@ TCPServer::TCPServer(QObject *parent): QObject(parent){
         else{
             qDebug() << "Server started in local IP: " << localIP << " || In port: 1234";
             serverwindow->setConnectionState("Stratego Server started");
+            serverwindow->setIPText(localIP);
         }
     }
 }
@@ -77,6 +78,7 @@ int TCPServer::writeToClient(QTcpSocket* socket, QString data){
 
 void TCPServer::onClientDisconnected(){
     QTcpSocket *senderSocket = dynamic_cast<QTcpSocket*>(sender());
+    serverwindow->setDataReceived(senderSocket, QString("LEAVE"));
     if(senderSocket) {
         senderSocket->deleteLater(); // schedule the socket for deletion
         // remove the socket from list of connected sockets

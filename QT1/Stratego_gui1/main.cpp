@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     game = new Game();
 
     game->show();
+    //game->setServerIP(); //set the server's IP
     game->loginGame(); //start the game
     //game->displayInstructions();
 

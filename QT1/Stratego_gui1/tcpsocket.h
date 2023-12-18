@@ -31,6 +31,7 @@ public slots:
 
 private:
     //private attributes
+    QString serverIP;
     QTcpSocket* socket;
     QString receivedfromServerData;
 };
