@@ -50,6 +50,8 @@ ServerWindow::ServerWindow(QWidget *parent){ //constructor
 
     //delete usernames and passwords if needed:
     query.exec("DELETE FROM Users");
+
+    //when server starts, delete all previous rooms
     query.exec("DELETE FROM GameRooms");
 
 
@@ -173,6 +175,18 @@ void ServerWindow::setDataReceived(QTcpSocket* socket, QString data){
                 // Found player with the given IP and source, set its game board
                 thisPlayer = player;
                 setMoveResponse(thisPlayer, socket, connectionIP, connectionSourcePort, move);
+            }
+        }
+    }
+    else if (identifier == QString("LEAVE")){
+        Player* thisPlayer = nullptr;
+        for (Player* player : Players) {
+            qDebug() << "4th Running through player's IPs/Ports: " << player->getIP() << player->getSourcePort();
+            if (player->getIP() == connectionIP && player->getSourcePort() == connectionSourcePort ) {
+                // Found player with the given IP and source, set its game board
+                thisPlayer = player;
+                leaveOtherGame(thisPlayer, socket, connectionIP, connectionSourcePort);
+                thisPlayer->cleanGameData();
             }
         }
     }
@@ -598,13 +612,60 @@ int ServerWindow::ComparePiece(QString thisRank, QString otherRank) {           
             return 1; //Miner disarms bomb, bomb piece looses
         }
         else{
-            return 0; //Bomb explodes, both pieces loose
+            return -1; //Bomb "explodes, wins" and atacking piece looses (Bomb stays in place)
         }
     }
     else if (otherRank == "0F"){ //defending piece is a flag
         return 2; //atacking player wins
     }
     return 1;
+}
+
+void ServerWindow::leaveOtherGame(Player *thisPlayer, QTcpSocket *thisSocket, QString thisIp, QString thisSourcePort){
+    QString thisRoom = thisPlayer->getRoom(); //room of this player
+
+    //check if room exists and delete it from SQL table
+    QSqlQuery query(database);                                                                     //Create query
+    query.prepare("SELECT * FROM GameRooms WHERE roomName = :roomName");                           //prepares a SELECT command to select all rows from the Users table
+    query.bindValue(":roomName", thisRoom);                                                        //bind pretended room
+    query.exec();                                                                                  //execute query
+
+    if (!query.next()) { //there isnt a row with matched room
+        qDebug() << "Room doesnt exist, no need to delete it" ;
+    }
+    else {
+        qDebug() << "Room exists, deleting it" ; // The username already exists and no new acount is registered
+
+        // Delete the room
+        QSqlQuery deleteQuery(database);
+        deleteQuery.prepare("DELETE FROM GameRooms WHERE roomName = :roomName");
+        deleteQuery.bindValue(":roomName", thisRoom);
+        deleteQuery.exec();
+    }
+
+
+    QString thisColor = thisPlayer->getColor(); //color of this player
+    //find ip and port of the other player with the same room and diferent color
+    Player* otherPlayer = nullptr;
+    QString otherIP;
+    QString otherSourcePort;
+    QString otherColor;
+    QTcpSocket* otherSocket;
+    for (Player* player : Players) {
+        otherIP = player->getIP();
+        otherSourcePort = player->getSourcePort();
+        otherColor = player->getColor();
+        if ( player->getRoom() == thisRoom && player->getColor() != thisColor ) { //if they share the same room and have diferent colors, found other player!
+            qDebug() << "move found other player " << player->getIP() << player->getSourcePort();
+            otherPlayer = player;
+            // get other player's socket
+            otherSocket = gameServer->findConnection(otherIP, otherSourcePort);
+            //send message to other player, that this player left the game
+            gameServer->writeToClient(otherSocket, QString("PLEFT")); //PLAYER LEFT
+            //clean other player's game data
+            otherPlayer->cleanGameData();
+        }
+    }
 }
 
 

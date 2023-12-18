@@ -49,7 +49,9 @@ public slots:
     void waitForLogin();
     void waitForRegister();
     void displayMainMenu();
-    void displayGameOver();
+    void displayInstructions();
+    void displayInstructions2();
+    void displayGameOver(bool thisWon);
     void joinRoom();
     void createRoom();
     void createRoomClicked();
@@ -57,6 +59,9 @@ public slots:
     void start();
     void ready();
     void setUpDefaultPositions();
+    void leaveGame();
+    void yesleave();
+    void noleave();
 
 private:
     //private methods
@@ -76,6 +81,8 @@ private:
     //private network methods
 
     //private atributes
+    QGraphicsPixmapItem *backgroundItem; //background picture
+    QGraphicsRectItem* boardbackground; //board background
     QString thisPlayerName;  //the name of the player of this client
     QString otherPlayerName; //enemy player's name;
     bool LoggedIn;
@@ -109,6 +116,8 @@ private:
     Button* jgButton;   //joingame button
     Button* instButton; //instructions button
     Button* quitButton; //quit button
+        //instructions
+    Button* nextButton;
         //new game
     QGraphicsTextItem* roomText; //"Room name: "
     Textbox* roomTextbox; //where to write room
@@ -123,6 +132,16 @@ private:
                 //ready buttons
     Button* readyButton;
     Button* defaultPositionsButton;
+        //playing
+    Button* leaveButton;
+    QGraphicsTextItem* gameOverText; //gameover text
+    QGraphicsTextItem* wonText; //who won text
+    //leavegame
+    QGraphicsRectItem* leavegamePanel;
+    QGraphicsTextItem* leaveSure;
+    Button* yesButton;
+    Button* noButton;
+    void otherPlayerLeft();
 
     //otherPlayer attributes
     Piece* demoThisPiece;

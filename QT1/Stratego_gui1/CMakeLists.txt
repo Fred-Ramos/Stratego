@@ -39,6 +39,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Textbox.cpp
         Textbox.h
         Textbox.h
+        res.qrc
+
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Stratego_gui1 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
