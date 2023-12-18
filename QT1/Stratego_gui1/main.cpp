@@ -12,8 +12,8 @@ int main(int argc, char *argv[])
     game = new Game();
 
     game->show();
-    //game->loginGame(); //start the game
-    game->displayMainMenu();
+    game->loginGame(); //start the game
+    //game->displayInstructions();
 
     return a.exec();
 }

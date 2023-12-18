@@ -1,3 +1,9 @@
 <RCC>
-    <qresource prefix="/images"/>
+    <qresource prefix="/images">
+        <file>images/instructionpieces1.png</file>
+        <file>images/instructionpieces2.png</file>
+        <file>images/instructionpieces3.png</file>
+        <file>images/movementrules.png</file>
+        <file>images/background.png</file>
+    </qresource>
 </RCC>

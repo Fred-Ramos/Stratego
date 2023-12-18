@@ -53,6 +53,15 @@ Game::Game(QWidget *parent){ //constructor
     //gameOVer starts as false
     isGameOver = false;
 
+    // Create a QPixmap object and load the image
+    QPixmap background;
+    background.load(":/images/images/background.png");
+    // Create a QGraphicsPixmapItem and set the pixmap
+    backgroundItem = new QGraphicsPixmapItem(background);
+    backgroundItem->setPos(0, 0);
+    backgroundItem->setZValue(-10);
+    scene->addItem(backgroundItem);
+
 }
 
 QPointF Game::toSceneCoord(int Col, int Row){
@@ -60,12 +69,25 @@ QPointF Game::toSceneCoord(int Col, int Row){
 }
 
 void Game::start(){
-    //clear the screen
-    scene->clear();
+    //clean unnecessary items
+    QList<QGraphicsItem *> items = scene->items();
+    for(QGraphicsItem *item : items) {
+        if(item != backgroundItem) {
+            scene->removeItem(item);
+        }
+    }
+
+    int xPieces = 150 + 5;
+    int yPieces = 18 + 5;
+    boardbackground = new QGraphicsRectItem();
+    boardbackground->setRect(xPieces, yPieces, 545, 545); // Set the rectangle's position and size
+    boardbackground->setZValue(-1);
+    boardbackground->setBrush(Qt::white); // Set the color of the rectangle to black
+    scene->addItem(boardbackground);
 
     //test code TODO REMOVE LATER
     Gameboard = new Board();
-    Gameboard->placePieces(150 + 5, 18 + 5);
+    Gameboard->placePieces(xPieces, yPieces);
     drawGUI();
     createInitialPieces(thisPlayerColor); //start pieces with given color by the server
 }
@@ -248,13 +270,21 @@ void Game::waitForRegister(){
 }
 
 void Game::displayMainMenu(){
+    isGameOver = false;
+    ArePiecesSetUp = false;
+
     //clean unnecessary items
     QList<QGraphicsItem *> items = scene->items();
     for(QGraphicsItem *item : items) {
-        if(item != titleText || item != ngButton || item != jgButton || item != instButton || item != quitButton) {
+        if(item != backgroundItem && item != titleText && item != ngButton && item != jgButton && item != instButton && item != quitButton) {
             scene->removeItem(item);
         }
     }
+
+    qDeleteAll(OtherPlayerPieces);
+    OtherPlayerPieces.clear();
+    qDeleteAll(ThisPlayerPieces);
+    ThisPlayerPieces.clear();
 
 
     //create middle panel
@@ -312,7 +342,9 @@ void Game::displayInstructions(){
     //clean unnecessary items
     QList<QGraphicsItem *> items = scene->items();
     for(QGraphicsItem *item : items) {
+        if(item != backgroundItem) {
             scene->removeItem(item);
+        }
     }
 
     //create middle panel
@@ -329,15 +361,19 @@ void Game::displayInstructions(){
     connect(backButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
     scene->addItem(backButton);
 
+    //create next page button
+    nextButton = new Button(QString("Next"), 100, 50);
+    int xnextButton = xbackButton;
+    int ynextButton = ybackButton - 50 - 10;
+    nextButton->setPos(xnextButton, ynextButton);
+    connect(nextButton, SIGNAL(clicked()), this, SLOT(displayInstructions2()));
+    scene->addItem(nextButton);
 
-    // QLabel *label = new QLabel;
-    // QPixmap pixmap("/path/to/image.jpg");
-    // label->setPixmap(pixmap);
 
     //create the objective text
     QGraphicsTextItem* objectiveText = new QGraphicsTextItem();
-    objectiveText->setHtml("<p><b>OBJECTIVE:</b> To capture your<br>opponent's Flag</p> <p></p> <p><b>AN ARMY:</b> Each army consists of:</p>");
-    QFont instructionsFont("Sans Serif 10", 10); //set font and size
+    objectiveText->setHtml("<p><b>OBJECTIVE:</b> To capture your opponent's Flag</p> <p></p> <p><b>AN ARMY:</b> Each army consists of:</p> <p> <b>33 <i>movable<i> pieces: <b> </p>");
+    QFont instructionsFont("Sans Serif 10", 8); //set font and size
     objectiveText->setFont(instructionsFont);
     int xobjective = xPanel + 5;
     int yobjective = yPanel + 5;
@@ -345,27 +381,333 @@ void Game::displayInstructions(){
     objectiveText->setZValue(1);
     scene->addItem(objectiveText);
 
-    //Place pieces to show ranks
+    //Place pieces to show ranksnext
 
+    // Create a QPixmap object and load the image
+    QPixmap pixmap;
+    pixmap.load(":/images/images/instructionpieces1.png");
+    // Create a QGraphicsPixmapItem and set the pixmap
+    QGraphicsPixmapItem *pixmapItem = new QGraphicsPixmapItem(pixmap);
+    int xPieces1 = xobjective;
+    int yPieces1 = yobjective + objectiveText->boundingRect().height() + 1;
+    pixmapItem->setPos(xPieces1, yPieces1);
+    pixmapItem->setZValue(1);
+    scene->addItem(pixmapItem);
 
+    //create the piece description text
+    QGraphicsTextItem* piece1Text = new QGraphicsTextItem();
+    piece1Text->setHtml("<b>1</b> Spy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>8</b> Scouts &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>5</b> Miners &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>4</b> Sergeants &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>4</b> Lieutenants");
+    piece1Text->setFont(instructionsFont);
+    int xpiece1Text = xobjective;
+    int ypiece1Text = yPieces1 + pixmapItem->boundingRect().height() + 1;
+    piece1Text->setPos(xpiece1Text, ypiece1Text);
+    piece1Text->setZValue(1);
+    scene->addItem(piece1Text);
+
+    // Create a QPixmap object and load the image
+    QPixmap pixmap2;
+    pixmap2.load(":/images/images/instructionpieces2.png");
+    // Create a QGraphicsPixmapItem and set the pixmap
+    QGraphicsPixmapItem *pixmapItem2 = new QGraphicsPixmapItem(pixmap2);
+    int xPieces2 = xobjective;
+    int yPieces2 = ypiece1Text + piece1Text->boundingRect().height() + 1;
+    pixmapItem2->setPos(xPieces2, yPieces2);
+    pixmapItem2->setZValue(1);
+    scene->addItem(pixmapItem2);
+
+    //create the piece description text
+    QGraphicsTextItem* piece2Text = new QGraphicsTextItem();
+    piece2Text->setHtml("<b>4</b> Captains &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>3</b> Majors &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>2</b> Colonels &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>1</b> General &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>1</b> Marshal");
+    piece2Text->setFont(instructionsFont);
+    int xpiece2Text = xobjective;
+    int ypiece2Text = yPieces2 + pixmapItem2->boundingRect().height() + 1;
+    piece2Text->setPos(xpiece2Text, ypiece2Text);
+    piece2Text->setZValue(1);
+    scene->addItem(piece2Text);
+
+    //create note1 text
+    QGraphicsTextItem* note1Text = new QGraphicsTextItem();
+    note1Text->setHtml("<p> <b>NOTE:</b> Higher number indicates higher rank. Lower-ranked pieces, <br> like Miners, Scouts and Spy, have unique privileges </p> <p> <b>7 pieces that <i>do not move:<i></b> </p>");
+    note1Text->setFont(instructionsFont);
+    int xnote1 = xobjective;
+    int ynote1 = ypiece2Text + piece1Text->boundingRect().height() + 5;
+    note1Text->setPos(xnote1, ynote1);
+    note1Text->setZValue(1);
+    scene->addItem(note1Text);
+
+    // Create a QPixmap object and load the image
+    QPixmap pixmap3;
+    pixmap3.load(":/images/images/instructionpieces3.png");
+    // Create a QGraphicsPixmapItem and set the pixmap
+    QGraphicsPixmapItem *pixmapItem3 = new QGraphicsPixmapItem(pixmap3);
+    int xPieces3 = xobjective;
+    int yPieces3 = ynote1 + note1Text->boundingRect().height() + 1;
+    pixmapItem3->setPos(xPieces3, yPieces3);
+    pixmapItem3->setZValue(1);
+    scene->addItem(pixmapItem3);
+
+    //create the piece description text
+    QGraphicsTextItem* piece3Text = new QGraphicsTextItem();
+    piece3Text->setHtml("<b>6</b> Bombs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>1</b> Flag");
+    piece3Text->setFont(instructionsFont);
+    int xpiece3Text = xobjective;
+    int ypiece3Text = yPieces3 + pixmapItem3->boundingRect().height() + 1;
+    piece3Text->setPos(xpiece3Text, ypiece3Text);
+    piece3Text->setZValue(1);
+    scene->addItem(piece3Text);
+
+    //create dividing vertical line
+    int xline = xPieces2 + pixmapItem2->boundingRect().width() + 1;
+    int yline = yPanel;
+    QLineF line(xline, yline, xline, yline + 500);
+    scene->addLine(line);
+
+    //create setup text
+    QGraphicsTextItem* setupText = new QGraphicsTextItem();
+    setupText->setHtml("<b>SETUP</b>");
+    QFont setupFont("Sans Serif 10", 25); //set font and size
+    setupText->setFont(setupFont);
+    int xSetup = xPanel + 800 - ((xPanel + 800) - xline)/2 - setupText->boundingRect().width()/2;
+    int ySetup = yobjective;
+    setupText->setPos(xSetup, ySetup);
+    setupText->setZValue(1);
+    scene->addItem(setupText);
+
+    //create setup instructions
+    QGraphicsTextItem* setupInstText = new QGraphicsTextItem();
+    setupInstText->setHtml("<p> <b>1.</b> Setup your armies using the strategy hints presented next </p>"
+                           "<p> <b>2.</b> Only one piece can occupy a square. Place them <i>anywhere</i> in the <i>bottom<br> four rows</i>. The two middle rows are left onoccupied at the start of the game</p>"
+                           "<p> <b>3.</b> Once both players have positioned their army pieces where they want<br>and are ready, the game starts.</p>"
+                           "<p> <b>STRATEGY HINTS:</b> </p>"
+                           "<p> <b>1.</b> When setting up your pieces, place your Flag somehere in the back row.<br>"
+                           " Another strategy is to use Bombs as corner decoys and hide your Flag in the<br>"
+                           " middle of the back row. Then place a high ranking piece near it for<br> "
+                           "protection. <b>Warning!</b> It is usually not a good idea to place Bombs in the <br>"
+                           "front row. They can block you in.</p>"
+                           "<p></p>"
+                           "<p><b>2.</b> Protect your Miners! If your opponent has surrounded his or her Flag with<br>"
+                           "Bombs, you will need a Miner later in the game to open up a pathway to the<br>"
+                           " Flag</p>"
+                           "<p><b>3.</b> Place some of your Scouts in the first two rows. Use them to reveal the<br>"
+                           " rank of the enemy moving towards you. Keep some Scouts safe and use<br>"
+                           " them later in the game to capture the Flag!</p>");
+    QFont setupInstFont("Sans Serif 10", 8); //set font and size
+    setupInstText->setFont(setupInstFont);
+    int xinstSetup = xline + 1;
+    int yinstSetup = ySetup + setupText->boundingRect().height() + 1;
+    setupInstText->setPos(xinstSetup, yinstSetup);
+    setupInstText->setZValue(1);
+    scene->addItem(setupInstText);
+}
+
+void Game::displayInstructions2(){
+    //clean unnecessary items
+    QList<QGraphicsItem *> items = scene->items();
+    for(QGraphicsItem *item : items) {
+        if(item != backgroundItem && item != backButton) {
+            scene->removeItem(item);
+        }
+    }
+
+    //create middle panel
+    int xPanel = this->width()/2 - 800/2;
+    int yPanel = this->height()/2 - 500/2;
+    drawPanel(xPanel, yPanel, 800, 500, QColor(237, 214, 181), 1);
+
+    //reprogram back button
+    backButton = new Button(QString("Back"), 100, 50);
+    int xbackButton = xPanel + 800 - 110;
+    int ybackButton = yPanel + 500 - 60;
+    backButton->setPos(xbackButton, ybackButton);
+    disconnect(backButton, SIGNAL(clicked()), 0,0); //disconnect previous signal/slot pair
+    connect(backButton, SIGNAL(clicked()), this, SLOT(displayInstructions()));
+    scene->addItem(backButton);
+
+    //create gameplay2 text
+    QGraphicsTextItem* gameplayText = new QGraphicsTextItem();
+    gameplayText->setHtml("<p><b>GAMEPLAY</b></p>");
+    QFont gameplayFont("Sans Serif 10", 25); //set font and size
+    gameplayText->setFont(gameplayFont);
+    int xgameplay = xPanel + 5;
+    int ygameplay = yPanel;
+    gameplayText->setPos(xgameplay, ygameplay);
+    gameplayText->setZValue(1);
+    scene->addItem(gameplayText);
+    //create gameplay explanation text 2
+    QGraphicsTextItem* gameplayText2 = new QGraphicsTextItem();
+    gameplayText2->document()->setTextWidth(gameplayText->boundingRect().width() + 5);
+    gameplayText2->setHtml("<p>You and your opponent alternate turns. The red player moves first.</p>"
+                          "<p> On your turn, you <i>must</i> do one of the following:"
+                          "<p><b>Move - </b> one of your playing pieces to an open adjacent space.</p>"
+                           "<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i><b>OR</b></i></p>"
+                           "<p><b>Attack</b> - one of your opponent's playing pieces.</b></p>"
+                           "<p><b>NOTE:</b> If you cannot do either action, the game is over and you lose.</p>"
+                           "<p></p>"
+                           "<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>RULES FOR MOVEMENT</b></p>"
+                           "<p><b>1.</b> Pieces move one square at a time, forward, backward, or sideways. (Exception: See Special Scout Movement Privilege next</p>"
+                           "<p><b>2.</b> Pieces cannot move diagonally. They cannot jump over another piece. They cannot move onto a square occupied by another piece of the same color</p>"
+                           "<p><b>3.</b> Only one piece can be moved a turn</p>");
+    QFont gameplayFont2("Sans Serif 10", 8); //set font and size
+    gameplayText2->setFont(gameplayFont2);
+    int xgameplay2 = xgameplay;
+    int ygameplay2 = ygameplay + gameplayText->boundingRect().height() + 1;
+    gameplayText2->setPos(xgameplay2, ygameplay2);
+    gameplayText2->setZValue(1);
+    scene->addItem(gameplayText2);
+
+    //create dividing vertical line
+    int xline = xgameplay + gameplayText->boundingRect().width() + 5;
+    int yline = yPanel;
+    QLineF line(xline, yline, xline, yline + 500);
+    scene->addLine(line);
+
+    //create gameplay explanation text 3
+    QGraphicsTextItem* gameplayText3 = new QGraphicsTextItem();
+    gameplayText3->document()->setTextWidth(gameplayText->boundingRect().width() + 5);
+    gameplayText3->setHtml("<p><b>4.</b> A piece cannot move back and forth between the same two squares in three consecutive turns.</p>"
+                           "<p><b>5.</b> Pieces cannot jump over or move onto the two lake areas in the center of the gameBoard. See following figure </p>");
+    QFont gameplayFont3("Sans Serif 10", 8); //set font and size
+    gameplayText3->setFont(gameplayFont3);
+    int xgameplay3 = xline + 5;
+    int ygameplay3 = yPanel;
+    gameplayText3->setPos(xgameplay3, ygameplay3);
+    gameplayText3->setZValue(1);
+    scene->addItem(gameplayText3);
+
+    // Create a QPixmap object and load the image
+    QPixmap pixmap4;
+    pixmap4.load(":/images/images/movementrules.png");
+    // Create a QGraphicsPixmapItem and set the pixmap
+    QGraphicsPixmapItem *pixmapItem4 = new QGraphicsPixmapItem(pixmap4);
+    int xPieces4 = xgameplay3;
+    int yPieces4 = ygameplay3 + gameplayText3->boundingRect().height() + 1;
+    pixmapItem4->setPos(xPieces4, yPieces4);
+    pixmapItem4->setZValue(1);
+    scene->addItem(pixmapItem4);
+
+    //create gameplay explanation text 4
+    QGraphicsTextItem* gameplayText4 = new QGraphicsTextItem();
+    gameplayText4->document()->setTextWidth(gameplayText->boundingRect().width() + 5);
+    gameplayText4->setHtml("<p><i>Arrows show what moves are legal</i> </p>"
+                           "<p><b>Special Scout Movement Privilege</b></p>"
+                           "A Scout can move any number of open squares forward, backward, or sideways. <b>IMPORTANT!</b> This movement will let your opponent know the value of that piece. Once its rank is known, that piece could be left vulnerable for an attack.");
+    QFont gameplayFont4("Sans Serif 10", 8); //set font and size
+    gameplayText4->setFont(gameplayFont4);
+    int xgameplay4 = xgameplay3;
+    int ygameplay4 = yPieces4 + pixmapItem4->boundingRect().height() + 1;
+    gameplayText4->setPos(xgameplay4, ygameplay4);
+    gameplayText4->setZValue(1);
+    scene->addItem(gameplayText4);
+
+    //create dividing vertical line
+    int xline2 = xgameplay3 + gameplayText3->boundingRect().width() + 10;
+    int yline2 = yPanel;
+    QLineF line2(xline2, yline2, xline2, yline2 + 500);
+    scene->addLine(line2);
+
+    //create gameplay explanation text 4
+    QGraphicsTextItem* gameplayText5 = new QGraphicsTextItem();
+    gameplayText5->document()->setTextWidth(gameplayText->boundingRect().width() + 5);
+    gameplayText5->setHtml("<div style='text-align: center;'>"
+                           "<p><b>RULES FOR ATTACK</b></p>"
+                           "</div>"
+                           "<p><b>1.</b>When moving into an opponent's piece space, you attack that piece</p>"
+                           "<p><b>2. When attacking:</b> When a piece is att"
+                           "acking (battle in progress), the rank's of both pieces are displayed on the top of the screen on <i>last battle. </i></p>"
+                           "<p><b>3.</b> The piece with the <b>lower number</b> is captured, removed from the board, and placed in its position in the display side panel(graveyard). If your piece(the at"
+                           "tacking piece) is the remaining and winning piece, it stays in the space formerly occupied  by the defending piece."
+                           "If the remaining and winning piece is the defending piece, it stays on the square it was on when it was attacked.</p>"
+                           "<p><b>4.</b> When pieces of the same rank battle, both pieces are removed from the game</p>"
+                           "<p><b>5.</b> Attacking is always optional.</p>"
+                           "<div style='text-align: center;'>"
+                           "<p><b> Special Miner Attack Privilege</b></p>"
+                            "</div>"
+                           "<p>When any piece(except a Miner - ranked \"3\") strikes a Bomb, that piece is lost and removed from the board. Exception: When a Miner strikes a Bomb, the Bomb is defused and removed from the gameboard, and </p>");
+    QFont gameplayFont5("Sans Serif 10", 8); //set font and size
+    gameplayText5->setFont(gameplayFont5);
+    int xgameplay5 = xline2 + 10;
+    int ygameplay5 = yPanel;
+    gameplayText5->setPos(xgameplay5, ygameplay5);
+    gameplayText5->setZValue(1);
+    scene->addItem(gameplayText5);
+
+    //create dividing vertical line
+    int xline3 = xgameplay5 + gameplayText5->boundingRect().width() + 10;
+    int yline3 = yPanel;
+    QLineF line3(xline3, yline3, xline3, yline3 + 500);
+    scene->addLine(line3);
+
+    //create gameplay explanation text 5
+    QGraphicsTextItem* gameplayText6 = new QGraphicsTextItem();
+    gameplayText6->document()->setTextWidth(xPanel + 800 - xline3 - 10);
+    gameplayText6->setHtml("<p>miner stays in bomb's previous position. Bombs remain on the same space throughout the game unless they are defused. Bombs cannot attack or move.</p>"
+                           "<div style='text-align: center;'>"
+                           "<p><b> Special Spy Attack Privilege</b></p>"
+                           "</div>"
+                           "<p>The Spy is ranked with \"1\". If any piece attacks it, it is removed from the board. But the Spy has a unique attack privilege. It is the only piece that can kill a Marshal(ranked \"10\"), providing the Spy attacks the Marshal first. If the Marshal attacks first, then the Spy is removed.</p>"
+                           "<div style='text-align: center;'>"
+                           "<p><b> WINNING THE GAME</b></p>"
+                           "</div>"
+                           "<p>The first player to attack an opponent's Flag captures it and wins the game.</p>"
+                           "<p>If all of your movable pieces have been removed and you cannot move or attack this turn, you loose and your opponent is declared the winner.</p>");
+    QFont gameplayFont6("Sans Serif 10", 8); //set font and size
+    gameplayText6->setFont(gameplayFont6);
+    int xgameplay6 = xline3 + 10;
+    int ygameplay6 = yPanel;
+    gameplayText6->setPos(xgameplay6, ygameplay6);
+    gameplayText6->setZValue(1);
+    scene->addItem(gameplayText6);
 }
 
 
-void Game::displayGameOver(){
+void Game::displayGameOver(bool thisWon){
     isGameOver = true;
 
     double opacityLevel = 0.8;
 
     //create the GameOver text
     gameOverText = new QGraphicsTextItem(QString("GAME OVER"));
-    QFont gameOverFont("GothicI", 25); //set font and size
+    QFont gameOverFont("GothicI", 50); //set font and size
     gameOverText->setFont(gameOverFont);
-    int xTitle = this->width()/2 - gameOverText->boundingRect().width()/2;
-    int yTitle = 100;
-    gameOverText->setPos(xTitle, yTitle);
-    gameOverText->setZValue(3);
+    int xGameOver = this->width()/2 - gameOverText->boundingRect().width()/2;
+    int yGameOver = this->height()/2 - gameOverText->boundingRect().height()/2;
+    gameOverText->setPos(xGameOver, yGameOver);
+    gameOverText->setZValue(10);
     gameOverText->setOpacity(opacityLevel + 0.1);
     scene->addItem(gameOverText);
+
+    //create you won/lost text
+    wonText = new QGraphicsTextItem();
+
+    QTextDocument *doc = wonText->document();
+    QTextCursor cursor(doc);
+
+    QTextCharFormat format;
+    QPen outlinePen = QPen(QColor(0, 0, 0), 1, Qt::SolidLine); // Black outline
+    format.setTextOutline(outlinePen);
+    QFont wonFont("Sans Serif 10", 25);
+    format.setFont(wonFont);
+
+    if (thisPlayerColor == "REDPLAYER"){
+        format.setForeground(Qt::red);
+    }
+    else{
+        format.setForeground(Qt::blue);
+    }
+
+    if (thisWon == true){
+        cursor.insertText("YOU WON", format);
+    }
+    else{
+        cursor.insertText("YOU LOST", format);
+    }
+
+    int xwon = this->width()/2 - wonText->boundingRect().width()/2;
+    int ywon = yGameOver + gameOverText->boundingRect().height() + 1;
+    wonText->setPos(xwon, ywon);
+    wonText->setZValue(10);
+    wonText->setOpacity(opacityLevel + 0.1);
+    scene->addItem(wonText);
 }
 
 void Game::joinRoom(){
@@ -374,7 +716,7 @@ void Game::joinRoom(){
     //clean unnecessary items
     QList<QGraphicsItem *> items = scene->items();
     for(QGraphicsItem *item : items) {
-        if(item != titleText && item != retryConButton && item != roomText && item != roomTextbox && item != joinRoomButton && item != backButton ) {
+        if(item != backgroundItem && item != titleText && item != retryConButton && item != roomText && item != roomTextbox && item != joinRoomButton && item != backButton ) {
             scene->removeItem(item);
         }
     }
@@ -457,7 +799,7 @@ void Game::createRoom(){
     //clean unnecessary items
     QList<QGraphicsItem *> items = scene->items();
     for(QGraphicsItem *item : items) {
-        if(item != titleText && item != retryConButton && item != roomText && item != roomTextbox && item != createRoomButton && item != waitingJoinText && item != backButton ) {
+        if(item != backgroundItem && item != titleText && item != retryConButton && item != roomText && item != roomTextbox && item != createRoomButton && item != waitingJoinText && item != backButton ) {
             scene->removeItem(item);
         }
     }
@@ -825,9 +1167,92 @@ void Game::drawGUI(){
     int xleaveButton = xreadyButton;
     int yleaveButton = yreadyButton - 5 - leaveButton->boundingRect().height();
     leaveButton->setPos(xleaveButton, yleaveButton);
-    //connect(leaveButton, SIGNAL(clicked()), this, SLOT(displayMainMenu())); conectar depois
+    connect(leaveButton, SIGNAL(clicked()), this, SLOT(leaveGame()));
     scene->addItem(leaveButton);
 
+}
+
+void Game::leaveGame(){
+    leavegamePanel = new QGraphicsRectItem();
+    qDebug() << this->width();
+    int xleave = this->width()/2 - 100;
+    int yleave = this->height()/2 - 50;
+    leavegamePanel->setRect(xleave, yleave, 200, 100); // Set the rectangle's position and size
+    leavegamePanel->setZValue(20);
+    leavegamePanel->setBrush(QColor(237, 214, 181)); // Set the color of the rectangle to black
+    scene->addItem(leavegamePanel);
+    leaveSure = new QGraphicsTextItem(QString("Are you sure?"));
+    QFont leaveFont("GothicI", 16); //set font and size
+    leaveSure->setFont(leaveFont);
+    leaveSure->setPos(xleave + 100 - leaveSure->boundingRect().width()/2, yleave);
+    leaveSure->setZValue(21);
+    scene->addItem(leaveSure);
+
+    //Create yes leave button
+    yesButton = new Button(QString("Yes"), 50, 25);
+    int xyesButton = xleave + 100/3;
+    int yyesButton = yleave + leaveSure->boundingRect().height() + 10;
+    yesButton->setPos(xyesButton, yyesButton);
+    yesButton->setZValue(21);
+    connect(yesButton, SIGNAL(clicked()), this, SLOT(yesleave()));
+    scene->addItem(yesButton);
+
+    //Create no leave button
+    noButton = new Button(QString("No"), 50, 25);
+    int xnoButton = xyesButton + 50 + 100/3;
+    int ynoButton = yyesButton;
+    noButton->setPos(xnoButton, ynoButton);
+    noButton->setZValue(21);
+    connect(noButton, SIGNAL(clicked()), this, SLOT(noleave()));
+    scene->addItem(noButton);
+}
+
+void Game::yesleave(){
+    thisPlayerName = "";  //the name of the player of this client
+    otherPlayerName = ""; //enemy player's name;
+    thisPlayerColor = ""; //the color of the player of this client
+    roomNumber = "";
+    ArePiecesSetUp = false;
+    isGameOver = false;
+    if (isGameOver == false){
+    ThisClientSocket->writeData(QString("LEAVE"));
+    }
+    displayMainMenu();
+}
+
+void Game::noleave(){
+    scene->removeItem(leavegamePanel);
+    scene->removeItem(leaveSure);
+    scene->removeItem(yesButton);
+    scene->removeItem(noButton);
+}
+
+void Game::otherPlayerLeft(){
+    isGameOver = true;
+
+    leavegamePanel = new QGraphicsRectItem();
+    qDebug() << this->width();
+    int xleave = this->width()/2 - 100;
+    int yleave = this->height()/2 - 50;
+    leavegamePanel->setRect(xleave, yleave, 200, 100); // Set the rectangle's position and size
+    leavegamePanel->setZValue(20);
+    leavegamePanel->setBrush(QColor(237, 214, 181)); // Set the color of the rectangle to black
+    scene->addItem(leavegamePanel);
+    leaveSure = new QGraphicsTextItem(QString("Other Player Left the Game"));
+    QFont leaveFont("GothicI", 8); //set font and size
+    leaveSure->setFont(leaveFont);
+    leaveSure->setPos(xleave + 100 - leaveSure->boundingRect().width()/2, yleave);
+    leaveSure->setZValue(21);
+    scene->addItem(leaveSure);
+
+    //Create yes leave button
+    yesButton = new Button(QString("Back to Menu"), 100, 25);
+    int xyesButton = xleave + 100 - yesButton->boundingRect().width()/2;
+    int yyesButton = yleave + leaveSure->boundingRect().height() + 10;
+    yesButton->setPos(xyesButton, yyesButton);
+    yesButton->setZValue(21);
+    connect(yesButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
+    scene->addItem(yesButton);
 }
 
 void Game::createNewPiece(QString player, QString pieceRank){
@@ -1150,6 +1575,9 @@ void Game::setDataReceived(QString data){
         QString defenseResponse = data.mid(5, 5 - datalength);
         defenseMoveResponse(defenseResponse);
     }
+    else if(identifier == QString("PLEFT")){
+        otherPlayerLeft();
+    }
 }
 
 void Game::atackMoveResponse(QString response){
@@ -1182,7 +1610,7 @@ void Game::atackMoveResponse(QString response){
         defendingPiece->setRank(otherRank);
         defendingPiece->setVisible(true); //rank is visible when dead
         qDebug() << "GAMEOVER, YOU WON!";
-        displayGameOver();
+        displayGameOver(true);
     }
     QString thisRank = atackingPiece->getRank();
     if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
@@ -1263,7 +1691,7 @@ void Game::defenseMoveResponse(QString response){
         defendingPiece->setZValue(defendingPiece->originalPanelZ);
         isGameOver = true;
         qDebug() << "GAMEOVER, YOU LOST!";
-        displayGameOver();
+        displayGameOver(false);
     }
     if (thisRank != "N" && otherRank != "N"){ //if there was a battle, update demo pieces
         demoThisPiece->setRank(thisRank);

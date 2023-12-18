@@ -47,6 +47,25 @@ void Player::PrintBoard(bool inv){
     }
 }
 
+void Player::cleanGameData(){
+    //CLEAN GAME DATA
+    playerRoom = QString("");
+    playerSetUpData = QString("");
+    playerColor = NULL;
+    //CLEAN BOARD
+    gameBoard = QVector<QVector<QString>>(10, QVector<QString>(10));
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if ( (i == 4 || i == 5) && (j == 2 || j == 3 || j == 6 || j == 7) ){ //if it is a water position, put Water
+                gameBoard[i][j] = QString("0W"); //water
+            }
+            else{
+                gameBoard[i][j] = QString("0N"); //empty
+            }
+        }
+    }
+}
+
 void Player::setColor(QString color){
     playerColor = color;
 }

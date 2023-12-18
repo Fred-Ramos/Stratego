@@ -1,0 +1,19 @@
+{
+	"BUILD_DIR" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/Stratego_gui1_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/Stratego_gui1",
+	"CMAKE_SOURCE_DIR" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/Stratego_gui1",
+	"INCLUDE_DIR" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/Stratego_gui1_autogen/include",
+	"INPUTS" : [],
+	"LOCK_FILE" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/Stratego_gui1_autogen.dir/AutoRcc_res_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "res" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_res.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.6.1/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/build-Stratego_gui1-Desktop_Qt_6_6_1_MinGW_64_bit-Debug/CMakeFiles/Stratego_gui1_autogen.dir/AutoRcc_res_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/aranh/Desktop/FACULDADE/PSW/git/a03_3/QT1/Stratego_gui1/res.qrc",
+	"VERBOSITY" : 0
+}

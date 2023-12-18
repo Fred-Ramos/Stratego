@@ -10,6 +10,7 @@ public:
     //print check matrix method
     void PrintBoard(bool inv);
 
+    void cleanGameData();
     //setters
     void setColor(QString color);
     void setIP(QString ip);
@@ -38,7 +39,6 @@ private:
     QString playerSourcePort;
     QString playerRoom; //room player is playing at
     QString playerSetUpData;
-    //QVector<QVector<QString>> gameBoard; //gameboard to save the pieces allocation
 };
 
 #endif // PLAYER_H

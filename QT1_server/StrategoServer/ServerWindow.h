@@ -56,6 +56,8 @@ private:
 
     int ComparePiece(QString thisRank, QString otherRank);
 
+    void leaveOtherGame(Player* thisPlayer, QTcpSocket* thisSocket, QString thisIp, QString thisSourcePort);
+
 
 };
 
