@@ -136,6 +136,7 @@ private:
                 //ready buttons
     Button* readyButton;
     Button* defaultPositionsButton;
+    QGraphicsTextItem* waitingOtherReady;
         //playing
     Button* leaveButton;
     QGraphicsTextItem* gameOverText; //gameover text

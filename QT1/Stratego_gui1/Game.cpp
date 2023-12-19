@@ -95,13 +95,15 @@ void Game::start(){
 }
 
 void Game::ready(){
+    qDebug() << "Ready button clicked";
     if (ArePiecesPlaced() == true){
         qDebug() << "player ready and pieces placed";
         SetPiecesMessage();
         qDebug() << MessageToSend;
         qDebug() << "Message length: " << MessageToSend.length();
 
-        ThisClientSocket->writeData(MessageToSend);
+        disconnect(readyButton, SIGNAL(clicked()), 0,0); //disconnect previous signal/slot pair
+        readyButton->changeText("Waiting for other...");
     }
 }
 
@@ -918,14 +920,14 @@ void Game::pickUpPiece(Piece* piece){
     //picks up the specified card
     if (isGameOver == false && getArePiecesSetUp() == false){
         if (piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
-            piece->setZValue(10);
+            piece->setZValue(20);
             pieceToPlace = piece;
             return;
         }
     }
     else{ //if pieces already setup, change original position; else original position is in the side panel; cant pick up piece on the side panel(now its the graveyard)
         if (isGameOver == false && piece->getOwner() == thisPlayerColor && piece->getOwner() == getTurn() && piece->pos().x() > 150 && pieceToPlace == NULL){ //if piece to pick up belongs to this client's player, it is this player's turn and and no piece picked up yet
-            piece->setZValue(10);
+            piece->setZValue(20);
             pieceToPlace = piece;
             piece->originalPos = piece->pos();
             piece->originalZ = piece->zValue();
@@ -1012,6 +1014,7 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                 atackingPiece = pieceToPlace;
                 defendingPiece = pieceToReplace;
                 pieceToPlace = NULL;
+                nextPlayersTurn(); //1move per play //make it the next players turn if piece was placed and ArePiecesSetup == true
             }
         }
         //Other pieces movement:
@@ -1052,11 +1055,8 @@ void Game::placePiece(Piece *pieceToReplace){ //piece is ON TOP of board's empty
                 atackingPiece = pieceToPlace;
                 defendingPiece = pieceToReplace;
                 pieceToPlace = NULL;
+                nextPlayersTurn(); //1move per play //make it the next players turn if piece was placed and ArePiecesSetup == true
             }
-        }
-        //make it the next players turn if piece was placed and ArePiecesSetup == true
-        if (pieceToPlace == NULL){
-            nextPlayersTurn(); //1move per play
         }
     }
 }
@@ -1508,6 +1508,7 @@ void Game::SetPiecesMessage(){ //Initial Pieces setup message to send to the ser
         }
         MessageToSend.append(QString::number(yPosition) + QString::number(xPosition) + thisRank);
     }
+    ThisClientSocket->writeData(MessageToSend);
 }
 
 void Game::pieceMoveMessage(int srcRow, int srcCol, int destRow, int destCol){

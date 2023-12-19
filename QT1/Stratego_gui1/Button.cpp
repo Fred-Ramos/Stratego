@@ -1,6 +1,7 @@
 #include "Button.h"
 
 #include <QBrush>
+#include <QFont>
 Button::Button(QString name, int width, int height, QGraphicsItem *parent){
     //draw rectangle
     setRect(0,0, width, height);
@@ -10,7 +11,6 @@ Button::Button(QString name, int width, int height, QGraphicsItem *parent){
     setBrush(brush);
 
     //draw button text
-    QGraphicsItem* text;
     text = new QGraphicsTextItem(name, this); //button is the parent of the text
     //center text
     int xText = rect().width()/2 - text->boundingRect().width()/2;
@@ -39,4 +39,20 @@ void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event){
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::red);
     setBrush(brush);
+}
+
+void Button::changeText(QString newText){
+    text->setPlainText(newText);
+
+    //center text
+    int xText = rect().width()/2 - text->boundingRect().width()/2;
+    int yText = rect().height()/2 - text->boundingRect().height()/2;
+    text->setPos(xText, yText);
+
+    //change font size
+    QFont font = text->font();
+    if(text->boundingRect().width() > rect().width()){
+        font.setPointSize(font.pointSize() - 1);
+    }
+    text->setFont(font);
 }

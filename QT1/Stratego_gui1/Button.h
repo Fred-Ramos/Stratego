@@ -14,10 +14,12 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
+
+    void changeText(QString newText);
 signals:
     void clicked();
 private:
-    QString text;
+    QGraphicsTextItem* text;
 };
 
 #endif // BUTTON_H
