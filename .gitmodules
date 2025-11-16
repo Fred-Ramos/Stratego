@@ -1,0 +1,3 @@
+[submodule "PRE_GUI/googletest"]
+	path = PRE_GUI/googletest
+	url = https://github.com/google/googletest.git
