@@ -25,7 +25,11 @@ set(Sources
     src/game.cpp
 )
 
-add_library(${This} STATIC ${Sources} ${Headers})
+# Library for tests
+add_library(StrategoLib STATIC ${Sources} ${Headers})
 
-#look for cmake list inside test folder and run it
+# Look for cmake list inside test folder and run it
 add_subdirectory(test)
+
+# Game executable
+add_executable(stratego src/main.cpp ${Sources} ${Headers})

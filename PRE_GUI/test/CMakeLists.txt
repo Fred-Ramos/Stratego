@@ -16,7 +16,7 @@ set(Sources
 add_executable(${This} ${Sources} ${Headers})
 target_link_libraries(${This} PUBLIC
     gtest_main
-    Stratego_test
+    StrategoLib
 )
 
 add_test(
