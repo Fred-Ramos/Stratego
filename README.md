@@ -8,7 +8,7 @@ It includes two independent versions:
     terminal.\
 -   A **graphical client-server version** built with **Qt** (QT_GUI).
 
-The project was developed as part of a university course, covering
+The project was developed in 2023 as part of a university course, covering
 object-oriented programming, data structures, networking, and GUI
 development.
 
