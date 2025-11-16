@@ -1,4 +1,4 @@
-#include "../logic/game.h"
+#include "../src/game.h"
 
 void CleanTestBoard(BoardPiece* qpaaBoard[10][10]){
     //clean board(for now because board constructor fills it up with a demo)

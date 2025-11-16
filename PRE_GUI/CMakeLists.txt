@@ -15,14 +15,14 @@ enable_testing()
 add_subdirectory(googletest)
 
 set(Headers
-    logic/piece.h
-    logic/board.h
-    logic/game.h
+    src/piece.h
+    src/board.h
+    src/game.h
 )
 set(Sources
-    logic/piece.cpp
-    logic/board.cpp
-    logic/game.cpp
+    src/piece.cpp
+    src/board.cpp
+    src/game.cpp
 )
 
 add_library(${This} STATIC ${Sources} ${Headers})
