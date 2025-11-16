@@ -1,0 +1,5 @@
+*.o
+googletest/
+.vscode/
+build/
+stratego.exe
